@@ -17,6 +17,7 @@ public class App {
         writeToLogger("Executing jar from " + executionPath());
         writeToLogger("Reading config file...\n");
         createConfigFile();
+        createResultFile(false);
 
     }
 
@@ -36,11 +37,24 @@ public class App {
         }
     }
 
+    private static void createResultFile(boolean result){
+        try {
+            ResultFile resultFile = new ResultFile(executionPath());
+            resultFile.create();
+            writeToLogger("Created file in " + resultFile.path);
+            resultFile.write(result);
+            writeToLogger("Test succeeded: " + result);
+        } catch (URISyntaxException | IOException e) {
+            writeToLogger("Couldn't create log file: \n");
+            writeToLogger(Arrays.toString(e.getStackTrace()));
+        }
+    }
+
     private static void createConfigFile() {
 
-        ConfigFile configFile = new ConfigFile();
         try {
-            configFile.read(executionPath());
+            ConfigFile configFile = new ConfigFile(executionPath());
+            configFile.read();
             writeToLogger("Config file read: \n");
             writeToLogger(configFile.toString());
         } catch (URISyntaxException | IOException e) {

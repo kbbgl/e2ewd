@@ -18,7 +18,6 @@ class Logger {
 
             fileWriter.write(s);
             fileWriter.write("\n");
-            System.out.println("wrote " + s + " to file");
 
         } catch (IOException e) {
             e.printStackTrace();

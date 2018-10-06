@@ -38,6 +38,18 @@ task createLogFile(){
     }
 }
 
+task createResultFile(){
+    def path = new File("$projectDir/build/libs/run")
+    path.mkdirs();
+}
+
+task deleteLogAndResultContent(){
+    doLast {
+        new File("$projectDir/build/libs/run/result.txt").text = ""
+        new File("$projectDir/build/libs/log/log.txt").text = ""
+    }
+}
+
 // Define the main class for the application
 mainClassName = 'App'
 

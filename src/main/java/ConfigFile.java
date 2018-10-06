@@ -3,11 +3,13 @@ import java.util.Properties;
 
 public class ConfigFile {
 
+    String path;
     String token;
     String host;
     int port;
 
-    ConfigFile() {
+    ConfigFile(String path) {
+        this.path = path;
     }
 
     private void setToken(String token) {
@@ -22,7 +24,7 @@ public class ConfigFile {
         this.port = port;
     }
 
-    void read(String path){
+    void read(){
         Properties properties = new Properties();
         InputStream input;
 
