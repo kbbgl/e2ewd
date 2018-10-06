@@ -14,7 +14,7 @@
 
 So the command to run the application becomes:
 
-    `"C:\Program Files\Sisense\Infra\jre\bin\java.exe" -jar e2ewd.jar`
+    "C:\Program Files\Sisense\Infra\jre\bin\java.exe" -jar e2ewd.jar
     
 ### Troubleshooting
 See log file located in:
