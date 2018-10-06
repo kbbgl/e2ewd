@@ -1,4 +1,12 @@
 # e2ewd
+## Hermetical test for your Sisense server
+
+[![GitHub issues](https://img.shields.io/github/issues/kbbgl/e2ewd.svg?style=plastic)](https://github.com/kbbgl/e2ewd/issues)
+
+[![GitHub repo size in bytes](https://img.shields.io/github/repo-size/badges/shields.svg)](https://github.com/kbbgl/e2ewd)
+
+[![Depfu](https://img.shields.io/depfu/depfu/example-ruby.svg)](https://github.com/kbbgl/e2ewd)
+
 
 ### Tests 
 

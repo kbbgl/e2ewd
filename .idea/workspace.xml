@@ -2,27 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c8a9607-8b97-42f8-b6b2-6e5ad6edebd5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/build/classes/main/ResultFile.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/build/libs/run/result.txt" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/ResultFile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.lock" afterPath="$PROJECT_DIR$/.gradle/3.3/taskArtifacts/taskArtifacts.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/App.class" afterPath="$PROJECT_DIR$/build/classes/main/App.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/ConfigFile.class" afterPath="$PROJECT_DIR$/build/classes/main/ConfigFile.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/classes/main/Logger.class" afterPath="$PROJECT_DIR$/build/classes/main/Logger.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/distributions/e2ewd.tar" afterPath="$PROJECT_DIR$/build/distributions/e2ewd.tar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/distributions/e2ewd.zip" afterPath="$PROJECT_DIR$/build/distributions/e2ewd.zip" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/libs/e2ewd.jar" afterPath="$PROJECT_DIR$/build/libs/e2ewd.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.gradle" afterPath="$PROJECT_DIR$/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/libs/log/log.txt" afterPath="$PROJECT_DIR$/build/libs/log/log.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/reports/tests/test/index.html" afterPath="$PROJECT_DIR$/build/reports/tests/test/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/App.java" afterPath="$PROJECT_DIR$/src/main/java/App.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ConfigFile.java" afterPath="$PROJECT_DIR$/src/main/java/ConfigFile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Logger.java" afterPath="$PROJECT_DIR$/src/main/java/Logger.java" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -44,8 +25,8 @@
       <file leaf-file-name="App.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="19" column="30" lean-forward="false" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+            <state relative-caret-position="87">
+              <caret line="11" column="51" lean-forward="false" selection-start-line="11" selection-start-column="51" selection-end-line="11" selection-end-column="51" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -67,8 +48,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="30">
-                <caret line="2" column="9" lean-forward="false" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
+              <first_editor relative-caret-position="15">
+                <caret line="1" column="42" lean-forward="true" selection-start-line="1" selection-start-column="42" selection-end-line="1" selection-end-column="42" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -119,8 +100,8 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="559">
-              <caret line="45" column="30" lean-forward="false" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="30" />
+            <state relative-caret-position="75">
+              <caret line="5" column="38" lean-forward="false" selection-start-line="5" selection-start-column="38" selection-end-line="5" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -392,7 +373,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="4616330017000" />
+        <entry key="$PROJECT_DIR$" value="4616330454000" />
         <entry key="$PROJECT_DIR$/build.gradle" value="3635319966" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="829777938" />
       </map>
@@ -574,8 +555,8 @@
         <option value="$PROJECT_DIR$/src/main/java/ConfigFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/Logger.java" />
         <option value="$PROJECT_DIR$/src/main/java/ResultFile.java" />
-        <option value="$PROJECT_DIR$/src/main/java/App.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/main/java/App.java" />
         <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
@@ -622,60 +603,60 @@
           <expand>
             <path>
               <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="462c0819:PsiDirectoryNode" />
+              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
               <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="462c0819:PsiDirectoryNode" />
+              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="build" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="462c0819:PsiDirectoryNode" />
+              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="build" type="462c0819:PsiDirectoryNode" />
               <item name="libs" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="462c0819:PsiDirectoryNode" />
+              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="build" type="462c0819:PsiDirectoryNode" />
               <item name="libs" type="462c0819:PsiDirectoryNode" />
               <item name="log" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="462c0819:PsiDirectoryNode" />
+              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="build" type="462c0819:PsiDirectoryNode" />
               <item name="libs" type="462c0819:PsiDirectoryNode" />
               <item name="run" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="462c0819:PsiDirectoryNode" />
+              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="462c0819:PsiDirectoryNode" />
+              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
               <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="462c0819:PsiDirectoryNode" />
+              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="462c0819:PsiDirectoryNode" />
+              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
               <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="462c0819:PsiDirectoryNode" />
+              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
@@ -948,24 +929,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="19" column="30" lean-forward="false" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="559">
-          <caret line="45" column="30" lean-forward="false" selection-start-line="45" selection-start-column="5" selection-end-line="45" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build/libs/run/result.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -982,11 +945,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="38" lean-forward="false" selection-start-line="5" selection-start-column="38" selection-end-line="5" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="87">
+          <caret line="11" column="51" lean-forward="false" selection-start-line="11" selection-start-column="51" selection-end-line="11" selection-end-column="51" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="30">
-            <caret line="2" column="9" lean-forward="false" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
+          <first_editor relative-caret-position="15">
+            <caret line="1" column="42" lean-forward="true" selection-start-line="1" selection-start-column="42" selection-end-line="1" selection-end-column="42" />
             <folding />
           </first_editor>
           <second_editor />
