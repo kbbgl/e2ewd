@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/e2ewd.iml" filepath="$PROJECT_DIR$/e2ewd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/e2ewd_main.iml" filepath="$PROJECT_DIR$/.idea/modules/e2ewd_main.iml" group="e2ewd" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/e2ewd_test.iml" filepath="$PROJECT_DIR$/.idea/modules/e2ewd_test.iml" group="e2ewd" />
+    </modules>
+  </component>
+</project>
