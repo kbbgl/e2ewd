@@ -26,7 +26,7 @@ which will contain a `boolean` as the result, i.e. `true` means that the tests r
 4) Run the command:  
 
 
-    java -jar e2ewd.jar
+    `java -jar e2ewd.jar`
     
 **NOTE**: If you don't have `java` installed globally, you may use the JRE located in:
 `"C:\Program Files\Sisense\Infra\jre\bin\java.exe"`
