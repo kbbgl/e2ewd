@@ -1,0 +1,19 @@
+
+Run at: Mon Oct 08 14:56:36 IDT 2018
+-----------------------
+Executing jar from C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs
+Reading config file...
+
+Config file read: 
+
+ConfigFile{token='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNWI3ZDhiNzU3MGZmMmUyOTVlODljZjc3IiwiYXBpU2VjcmV0IjoiZjE2Y2M2OGQtNjhhZC0zMmQ2LTc3MjktNzkxMTgwNzZlNDI1IiwiaWF0IjoxNTM4MTMwNTMzfQ.XNkwEWWiJ2AqCcCXwvojLYPDJkiC1CXENW6xPQhSRQ4', host='localhost', port=8081, protocol=http}
+Connecting to mongo
+Running command to retrieve test ElastiCube
+EC found: Sample Healthcare
+Table found: Divisions
+Running query: SELECT COUNT(*) FROM Divisions
+GET result: {"headers":["Column"],"values":[[6]]}
+Result: 6
+Table query successful: true
+Created file in C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs/run/result.txt
+Test succeeded: true

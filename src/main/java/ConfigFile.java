@@ -3,10 +3,11 @@ import java.util.Properties;
 
 public class ConfigFile {
 
-    String path;
-    String token;
-    String host;
-    int port;
+    private String path;
+    private String token;
+    private String host;
+    private String protocol;
+    private int port;
 
     ConfigFile(String path) {
         this.path = path;
@@ -24,6 +25,18 @@ public class ConfigFile {
         this.port = port;
     }
 
+    public int getPort(){
+        return this.port;
+    }
+
+    public String getHost(){
+        return this.host;
+    }
+
+    public String getToken(){
+        return this.token;
+    }
+
     void read(){
         Properties properties = new Properties();
         InputStream input;
@@ -35,6 +48,7 @@ public class ConfigFile {
             setToken(properties.getProperty("token"));
             setHost(properties.getProperty("host"));
             setPort(Integer.parseInt(properties.getProperty("port")));
+            setProtocol(properties.getProperty("protocol"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,6 +62,15 @@ public class ConfigFile {
                 "token='" + token + '\'' +
                 ", host='" + host + '\'' +
                 ", port=" + port +
+                ", protocol=" + protocol +
                 '}';
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
     }
 }
