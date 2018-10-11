@@ -19,8 +19,6 @@ public class App {
     private static final Date runTime = new Date();
     private static final Runtime rt = Runtime.getRuntime();
     private static ConfigFile configFile;
-    private static String ec;
-    private static String table;
     private static final String[] mongoCmds =  {
             "C:\\Program Files\\Sisense\\Infra\\MongoDB\\sisenseRepositoryShell.exe",
             "prismWebDB",
@@ -43,12 +41,14 @@ public class App {
     public static void main(String[] args) throws IOException, URISyntaxException, JSONException {
 
         writeToLogger("\nRun at: " + runTime.toString() + "\n-----------------------");
+        writeToLogger("Deleting result file...");
+        deleteResultFile();
         writeToLogger("Executing jar from " + executionPath());
         createConfigFile();
 
         // Read EC and table
-        ec = getElasticubeName();
-        table = getTable(ec);
+        String ec = getElasticubeName();
+        String table = getTable(ec);
 
         String token = configFile.getToken();
         String host = configFile.getHost();
@@ -62,20 +62,23 @@ public class App {
 
     }
 
-    private static String executionPath() throws URISyntaxException, IOException {
-        String jarLocation = new File(App.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath();
-        Path path = Paths.get(jarLocation);
-
-        return String.valueOf(path.getParent());
+    private static String executionPath(){
+        String jarLocation = null;
+        try {
+            jarLocation = new File(App.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath();
+            Path path = Paths.get(jarLocation);
+            return String.valueOf(path.getParent());
+        } catch (IOException | URISyntaxException e) {
+            writeToLogger("Couldn't retrieve jar execution path:");
+            writeToLogger(e.getMessage());
+            writeToLogger(Arrays.toString(e.getStackTrace()));
+        }
+        return null;
     }
 
     private static void writeToLogger(String s){
-        try {
-            Logger logger = new Logger(executionPath());
-            logger.write(s);
-        } catch (URISyntaxException | IOException e) {
-            e.printStackTrace();
-        }
+        Logger logger = new Logger(executionPath());
+        logger.write(s);
     }
 
     private static void createResultFile(boolean result){
@@ -85,24 +88,33 @@ public class App {
             writeToLogger("Created file in " + resultFile.path);
             resultFile.write(result);
             writeToLogger("Test succeeded: " + result);
-        } catch (URISyntaxException | IOException e) {
+        } catch (IOException e) {
             writeToLogger("Couldn't create log file: \n");
             writeToLogger(Arrays.toString(e.getStackTrace()));
         }
     }
 
+    private static void deleteResultFile(){
+        try {
+            File file = new File(executionPath() + "/run/result.txt");
+            file.delete();
+        } catch (Exception e) {
+            writeToLogger("failed to delete result.txt file:\n");
+            writeToLogger(e.getMessage());
+            writeToLogger(Arrays.toString(e.getStackTrace()));
+            createResultFile(false);
+            e.printStackTrace();
+        }
+
+    }
+
     private static void createConfigFile() {
 
-        try {
-            configFile = new ConfigFile(executionPath());
-            writeToLogger("Reading config file...\n");
-            configFile.read();
-            writeToLogger("Config file read: \n");
-            writeToLogger(configFile.toString());
-        } catch (URISyntaxException | IOException e) {
-            writeToLogger("Couldn't read config file: \n");
-            writeToLogger(Arrays.toString(e.getStackTrace()));
-        }
+        configFile = new ConfigFile(executionPath());
+        writeToLogger("Reading config file...\n");
+        configFile.read();
+        writeToLogger("Config file read: \n");
+        writeToLogger(configFile.toString());
     }
 
     private static String getElasticubeName() {
@@ -174,8 +186,11 @@ public class App {
             writeToLogger("Table found: " + table);
             return table;
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            createResultFile(false);
+            writeToLogger("getTable failed: ");
+            writeToLogger(e.getMessage());
+            writeToLogger(Arrays.toString(e.getStackTrace()));
         }
 
         return null;
@@ -187,29 +202,37 @@ public class App {
         String query = ("SELECT COUNT(*) FROM " + tableName).replaceAll(" ", "%20");
         String uri = protocol + "://" + domain + ":" + port + "/api/datasources/" + elasticubeName.replaceAll(" ", "%20") + "/sql?query=" + query;
 
-        HttpClient client = HttpClients.createDefault();
-        HttpGet get = new HttpGet(uri);
-        get.addHeader("authorization", "Bearer " + token);
+        try{
 
-        HttpResponse response = client.execute(get);
-        HttpEntity entity = response.getEntity();
+            HttpClient client = HttpClients.createDefault();
+            HttpGet get = new HttpGet(uri);
+            get.addHeader("authorization", "Bearer " + token);
+            HttpResponse response = client.execute(get);
+            HttpEntity entity = response.getEntity();
 
 
-        if (entity != null){
-            try(InputStream inputStream = entity.getContent()) {
+            if (entity != null){
+                try(InputStream inputStream = entity.getContent()) {
 
-                String result = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
-                writeToLogger("Running query: " + query.replaceAll("%20", " "));
-                writeToLogger("GET result: " + result);
-                JSONObject jsonObject = new JSONObject(result);
-                int count = jsonObject.getJSONArray("values").getJSONArray(0).getInt(0);
-                writeToLogger("Result: " + count);
+                    String result = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
+                    writeToLogger("Running query: " + query.replaceAll("%20", " "));
+                    writeToLogger("GET result: " + result);
+                    JSONObject jsonObject = new JSONObject(result);
+                    int count = jsonObject.getJSONArray("values").getJSONArray(0).getInt(0);
+                    writeToLogger("Result: " + count);
 
-                if (count > 0){
-                    isSuccessful = true;
+                    if (count > 0){
+                        isSuccessful = true;
+                    }
                 }
             }
+            return isSuccessful;
+        }catch (Exception e){
+            writeToLogger("query table failed:\n");
+            writeToLogger(e.getMessage());
+            writeToLogger(Arrays.toString(e.getStackTrace()));
+            return false;
         }
-        return isSuccessful;
+
     }
 }

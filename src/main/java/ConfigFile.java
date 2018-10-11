@@ -25,15 +25,15 @@ public class ConfigFile {
         this.port = port;
     }
 
-    public int getPort(){
+    int getPort(){
         return this.port;
     }
 
-    public String getHost(){
+    String getHost(){
         return this.host;
     }
 
-    public String getToken(){
+    String getToken(){
         return this.token;
     }
 
@@ -66,11 +66,11 @@ public class ConfigFile {
                 '}';
     }
 
-    public String getProtocol() {
+    String getProtocol() {
         return protocol;
     }
 
-    public void setProtocol(String protocol) {
+    private void setProtocol(String protocol) {
         this.protocol = protocol;
     }
 }
