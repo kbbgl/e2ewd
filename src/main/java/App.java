@@ -202,6 +202,9 @@ public class App {
         String query = ("SELECT COUNT(*) FROM " + tableName).replaceAll(" ", "%20");
         String uri = protocol + "://" + domain + ":" + port + "/api/datasources/" + elasticubeName.replaceAll(" ", "%20") + "/sql?query=" + query;
 
+        writeToLogger("query: " + query);
+        writeToLogger("uri: " + uri);
+
         try{
 
             HttpClient client = HttpClients.createDefault();
