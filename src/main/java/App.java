@@ -199,7 +199,7 @@ public class App {
     private static boolean queryTableIsSuccessful(String protocol, String domain, int port, String token, String elasticubeName, String tableName) throws IOException, JSONException {
 
         boolean isSuccessful = false;
-        String query = ("SELECT COUNT(*) FROM " + tableName).replaceAll(" ", "%20");
+        String query = ("SELECT COUNT(*) FROM [" + tableName + "]").replaceAll(" ", "%20");
         String uri = protocol + "://" + domain + ":" + port + "/api/datasources/" + elasticubeName.replaceAll(" ", "%20") + "/sql?query=" + query;
 
         writeToLogger("query: " + query);
