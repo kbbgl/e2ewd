@@ -1,9 +1,10 @@
+import env_var.EnvironmentalVariables;
+import logging.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -12,6 +13,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class App {
@@ -19,32 +22,18 @@ public class App {
     private static final Date runTime = new Date();
     private static final Runtime rt = Runtime.getRuntime();
     private static ConfigFile configFile;
-    private static final String[] mongoCmds =  {
-            "C:\\Program Files\\Sisense\\Infra\\MongoDB\\sisenseRepositoryShell.exe",
-            "prismWebDB",
-            "--port",
-            "27018",
-            "--host",
-            "localhost",
-            "--authenticationDatabase",
-            "admin",
-            "--username",
-            "RootUser",
-            "--password",
-            "RepoAdmin!",
-            "--eval",
-            "\"db.elasticubes.findOne().title\"",
-            "--quiet"
-    };
+    private static Logger logger;
 
-
-    public static void main(String[] args) throws IOException, URISyntaxException, JSONException {
+    public static void main(String[] args) {
 
         writeToLogger("\nRun at: " + runTime.toString() + "\n-----------------------");
-        writeToLogger("Deleting result file...");
+        writeToLogger("[main] Deleting result file...");
         deleteResultFile();
-        writeToLogger("Executing jar from " + executionPath());
+        writeToLogger("[main] Executing jar from " + executionPath());
         createConfigFile();
+
+        // Setting ENV
+        setDebugMode();
 
         // Read EC and table
         String ec = getElasticubeName();
@@ -54,9 +43,10 @@ public class App {
         String host = configFile.getHost();
         String protocol = configFile.getProtocol();
         int port = configFile.getPort();
+        boolean restartECS = configFile.isRestartECS();
 
         boolean isSuccessful = queryTableIsSuccessful(protocol, host, port, token, ec, table);
-        writeToLogger("Table query successful: " + isSuccessful);
+        writeToLogger("[queryTableIsSuccessful] Table query successful: " + isSuccessful);
 
         createResultFile(isSuccessful);
 
@@ -77,7 +67,7 @@ public class App {
     }
 
     private static void writeToLogger(String s){
-        Logger logger = new Logger(executionPath());
+        logger = new Logger(executionPath());
         logger.write(s);
     }
 
@@ -85,9 +75,9 @@ public class App {
         try {
             ResultFile resultFile = new ResultFile(executionPath());
             resultFile.create();
-            writeToLogger("Created file in " + resultFile.path);
+            writeToLogger("[createResultFile] Created file in " + resultFile.path);
             resultFile.write(result);
-            writeToLogger("Test succeeded: " + result);
+            writeToLogger("[createResultFile] Test succeeded: " + result);
         } catch (IOException e) {
             writeToLogger("Couldn't create log file: \n");
             writeToLogger(Arrays.toString(e.getStackTrace()));
@@ -111,47 +101,50 @@ public class App {
     private static void createConfigFile() {
 
         configFile = new ConfigFile(executionPath());
-        writeToLogger("Reading config file...\n");
+        writeToLogger("[createConfigFile] Reading config file...\n");
         configFile.read();
-        writeToLogger("Config file read: \n");
+        writeToLogger("[createConfigFile] Config file read: \n");
         writeToLogger(configFile.toString());
     }
 
     private static String getElasticubeName() {
+
+        String ec = "";
+
         try {
-            Process readElastiCubeProcess = rt.exec(mongoCmds);
-            writeToLogger("Connecting to mongo");
 
-            BufferedReader stdInput = new BufferedReader(new
-                    InputStreamReader(readElastiCubeProcess.getInputStream()));
+            Runtime rt = Runtime.getRuntime();
+            Process listCubesCommand = rt.exec(new String[]{"cmd.exe", "/c", "SET SISENSE_PSM=true&&", "psm", "ecs", "ListCubes", "serverAddress=localhost"});
+            listCubesCommand.waitFor();
 
-            BufferedReader stdError = new BufferedReader(new
-                    InputStreamReader(readElastiCubeProcess.getErrorStream()));
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
+
+            Pattern cubeNamePattern = Pattern.compile("\\[(.*?)]");
+            Pattern errorPattern = Pattern.compile("\\((.*?)\\)");
 
             String s;
-            String ec = null;
-
-            //Success
-            writeToLogger("Running command to retrieve test ElastiCube");
             while ((s = stdInput.readLine()) != null) {
-                ec = s;
-            }
-
-            // Error
-            while ((s = stdError.readLine()) != null) {
-
-                if (!s.isEmpty() || !s.equals("")) {
-                    writeToLogger("error retreiving ec. read input: " + s);
-                    break;
+                if (s.startsWith("Cube Name")){
+                    Matcher m = cubeNamePattern.matcher(s);
+                    while (m.find()){
+                        ec = m.group(1);
+                        writeToLogger("[getElasticubeName] ElastiCube returned: " + ec);
+                        return ec;
+                    }
                 }
+                else {
+                    Matcher m = errorPattern.matcher(s);
+                    while (m.find()){
+                        writeToLogger("[getElasticubeName] ERROR: " + m.group(1));
+                    }
+                }
+
             }
-
-            writeToLogger("EC found: " + ec);
-            return ec;
-
-        } catch (IOException e) {
-            return e.getMessage();
+        } catch (IOException | InterruptedException e) {
+            writeToLogger("[getElasticubeName] ERROR: " + e.getMessage());
         }
+
+        return ec;
     }
 
     private static String getTable(String ec){
@@ -163,12 +156,13 @@ public class App {
                 "tables",
                 "getListOfTables",
                 "serverAddress=localhost",
-                "cubeName="+ec,
+                "cubeName=" + ec,
                 "isCustom=false"
         };
 
         try {
             Process readTableProcess = rt.exec(psmCmd);
+            writeToLogger("[getTable] Command sent: " + Arrays.toString(psmCmd));
 
             BufferedReader stdInput = new BufferedReader(new
                     InputStreamReader(readTableProcess.getInputStream()));
@@ -177,18 +171,23 @@ public class App {
             String table = null;
 
             while ((s = stdInput.readLine()) != null) {
+                System.out.println(s);
+                if (s.contains("Could not find a cube by the name")){
+                    createResultFile(false);
+                }
+
                 if (!s.contains("-") && !s.isEmpty()){
                     table = s;
+                    writeToLogger("[getTable] Table found: " + table);
                     break;
                 }
             }
 
-            writeToLogger("Table found: " + table);
             return table;
 
         } catch (Exception e) {
             createResultFile(false);
-            writeToLogger("getTable failed: ");
+            writeToLogger("[getTable] getTable failed: ");
             writeToLogger(e.getMessage());
             writeToLogger(Arrays.toString(e.getStackTrace()));
         }
@@ -196,14 +195,19 @@ public class App {
         return null;
     }
 
-    private static boolean queryTableIsSuccessful(String protocol, String domain, int port, String token, String elasticubeName, String tableName) throws IOException, JSONException {
+    private static void setDebugMode(){
+
+        EnvironmentalVariables.setSisenseDebugMode(rt, logger);
+
+    }
+
+    private static boolean queryTableIsSuccessful(String protocol, String domain, int port, String token, String elasticubeName, String tableName) {
 
         boolean isSuccessful = false;
         String query = ("SELECT COUNT(*) FROM [" + tableName + "]").replaceAll(" ", "%20");
         String uri = protocol + "://" + domain + ":" + port + "/api/datasources/" + elasticubeName.replaceAll(" ", "%20") + "/sql?query=" + query;
 
-        writeToLogger("query: " + query);
-        writeToLogger("uri: " + uri);
+        writeToLogger("[queryTableIsSuccessful] uri: " + uri);
 
         try{
 
@@ -218,11 +222,11 @@ public class App {
                 try(InputStream inputStream = entity.getContent()) {
 
                     String result = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
-                    writeToLogger("Running query: " + query.replaceAll("%20", " "));
-                    writeToLogger("GET result: " + result);
+                    writeToLogger("[queryTableIsSuccessful] Running query: " + query.replaceAll("%20", " "));
+                    writeToLogger("[queryTableIsSuccessful] GET result: " + result);
                     JSONObject jsonObject = new JSONObject(result);
                     int count = jsonObject.getJSONArray("values").getJSONArray(0).getInt(0);
-                    writeToLogger("Result: " + count);
+                    writeToLogger("[queryTableIsSuccessful] Result: " + count);
 
                     if (count > 0){
                         isSuccessful = true;
@@ -231,7 +235,7 @@ public class App {
             }
             return isSuccessful;
         }catch (Exception e){
-            writeToLogger("query table failed:\n");
+            writeToLogger("[queryTableIsSuccessful] query table failed:\n");
             writeToLogger(e.getMessage());
             writeToLogger(Arrays.toString(e.getStackTrace()));
             return false;

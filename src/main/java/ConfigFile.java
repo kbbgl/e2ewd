@@ -7,6 +7,7 @@ public class ConfigFile {
     private String token;
     private String host;
     private String protocol;
+    private boolean restartECS;
     private int port;
 
     ConfigFile(String path) {
@@ -37,6 +38,14 @@ public class ConfigFile {
         return this.token;
     }
 
+    boolean isRestartECS() {
+        return restartECS;
+    }
+
+    private void setRestartECS(boolean restartECS) {
+        this.restartECS = restartECS;
+    }
+
     void read(){
         Properties properties = new Properties();
         InputStream input;
@@ -49,6 +58,7 @@ public class ConfigFile {
             setHost(properties.getProperty("host"));
             setPort(Integer.parseInt(properties.getProperty("port")));
             setProtocol(properties.getProperty("protocol"));
+            setRestartECS(Boolean.parseBoolean(properties.getProperty("restartECS")));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,12 +68,13 @@ public class ConfigFile {
 
     @Override
     public String toString() {
-        return "ConfigFile{" +
-                "token='" + token + '\'' +
-                ", host='" + host + '\'' +
-                ", port=" + port +
-                ", protocol=" + protocol +
-                '}';
+        return "ConfigFile{\n\t" +
+                "token='" + token + ",\n\t" +
+                "host='" + host + ",\n\t" +
+                "port=" + port + ",\n\t" +
+                "protocol=" + protocol + ",\n\t" +
+                "restartECS=" + restartECS + "\n\t" +
+                "}";
     }
 
     String getProtocol() {
@@ -73,4 +84,5 @@ public class ConfigFile {
     private void setProtocol(String protocol) {
         this.protocol = protocol;
     }
+
 }
