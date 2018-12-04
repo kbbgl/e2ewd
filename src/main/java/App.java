@@ -62,6 +62,7 @@ public class App {
         }
         else if (ec.isEmpty()){
             writeToLogger("[main] EC result is empty and restartECS=false. Exiting...");
+            createResultFile(false);
             System.exit(0);
         }
         else {

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c8a9607-8b97-42f8-b6b2-6e5ad6edebd5" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -66,7 +66,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="2" />
-          <entry key="JAVA" value="6902" />
+          <entry key="JAVA" value="6912" />
           <entry key="Markdown" value="280" />
           <entry key="Properties" value="71" />
         </counts>
@@ -83,7 +83,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="gradle" value="2" />
-          <entry key="java" value="6902" />
+          <entry key="java" value="6912" />
           <entry key="md" value="280" />
           <entry key="properties" value="71" />
         </counts>
@@ -100,15 +100,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
+            <state relative-caret-position="476">
+              <caret line="64" column="36" lean-forward="true" selection-start-line="64" selection-start-column="36" selection-end-line="64" selection-end-column="36" />
               <folding>
                 <element signature="method#main#0;class#App#0" />
                 <element signature="method#preRun#0;class#App#0" />
-                <element signature="method#run#0;class#App#0" />
                 <element signature="method#executionPath#0;class#App#0" />
                 <element signature="method#getSisenseVersion#0;class#App#0" />
                 <element signature="method#writeToLogger#0;class#App#0" />
@@ -124,7 +123,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
@@ -659,8 +658,8 @@
         <option value="$PROJECT_DIR$/src/main/java/file_ops/ResultFile.java" />
         <option value="$PROJECT_DIR$/build/libs/config.properties" />
         <option value="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" />
-        <option value="$PROJECT_DIR$/src/main/java/App.java" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/src/main/java/App.java" />
       </list>
     </option>
   </component>
@@ -1096,14 +1095,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="697">
+            <caret line="41" selection-start-line="41" selection-end-line="41" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
+        <state relative-caret-position="476">
+          <caret line="64" column="36" lean-forward="true" selection-start-line="64" selection-start-column="36" selection-end-line="64" selection-end-column="36" />
           <folding>
             <element signature="method#main#0;class#App#0" />
             <element signature="method#preRun#0;class#App#0" />
-            <element signature="method#run#0;class#App#0" />
             <element signature="method#executionPath#0;class#App#0" />
             <element signature="method#getSisenseVersion#0;class#App#0" />
             <element signature="method#writeToLogger#0;class#App#0" />
@@ -1115,16 +1123,6 @@
             <element signature="method#restartECS#0;class#App#0" />
             <element signature="method#queryTableIsSuccessful#0;class#App#0" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="697">
-            <caret line="41" selection-start-line="41" selection-end-line="41" />
-          </first_editor>
-          <second_editor />
         </state>
       </provider>
     </entry>
