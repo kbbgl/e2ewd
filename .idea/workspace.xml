@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c8a9607-8b97-42f8-b6b2-6e5ad6edebd5" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -68,7 +67,7 @@
         <counts>
           <entry key="Groovy" value="2" />
           <entry key="JAVA" value="6902" />
-          <entry key="Markdown" value="102" />
+          <entry key="Markdown" value="280" />
           <entry key="Properties" value="71" />
         </counts>
       </usages-collector>
@@ -77,7 +76,7 @@
         <counts>
           <entry key="class" value="1" />
           <entry key="java" value="15" />
-          <entry key="md" value="1" />
+          <entry key="md" value="2" />
           <entry key="txt" value="1" />
         </counts>
       </usages-collector>
@@ -85,7 +84,7 @@
         <counts>
           <entry key="gradle" value="2" />
           <entry key="java" value="6902" />
-          <entry key="md" value="102" />
+          <entry key="md" value="280" />
           <entry key="properties" value="71" />
         </counts>
       </usages-collector>
@@ -93,7 +92,7 @@
         <counts>
           <entry key="CLASS" value="1" />
           <entry key="JAVA" value="15" />
-          <entry key="Markdown" value="1" />
+          <entry key="Markdown" value="2" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
@@ -101,22 +100,38 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="558">
-              <caret line="62" column="31" lean-forward="true" selection-start-line="62" selection-start-column="31" selection-end-line="62" selection-end-column="31" />
+            <state relative-caret-position="221">
+              <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
               <folding>
+                <element signature="method#main#0;class#App#0" />
+                <element signature="method#preRun#0;class#App#0" />
+                <element signature="method#run#0;class#App#0" />
                 <element signature="method#executionPath#0;class#App#0" />
                 <element signature="method#getSisenseVersion#0;class#App#0" />
                 <element signature="method#writeToLogger#0;class#App#0" />
                 <element signature="method#createResultFile#0;class#App#0" />
                 <element signature="method#deleteResultFile#0;class#App#0" />
+                <element signature="method#createConfigFile#0;class#App#0" />
                 <element signature="method#getElasticubeName#0;class#App#0" />
                 <element signature="method#getTable#0;class#App#0" />
                 <element signature="method#restartECS#0;class#App#0" />
                 <element signature="method#queryTableIsSuccessful#0;class#App#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="697">
+                <caret line="41" selection-start-line="41" selection-end-line="41" />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -637,7 +652,6 @@
         <option value="$PROJECT_DIR$/src/main/java/env_var/EnvironmentalVariables.java" />
         <option value="$PROJECT_DIR$/src/test/java/AppTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/ConfigFile.java" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/main/java/version/VersionRetriever.java" />
         <option value="$PROJECT_DIR$/src/test/java/ECSRestartTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java" />
@@ -646,6 +660,7 @@
         <option value="$PROJECT_DIR$/build/libs/config.properties" />
         <option value="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/App.java" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -869,7 +884,7 @@
     <frame x="-1866" y="-7" width="1874" height="1216" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17916207" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17916207" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -883,7 +898,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49944875" weight="0.32994455" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49944875" visible="true" weight="0.2042514" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49944875" visible="true" weight="0.2042514" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5005513" side_tool="true" weight="0.32994455" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Build" order="10" />
@@ -963,16 +978,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="5" selection-start-column="5" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="731">
-            <caret line="43" column="72" selection-start-line="43" selection-start-column="72" selection-end-line="43" selection-end-column="72" />
-          </first_editor>
-          <second_editor />
         </state>
       </provider>
     </entry>
@@ -1093,19 +1098,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="62" column="31" lean-forward="true" selection-start-line="62" selection-start-column="31" selection-end-line="62" selection-end-column="31" />
+        <state relative-caret-position="221">
+          <caret line="46" column="29" selection-start-line="46" selection-start-column="29" selection-end-line="46" selection-end-column="29" />
           <folding>
+            <element signature="method#main#0;class#App#0" />
+            <element signature="method#preRun#0;class#App#0" />
+            <element signature="method#run#0;class#App#0" />
             <element signature="method#executionPath#0;class#App#0" />
             <element signature="method#getSisenseVersion#0;class#App#0" />
             <element signature="method#writeToLogger#0;class#App#0" />
             <element signature="method#createResultFile#0;class#App#0" />
             <element signature="method#deleteResultFile#0;class#App#0" />
+            <element signature="method#createConfigFile#0;class#App#0" />
             <element signature="method#getElasticubeName#0;class#App#0" />
             <element signature="method#getTable#0;class#App#0" />
             <element signature="method#restartECS#0;class#App#0" />
             <element signature="method#queryTableIsSuccessful#0;class#App#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="697">
+            <caret line="41" selection-start-line="41" selection-end-line="41" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

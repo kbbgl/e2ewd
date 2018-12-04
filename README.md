@@ -25,7 +25,6 @@ which will contain a `boolean` as the result, i.e. `true` means that the tests r
 3) Open the `config.properties` file and enter the token, protocol, host and port of your Sisense instance and save the file.
 4) Run the command:  
 
-
     `java -jar e2ewd.jar`
     
 **NOTE**: If you don't have `java` installed globally, you may use the JRE located in:
@@ -39,6 +38,5 @@ So the command to run the application becomes:
 See log file located in:
 `[path/to/dir]/build/libs/log/log.txt`
 
-
-### Limitation
-`restartECS` boolean currently not implemented. Will be in next release.
+####Note:
+If you're planning to use the `restartECS` option, you will need to open the Command Prompt in elevated mode (i.e. as a Administrator)
