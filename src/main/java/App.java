@@ -37,7 +37,10 @@ public class App {
 
         // Read EC and table
         String ec = getElasticubeName();
+        System.out.println("EC found: " + ec);
+
         String table = getTable(ec);
+        System.out.println("Table found: " + table);
 
         String token = configFile.getToken();
         String host = configFile.getHost();
@@ -114,7 +117,18 @@ public class App {
         try {
 
             Runtime rt = Runtime.getRuntime();
-            Process listCubesCommand = rt.exec(new String[]{"cmd.exe", "/c", "SET SISENSE_PSM=true&&", "psm", "ecs", "ListCubes", "serverAddress=localhost"});
+            String[] psmCmd = new String[]{
+                    "cmd.exe",
+                    "/c",
+                    "SET SISENSE_PSM=true&&\"C:\\Program Files\\Sisense\\Prism\\Psm.exe\"",
+//                    "psm",
+                    "ecs",
+                    "ListCubes",
+                    "serverAddress=localhost"};
+
+            Process listCubesCommand = rt.exec(psmCmd);
+            writeToLogger("[getElasticubeName] running commands: " + Arrays.toString(psmCmd));
+            System.out.println(Arrays.toString(psmCmd));
             listCubesCommand.waitFor();
 
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
@@ -124,7 +138,9 @@ public class App {
 
             String s;
             while ((s = stdInput.readLine()) != null) {
+                System.out.println(s);
                 if (s.startsWith("Cube Name")){
+                    System.out.println(s);
                     Matcher m = cubeNamePattern.matcher(s);
                     while (m.find()){
                         ec = m.group(1);
