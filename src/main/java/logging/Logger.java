@@ -21,6 +21,7 @@ public class Logger {
             fileWriter.write(s);
             fileWriter.write("\n");
 
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,17 +1,19 @@
+package file_ops;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-class ResultFile {
+public class ResultFile {
 
-    String path;
+    public String path;
     private File file;
 
-    ResultFile(String path) {
+    public ResultFile(String path) {
         this.path = path + "/run/result.txt";
     }
 
-    void write(boolean s) throws IOException {
+    public void write(boolean s) throws IOException {
         try(FileWriter fileWriter = new FileWriter(file.getAbsolutePath(), false)) {
             fileWriter.write(String.valueOf(s));
         } catch (IOException e) {
@@ -19,7 +21,7 @@ class ResultFile {
     }
     }
 
-    void create() throws IOException {
+    public void create() throws IOException {
         file = new File(path);
         file.createNewFile();
     }

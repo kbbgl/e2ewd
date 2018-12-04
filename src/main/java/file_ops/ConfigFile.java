@@ -1,3 +1,5 @@
+package file_ops;
+
 import java.io.*;
 import java.util.Properties;
 
@@ -10,7 +12,7 @@ public class ConfigFile {
     private boolean restartECS;
     private int port;
 
-    ConfigFile(String path) {
+    public ConfigFile(String path) {
         this.path = path;
     }
 
@@ -26,19 +28,19 @@ public class ConfigFile {
         this.port = port;
     }
 
-    int getPort(){
+    public int getPort(){
         return this.port;
     }
 
-    String getHost(){
+    public String getHost(){
         return this.host;
     }
 
-    String getToken(){
+    public String getToken(){
         return this.token;
     }
 
-    boolean isRestartECS() {
+    public boolean isRestartECS() {
         return restartECS;
     }
 
@@ -46,7 +48,7 @@ public class ConfigFile {
         this.restartECS = restartECS;
     }
 
-    void read(){
+    public void read(){
         Properties properties = new Properties();
         InputStream input;
 
@@ -77,7 +79,7 @@ public class ConfigFile {
                 "}";
     }
 
-    String getProtocol() {
+    public String getProtocol() {
         return protocol;
     }
 

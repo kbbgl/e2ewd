@@ -1,4 +1,7 @@
+import cmd_ops.CmdOperations;
 import env_var.EnvironmentalVariables;
+import file_ops.ConfigFile;
+import file_ops.ResultFile;
 import logging.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -6,6 +9,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
+import version.VersionRetriever;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -23,30 +27,38 @@ public class App {
     private static final Runtime rt = Runtime.getRuntime();
     private static ConfigFile configFile;
     private static Logger logger;
+    private static boolean ecsResponsive;
+    private final String SISENSE_VERSION = getSisenseVersion();
 
     public static void main(String[] args) {
 
+        run();
+
+    }
+
+    private static void run(){
+
         writeToLogger("\nRun at: " + runTime.toString() + "\n-----------------------");
-        writeToLogger("[main] Deleting result file...");
         deleteResultFile();
-        writeToLogger("[main] Executing jar from " + executionPath());
         createConfigFile();
+
+        // read configuration file props
+        String token = configFile.getToken();
+        String host = configFile.getHost();
+        String protocol = configFile.getProtocol();
+        int port = configFile.getPort();
+        boolean restartECS = configFile.isRestartECS();
 
         // Setting ENV
         setDebugMode();
 
         // Read EC and table
         String ec = getElasticubeName();
-        System.out.println("EC found: " + ec);
+        writeToLogger("EC Found: " + ec);
 
         String table = getTable(ec);
-        System.out.println("Table found: " + table);
+        writeToLogger("Table found: " + table);
 
-        String token = configFile.getToken();
-        String host = configFile.getHost();
-        String protocol = configFile.getProtocol();
-        int port = configFile.getPort();
-        boolean restartECS = configFile.isRestartECS();
 
         boolean isSuccessful = queryTableIsSuccessful(protocol, host, port, token, ec, table);
         writeToLogger("[queryTableIsSuccessful] Table query successful: " + isSuccessful);
@@ -69,9 +81,23 @@ public class App {
         return null;
     }
 
+    private static String getSisenseVersion(){
+
+        String version = null;
+        try {
+            version = VersionRetriever.getVersion();
+            writeToLogger("Sisense version: " + version);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return version;
+    }
+
     private static void writeToLogger(String s){
         logger = new Logger(executionPath());
         logger.write(s);
+        System.out.println(s);
     }
 
     private static void createResultFile(boolean result){
@@ -89,6 +115,7 @@ public class App {
 
     private static void deleteResultFile(){
         try {
+            writeToLogger("[deleteResultFile] Deleting result file...");
             File file = new File(executionPath() + "/run/result.txt");
             file.delete();
         } catch (Exception e) {
@@ -104,9 +131,9 @@ public class App {
     private static void createConfigFile() {
 
         configFile = new ConfigFile(executionPath());
-        writeToLogger("[createConfigFile] Reading config file...\n");
+        writeToLogger("[createConfigFile] Reading config file...");
         configFile.read();
-        writeToLogger("[createConfigFile] Config file read: \n");
+        writeToLogger("[createConfigFile] Config file read:");
         writeToLogger(configFile.toString());
     }
 
@@ -121,14 +148,12 @@ public class App {
                     "cmd.exe",
                     "/c",
                     "SET SISENSE_PSM=true&&\"C:\\Program Files\\Sisense\\Prism\\Psm.exe\"",
-//                    "psm",
                     "ecs",
                     "ListCubes",
                     "serverAddress=localhost"};
 
             Process listCubesCommand = rt.exec(psmCmd);
             writeToLogger("[getElasticubeName] running commands: " + Arrays.toString(psmCmd));
-            System.out.println(Arrays.toString(psmCmd));
             listCubesCommand.waitFor();
 
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
@@ -137,10 +162,9 @@ public class App {
             Pattern errorPattern = Pattern.compile("\\((.*?)\\)");
 
             String s;
+
             while ((s = stdInput.readLine()) != null) {
-                System.out.println(s);
                 if (s.startsWith("Cube Name")){
-                    System.out.println(s);
                     Matcher m = cubeNamePattern.matcher(s);
                     while (m.find()){
                         ec = m.group(1);
@@ -152,6 +176,12 @@ public class App {
                     Matcher m = errorPattern.matcher(s);
                     while (m.find()){
                         writeToLogger("[getElasticubeName] ERROR: " + m.group(1));
+
+                        if (m.group(1).equals("the server, 'localhost', is not responding.")){
+                            ecsResponsive = false;
+                            return ec;
+                        }
+
                     }
                 }
 
@@ -187,7 +217,7 @@ public class App {
             String table = null;
 
             while ((s = stdInput.readLine()) != null) {
-                System.out.println(s);
+                writeToLogger(s);
                 if (s.contains("Could not find a cube by the name")){
                     createResultFile(false);
                 }
@@ -209,6 +239,21 @@ public class App {
         }
 
         return null;
+    }
+
+    private static void restartECS(String version){
+
+        String serviceName;
+
+        if (version.startsWith("7.2")){
+            serviceName = "ElastiCubeManagmentService";
+        }
+        else {
+            serviceName = "Sisense.ECMS";
+        }
+
+        CmdOperations.restartECS(rt, serviceName, logger);
+
     }
 
     private static void setDebugMode(){
