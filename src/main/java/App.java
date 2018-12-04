@@ -27,20 +27,24 @@ public class App {
     private static final Runtime rt = Runtime.getRuntime();
     private static ConfigFile configFile;
     private static Logger logger;
-    private static boolean ecsResponsive;
-    private final String SISENSE_VERSION = getSisenseVersion();
 
     public static void main(String[] args) {
 
+        writeToLogger("\nRun at: " + runTime.toString() + "\n-----------------------");
+        writeToLogger("Sisense version detected: " + getSisenseVersion() + "\n");
+        preRun();
         run();
 
     }
 
-    private static void run(){
+    private static void preRun(){
 
-        writeToLogger("\nRun at: " + runTime.toString() + "\n-----------------------");
         deleteResultFile();
         createConfigFile();
+
+    }
+
+    private static void run(){
 
         // read configuration file props
         String token = configFile.getToken();
@@ -49,22 +53,25 @@ public class App {
         int port = configFile.getPort();
         boolean restartECS = configFile.isRestartECS();
 
-        // Setting ENV
-        setDebugMode();
-
         // Read EC and table
         String ec = getElasticubeName();
-        writeToLogger("EC Found: " + ec);
 
-        String table = getTable(ec);
-        writeToLogger("Table found: " + table);
+        if (ec.isEmpty() && restartECS){
+            restartECS(getSisenseVersion());
+            run();
+        }
+        else if (ec.isEmpty()){
+            writeToLogger("[main] EC result is empty and restartECS=false. Exiting...");
+            System.exit(0);
+        }
+        else {
+            String table = getTable(ec);
 
+            boolean isSuccessful = queryTableIsSuccessful(protocol, host, port, token, ec, table);
+            writeToLogger("[queryTableIsSuccessful] Table query successful: " + isSuccessful);
 
-        boolean isSuccessful = queryTableIsSuccessful(protocol, host, port, token, ec, table);
-        writeToLogger("[queryTableIsSuccessful] Table query successful: " + isSuccessful);
-
-        createResultFile(isSuccessful);
-
+            createResultFile(isSuccessful);
+        }
     }
 
     private static String executionPath(){
@@ -86,7 +93,6 @@ public class App {
         String version = null;
         try {
             version = VersionRetriever.getVersion();
-            writeToLogger("Sisense version: " + version);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -168,7 +174,7 @@ public class App {
                     Matcher m = cubeNamePattern.matcher(s);
                     while (m.find()){
                         ec = m.group(1);
-                        writeToLogger("[getElasticubeName] ElastiCube returned: " + ec);
+                        writeToLogger("[getElasticubeName] ElastiCube found: " + ec);
                         return ec;
                     }
                 }
@@ -178,7 +184,6 @@ public class App {
                         writeToLogger("[getElasticubeName] ERROR: " + m.group(1));
 
                         if (m.group(1).equals("the server, 'localhost', is not responding.")){
-                            ecsResponsive = false;
                             return ec;
                         }
 
@@ -217,7 +222,6 @@ public class App {
             String table = null;
 
             while ((s = stdInput.readLine()) != null) {
-                writeToLogger(s);
                 if (s.contains("Could not find a cube by the name")){
                     createResultFile(false);
                 }
@@ -246,19 +250,14 @@ public class App {
         String serviceName;
 
         if (version.startsWith("7.2")){
-            serviceName = "ElastiCubeManagmentService";
-        }
-        else {
             serviceName = "Sisense.ECMS";
         }
+        else {
+            serviceName = "ElastiCubeManagmentService";
+        }
 
+        writeToLogger("[restartECS] Service to restart: " + serviceName);
         CmdOperations.restartECS(rt, serviceName, logger);
-
-    }
-
-    private static void setDebugMode(){
-
-        EnvironmentalVariables.setSisenseDebugMode(rt, logger);
 
     }
 
@@ -284,7 +283,6 @@ public class App {
 
                     String result = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
                     writeToLogger("[queryTableIsSuccessful] Running query: " + query.replaceAll("%20", " "));
-                    writeToLogger("[queryTableIsSuccessful] GET result: " + result);
                     JSONObject jsonObject = new JSONObject(result);
                     int count = jsonObject.getJSONArray("values").getJSONArray(0).getInt(0);
                     writeToLogger("[queryTableIsSuccessful] Result: " + count);

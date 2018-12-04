@@ -71,8 +71,8 @@ public class ConfigFile {
     @Override
     public String toString() {
         return "ConfigFile{\n\t" +
-                "token='" + token + ",\n\t" +
-                "host='" + host + ",\n\t" +
+                "token=" + token + ",\n\t" +
+                "host=" + host + ",\n\t" +
                 "port=" + port + ",\n\t" +
                 "protocol=" + protocol + ",\n\t" +
                 "restartECS=" + restartECS + "\n\t" +
