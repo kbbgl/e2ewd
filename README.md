@@ -38,3 +38,7 @@ So the command to run the application becomes:
 ### Troubleshooting
 See log file located in:
 `[path/to/dir]/build/libs/log/log.txt`
+
+
+### Limitation
+`restartECS` boolean currently not implemented. Will be in next release.
