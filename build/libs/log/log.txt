@@ -526,3 +526,151 @@ WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
 [queryTableIsSuccessful] Table query successful: true
 [createResultFile] Created file in C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs/run/result.txt
 [createResultFile] Test succeeded: true
+
+Run at: Tue Dec 04 19:18:23 IST 2018
+-----------------------
+Sisense version detected: 7.2.1.10084
+
+[deleteResultFile] Deleting result file...
+[createConfigFile] Reading config file...
+[createConfigFile] Config file read:
+ConfigFile{
+	token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNWJkNzQwZjJhMjc4MTQyNzUwZjM5OTI5IiwiYXBpU2VjcmV0IjoiYmMyNDc1NjYtZGQwZi0xY2I4LWJlMWYtZDU0YmEzOGM5ZWNhIiwiaWF0IjoxNTQzODU5NjQzfQ.nNwWYv3u5P17-BV3lWalSwTeTmcNg4pfRZi4edhtVhw,
+	host=localhost,
+	port=8081,
+	protocol=http,
+	restartECS=true
+	}
+[getElasticubeName] running commands: [cmd.exe, /c, SET SISENSE_PSM=true&&"C:\Program Files\Sisense\Prism\Psm.exe", ecs, ListCubes, serverAddress=localhost]
+[getElasticubeName] ERROR: the server, 'localhost', is not responding.
+[restartECS] Service to restart: Sisense.ECMS
+[restartECS] running command powershell.exe Restart-Service -DisplayName Sisense.ECMS -Force
+[restartECS] restart command output:
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+[getElasticubeName] running commands: [cmd.exe, /c, SET SISENSE_PSM=true&&"C:\Program Files\Sisense\Prism\Psm.exe", ecs, ListCubes, serverAddress=localhost]
+[getElasticubeName] ElastiCube found: Sample ECommerce
+[getTable] Command sent: [C:\Program Files\Sisense\Prism\Psm.exe, ecube, edit, tables, getListOfTables, serverAddress=localhost, cubeName=Sample ECommerce, isCustom=false]
+[getTable] Table found: Brand
+[queryTableIsSuccessful] uri: http://localhost:8081/api/datasources/Sample%20ECommerce/sql?query=SELECT%20COUNT(*)%20FROM%20[Brand]
+[queryTableIsSuccessful] Running query: SELECT COUNT(*) FROM [Brand]
+[queryTableIsSuccessful] Result: 2427
+[queryTableIsSuccessful] Table query successful: true
+[createResultFile] Created file in C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs/run/result.txt
+[createResultFile] Test succeeded: true
+
+Run at: Tue Dec 04 19:19:24 IST 2018
+-----------------------
+Sisense version detected: 7.2.1.10084
+
+[deleteResultFile] Deleting result file...
+[createConfigFile] Reading config file...
+[createConfigFile] Config file read:
+ConfigFile{
+	token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNWJkNzQwZjJhMjc4MTQyNzUwZjM5OTI5IiwiYXBpU2VjcmV0IjoiYmMyNDc1NjYtZGQwZi0xY2I4LWJlMWYtZDU0YmEzOGM5ZWNhIiwiaWF0IjoxNTQzODU5NjQzfQ.nNwWYv3u5P17-BV3lWalSwTeTmcNg4pfRZi4edhtVhw,
+	host=localhost,
+	port=8081,
+	protocol=http,
+	restartECS=true
+	}
+[getElasticubeName] running commands: [cmd.exe, /c, SET SISENSE_PSM=true&&"C:\Program Files\Sisense\Prism\Psm.exe", ecs, ListCubes, serverAddress=localhost]
+[getElasticubeName] ElastiCube found: Sample ECommerce
+[getTable] Command sent: [C:\Program Files\Sisense\Prism\Psm.exe, ecube, edit, tables, getListOfTables, serverAddress=localhost, cubeName=Sample ECommerce, isCustom=false]
+[getTable] Table found: Brand
+[queryTableIsSuccessful] uri: http://localhost:8081/api/datasources/Sample%20ECommerce/sql?query=SELECT%20COUNT(*)%20FROM%20[Brand]
+[queryTableIsSuccessful] Running query: SELECT COUNT(*) FROM [Brand]
+[queryTableIsSuccessful] Result: 2427
+[queryTableIsSuccessful] Table query successful: true
+[createResultFile] Created file in C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs/run/result.txt
+[createResultFile] Test succeeded: true
+
+Run at: Tue Dec 04 19:19:57 IST 2018
+-----------------------
+Sisense version detected: 7.2.1.10084
+
+[deleteResultFile] Deleting result file...
+[createConfigFile] Reading config file...
+[createConfigFile] Config file read:
+ConfigFile{
+	token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNWJkNzQwZjJhMjc4MTQyNzUwZjM5OTI5IiwiYXBpU2VjcmV0IjoiYmMyNDc1NjYtZGQwZi0xY2I4LWJlMWYtZDU0YmEzOGM5ZWNhIiwiaWF0IjoxNTQzODU5NjQzfQ.nNwWYv3u5P17-BV3lWalSwTeTmcNg4pfRZi4edhtVhw,
+	host=localhost,
+	port=8081,
+	protocol=http,
+	restartECS=false
+	}
+[getElasticubeName] running commands: [cmd.exe, /c, SET SISENSE_PSM=true&&"C:\Program Files\Sisense\Prism\Psm.exe", ecs, ListCubes, serverAddress=localhost]
+[getElasticubeName] ElastiCube found: Sample ECommerce
+[getTable] Command sent: [C:\Program Files\Sisense\Prism\Psm.exe, ecube, edit, tables, getListOfTables, serverAddress=localhost, cubeName=Sample ECommerce, isCustom=false]
+[getTable] Table found: Brand
+[queryTableIsSuccessful] uri: http://localhost:8081/api/datasources/Sample%20ECommerce/sql?query=SELECT%20COUNT(*)%20FROM%20[Brand]
+[queryTableIsSuccessful] Running query: SELECT COUNT(*) FROM [Brand]
+[queryTableIsSuccessful] Result: 2427
+[queryTableIsSuccessful] Table query successful: true
+[createResultFile] Created file in C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs/run/result.txt
+[createResultFile] Test succeeded: true
+
+Run at: Tue Dec 04 19:20:23 IST 2018
+-----------------------
+Sisense version detected: 7.2.1.10084
+
+[deleteResultFile] Deleting result file...
+[createConfigFile] Reading config file...
+[createConfigFile] Config file read:
+ConfigFile{
+	token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNWJkNzQwZjJhMjc4MTQyNzUwZjM5OTI5IiwiYXBpU2VjcmV0IjoiYmMyNDc1NjYtZGQwZi0xY2I4LWJlMWYtZDU0YmEzOGM5ZWNhIiwiaWF0IjoxNTQzODU5NjQzfQ.nNwWYv3u5P17-BV3lWalSwTeTmcNg4pfRZi4edhtVhw,
+	host=localhost,
+	port=8081,
+	protocol=http,
+	restartECS=false
+	}
+[getElasticubeName] running commands: [cmd.exe, /c, SET SISENSE_PSM=true&&"C:\Program Files\Sisense\Prism\Psm.exe", ecs, ListCubes, serverAddress=localhost]
+[getElasticubeName] ERROR: the server, 'localhost', is not responding.
+[main] EC result is empty and restartECS=false. Exiting...
+[createResultFile] Created file in C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs/run/result.txt
+[createResultFile] Test succeeded: false
+
+Run at: Tue Dec 04 19:31:28 IST 2018
+-----------------------
+Sisense version detected: 7.2.1.10084
+
+[deleteResultFile] Deleting result file...
+[createConfigFile] Reading config file...
+[createConfigFile] Config file read:
+ConfigFile{
+	token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNWJkNzQwZjJhMjc4MTQyNzUwZjM5OTI5IiwiYXBpU2VjcmV0IjoiYmMyNDc1NjYtZGQwZi0xY2I4LWJlMWYtZDU0YmEzOGM5ZWNhIiwiaWF0IjoxNTQzODU5NjQzfQ.nNwWYv3u5P17-BV3lWalSwTeTmcNg4pfRZi4edhtVhw,
+	host=localhost,
+	port=8081,
+	protocol=http,
+	restartECS=true
+	}
+[getElasticubeName] running commands: [cmd.exe, /c, SET SISENSE_PSM=true&&"C:\Program Files\Sisense\Prism\Psm.exe", ecs, ListCubes, serverAddress=localhost]
+[getElasticubeName] ERROR: the server, 'localhost', is not responding.
+[restartECS] Service to restart: Sisense.ECMS
+[restartECS] running command powershell.exe Restart-Service -DisplayName Sisense.ECMS -Force
+[restartECS] restart command output:
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+WARNING: Waiting for service 'Sisense.ECMS (Sisense.ECMS)' to start...
+[getElasticubeName] running commands: [cmd.exe, /c, SET SISENSE_PSM=true&&"C:\Program Files\Sisense\Prism\Psm.exe", ecs, ListCubes, serverAddress=localhost]
+[getElasticubeName] ElastiCube found: Sample ECommerce
+[getTable] Command sent: [C:\Program Files\Sisense\Prism\Psm.exe, ecube, edit, tables, getListOfTables, serverAddress=localhost, cubeName=Sample ECommerce, isCustom=false]
+[getTable] Table found: Brand
+[queryTableIsSuccessful] uri: http://localhost:8081/api/datasources/Sample%20ECommerce/sql?query=SELECT%20COUNT(*)%20FROM%20[Brand]
+[queryTableIsSuccessful] Running query: SELECT COUNT(*) FROM [Brand]
+[queryTableIsSuccessful] Result: 2427
+[queryTableIsSuccessful] Table query successful: true
+[createResultFile] Created file in C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs/run/result.txt
+[createResultFile] Test succeeded: true

@@ -21,22 +21,20 @@ which will contain a `boolean` as the result, i.e. `true` means that the tests r
 
 ### Instructions
 1) Download or clone the project to the Sisense server. 
-2) Navigate to `[path/to/dir]/build/libs/` (where `[path/to/dir]` is where you saved the project.)
-3) Open the `config.properties` file and enter the token, protocol, host and port of your Sisense instance and save the file.
+2) Launch a Command Prompt and Navigate to `[path/to/dir]/build/libs/` (where `[path/to/dir]` is where you saved the project.)
+3) Open the `config.properties` file and enter the token, protocol, host, port of your Sisense instance and save the file. There's also an option to restart the ElastiCube Server (`restartECS`). If you're planning to set `restartECS=true` , you will need to open the Command Prompt in elevated mode (i.e. as a Administrator) 
+
 4) Run the command:  
 
     `java -jar e2ewd.jar`
     
-**NOTE**: If you don't have `java` installed globally, you may use the JRE located in:
+* If you don't have `java` installed globally, you may use the JRE located in:
 `"C:\Program Files\Sisense\Infra\jre\bin\java.exe"`
 
-So the command to run the application becomes:
+  The command to run the application becomes:
 
-    "C:\Program Files\Sisense\Infra\jre\bin\java.exe" -jar e2ewd.jar
+ `"C:\Program Files\Sisense\Infra\jre\bin\java.exe" -jar e2ewd.jar`
     
 ### Troubleshooting
 See log file located in:
 `[path/to/dir]/build/libs/log/log.txt`
-
-####Note:
-If you're planning to use the `restartECS` option, you will need to open the Command Prompt in elevated mode (i.e. as a Administrator)
