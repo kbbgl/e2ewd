@@ -2,9 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c8a9607-8b97-42f8-b6b2-6e5ad6edebd5" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/fileContent/fileContent.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/taskHistory/fileSnapshots.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/taskHistory/fileSnapshots.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/taskHistory/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/taskHistory/taskHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/App.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/e2ewd.tar" beforeDir="false" afterPath="$PROJECT_DIR$/build/distributions/e2ewd.tar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/e2ewd.zip" beforeDir="false" afterPath="$PROJECT_DIR$/build/distributions/e2ewd.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/libs/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/config.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/libs/e2ewd.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/e2ewd.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/libs/log/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/log/log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/libs/run/result.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/tests/test/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -69,8 +84,8 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="2" />
-          <entry key="JAVA" value="6912" />
-          <entry key="Markdown" value="414" />
+          <entry key="JAVA" value="7695" />
+          <entry key="Markdown" value="419" />
           <entry key="Properties" value="81" />
         </counts>
       </usages-collector>
@@ -78,7 +93,7 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="1" />
-          <entry key="java" value="15" />
+          <entry key="java" value="16" />
           <entry key="md" value="2" />
           <entry key="txt" value="1" />
         </counts>
@@ -86,15 +101,15 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="gradle" value="2" />
-          <entry key="java" value="6912" />
-          <entry key="md" value="414" />
+          <entry key="java" value="7695" />
+          <entry key="md" value="419" />
           <entry key="properties" value="81" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="1" />
-          <entry key="JAVA" value="15" />
+          <entry key="JAVA" value="16" />
           <entry key="Markdown" value="2" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
@@ -106,15 +121,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="60" column="18" selection-start-line="60" selection-start-column="18" selection-end-line="60" selection-end-column="18" />
+            <state relative-caret-position="337">
+              <caret line="143" column="16" selection-start-line="143" selection-start-column="16" selection-end-line="143" selection-end-column="16" />
               <folding>
-                <element signature="method#main#0;class#App#0" />
-                <element signature="method#preRun#0;class#App#0" />
                 <element signature="method#executionPath#0;class#App#0" />
                 <element signature="method#getSisenseVersion#0;class#App#0" />
                 <element signature="method#writeToLogger#0;class#App#0" />
-                <element signature="method#createResultFile#0;class#App#0" />
                 <element signature="method#deleteResultFile#0;class#App#0" />
                 <element signature="method#createConfigFile#0;class#App#0" />
                 <element signature="method#getElasticubeName#0;class#App#0" />
@@ -126,12 +138,12 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="612">
-                <caret line="36" selection-start-line="36" selection-end-line="36" />
+              <first_editor relative-caret-position="663">
+                <caret line="39" column="38" lean-forward="true" selection-start-line="39" selection-start-column="38" selection-end-line="39" selection-end-column="38" />
               </first_editor>
               <second_editor />
             </state>
@@ -179,16 +191,16 @@
         <entry file="file://$PROJECT_DIR$/build/libs/config.properties">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
-              <caret line="4" column="15" lean-forward="true" selection-start-line="4" selection-start-column="15" selection-end-line="4" selection-end-column="15" />
+              <caret line="4" column="16" lean-forward="true" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ResultFile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="24" column="30" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
+            <state relative-caret-position="204">
+              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -199,11 +211,12 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="76" column="50" selection-start-line="76" selection-start-column="50" selection-end-line="76" selection-end-column="50" />
+            <state relative-caret-position="625">
+              <caret line="66" column="9" lean-forward="true" selection-start-line="66" selection-start-column="9" selection-end-line="66" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#read#0;class#ConfigFile#0" />
+                <element signature="e#289#290#0" expanded="true" />
+                <element signature="e#321#322#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -237,6 +250,7 @@
       <find>configFile</find>
       <find>get res</find>
       <find>created file</find>
+      <find>created file in</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -656,11 +670,11 @@
         <option value="$PROJECT_DIR$/src/test/java/ECSRestartTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java" />
         <option value="$PROJECT_DIR$/src/main/java/logging/Logger.java" />
-        <option value="$PROJECT_DIR$/src/main/java/file_ops/ResultFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" />
-        <option value="$PROJECT_DIR$/src/main/java/App.java" />
         <option value="$PROJECT_DIR$/build/libs/config.properties" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/src/main/java/App.java" />
+        <option value="$PROJECT_DIR$/src/main/java/file_ops/ResultFile.java" />
       </list>
     </option>
   </component>
@@ -884,7 +898,7 @@
     <frame x="-1866" y="-7" width="1874" height="1216" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18081588" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18081588" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -898,7 +912,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49944875" weight="0.32994455" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49944875" visible="true" weight="0.2042514" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49944875" visible="true" weight="0.2042514" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5005513" side_tool="true" weight="0.32994455" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Build" order="10" />
@@ -1026,27 +1040,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="60" column="18" selection-start-line="60" selection-start-column="18" selection-end-line="60" selection-end-column="18" />
-          <folding>
-            <element signature="method#main#0;class#App#0" />
-            <element signature="method#preRun#0;class#App#0" />
-            <element signature="method#executionPath#0;class#App#0" />
-            <element signature="method#getSisenseVersion#0;class#App#0" />
-            <element signature="method#writeToLogger#0;class#App#0" />
-            <element signature="method#createResultFile#0;class#App#0" />
-            <element signature="method#deleteResultFile#0;class#App#0" />
-            <element signature="method#createConfigFile#0;class#App#0" />
-            <element signature="method#getElasticubeName#0;class#App#0" />
-            <element signature="method#getTable#0;class#App#0" />
-            <element signature="method#restartECS#0;class#App#0" />
-            <element signature="method#queryTableIsSuccessful#0;class#App#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -1078,41 +1071,71 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ResultFile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="24" column="30" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="76" column="50" selection-start-line="76" selection-start-column="50" selection-end-line="76" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#read#0;class#ConfigFile#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build/libs/config.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
-          <caret line="4" column="15" lean-forward="true" selection-start-line="4" selection-start-column="15" selection-end-line="4" selection-end-column="15" />
+          <caret line="4" column="16" lean-forward="true" selection-start-line="4" selection-start-column="16" selection-end-line="4" selection-end-column="16" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="612">
-            <caret line="36" selection-start-line="36" selection-end-line="36" />
+          <first_editor relative-caret-position="663">
+            <caret line="39" column="38" lean-forward="true" selection-start-line="39" selection-start-column="38" selection-end-line="39" selection-end-column="38" />
           </first_editor>
           <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="625">
+          <caret line="66" column="9" lean-forward="true" selection-start-line="66" selection-start-column="9" selection-end-line="66" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#289#290#0" expanded="true" />
+            <element signature="e#321#322#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_151/src.zip!/java/lang/String.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="278">
+          <caret line="633" column="19" selection-start-line="633" selection-start-column="19" selection-end-line="633" selection-end-column="19" />
+          <folding>
+            <element signature="e#23072#23073#0" expanded="true" />
+            <element signature="e#23112#23113#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="143" column="16" selection-start-line="143" selection-start-column="16" selection-end-line="143" selection-end-column="16" />
+          <folding>
+            <element signature="method#executionPath#0;class#App#0" />
+            <element signature="method#getSisenseVersion#0;class#App#0" />
+            <element signature="method#writeToLogger#0;class#App#0" />
+            <element signature="method#deleteResultFile#0;class#App#0" />
+            <element signature="method#createConfigFile#0;class#App#0" />
+            <element signature="method#getElasticubeName#0;class#App#0" />
+            <element signature="method#getTable#0;class#App#0" />
+            <element signature="method#restartECS#0;class#App#0" />
+            <element signature="method#queryTableIsSuccessful#0;class#App#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ResultFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

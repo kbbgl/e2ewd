@@ -15,8 +15,7 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -27,6 +26,11 @@ public class App {
     private static final Runtime rt = Runtime.getRuntime();
     private static ConfigFile configFile;
     private static Logger logger;
+    private static String token;
+    private static String host;
+    private static String protocol;
+    private static int port;
+    private static boolean restartECS;
 
     public static void main(String[] args) {
 
@@ -42,16 +46,18 @@ public class App {
         deleteResultFile();
         createConfigFile();
 
+        // read configuration file props
+        token = configFile.getToken();
+        host = configFile.getHost();
+        protocol = configFile.getProtocol();
+        port = configFile.getPort();
+        restartECS = configFile.isRestartECS();
+
+        validateConfigValues(token, host, protocol, port, restartECS);
+
     }
 
     private static void run(){
-
-        // read configuration file props
-        String token = configFile.getToken();
-        String host = configFile.getHost();
-        String protocol = configFile.getProtocol();
-        int port = configFile.getPort();
-        boolean restartECS = configFile.isRestartECS();
 
         // Read EC and table
         String ec = getElasticubeName();
@@ -73,6 +79,32 @@ public class App {
 
             createResultFile(isSuccessful);
         }
+    }
+
+    private static void validateConfigValues(String token, String host, String protocol, int port, boolean restartECS) {
+
+        String methodName = "[validateConfigValues] ";
+        HashMap<String, String> configMap = new HashMap<>(5);
+
+        configMap.put("token", token);
+        configMap.put("host", host);
+        configMap.put("protocol", protocol);
+        configMap.put("port", String.valueOf(port));
+        configMap.put("restartECS", String.valueOf(restartECS));
+
+        Set set = configMap.entrySet();
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()){
+
+            Map.Entry mapEntry = (Map.Entry) iterator.next();
+            if (String.valueOf(mapEntry.getValue()).isEmpty()){
+                writeToLogger(methodName + mapEntry.getKey() + " is empty. Exiting...");
+                deleteResultFile();
+                System.exit(1);
+            }
+
+        }
+
     }
 
     private static String executionPath(){
