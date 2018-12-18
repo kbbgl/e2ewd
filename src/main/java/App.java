@@ -193,7 +193,7 @@ public class App {
 
             Process listCubesCommand = rt.exec(psmCmd);
             writeToLogger("[getElasticubeName] running commands: " + Arrays.toString(psmCmd));
-            listCubesCommand.waitFor();
+            //listCubesCommand.waitFor();
 
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
 
@@ -203,6 +203,7 @@ public class App {
             String s;
 
             while ((s = stdInput.readLine()) != null) {
+                System.out.println(s);
                 if (s.startsWith("Cube Name")){
                     Matcher m = cubeNamePattern.matcher(s);
                     while (m.find()){
@@ -224,7 +225,7 @@ public class App {
                 }
 
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             writeToLogger("[getElasticubeName] ERROR: " + e.getMessage());
         }
 
