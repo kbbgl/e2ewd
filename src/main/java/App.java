@@ -134,8 +134,9 @@ public class App {
     }
 
     private static void writeToLogger(String s){
+        Date writeDate = new Date();
         logger = new Logger(executionPath());
-        logger.write(s);
+        logger.write("[" + writeDate.toString() + "] " + s);
         System.out.println(s);
     }
 

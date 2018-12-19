@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c8a9607-8b97-42f8-b6b2-6e5ad6edebd5" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/libs/e2ewd.jar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -71,7 +69,7 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="2" />
-          <entry key="JAVA" value="7707" />
+          <entry key="JAVA" value="7763" />
           <entry key="Markdown" value="419" />
           <entry key="Properties" value="81" />
         </counts>
@@ -80,7 +78,7 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="1" />
-          <entry key="java" value="16" />
+          <entry key="java" value="17" />
           <entry key="md" value="2" />
           <entry key="txt" value="1" />
         </counts>
@@ -88,7 +86,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="gradle" value="2" />
-          <entry key="java" value="7707" />
+          <entry key="java" value="7763" />
           <entry key="md" value="419" />
           <entry key="properties" value="81" />
         </counts>
@@ -96,7 +94,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="1" />
-          <entry key="JAVA" value="16" />
+          <entry key="JAVA" value="17" />
           <entry key="Markdown" value="2" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
@@ -108,19 +106,18 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="628">
-              <caret line="229" column="9" lean-forward="true" selection-start-line="229" selection-start-column="9" selection-end-line="229" selection-end-column="9" />
+            <state relative-caret-position="340">
+              <caret line="138" column="60" lean-forward="true" selection-start-line="138" selection-start-column="60" selection-end-line="138" selection-end-column="60" />
               <folding>
-                <element signature="method#main#0;class#App#0" />
                 <element signature="method#preRun#0;class#App#0" />
                 <element signature="method#run#0;class#App#0" />
                 <element signature="method#validateConfigValues#0;class#App#0" />
                 <element signature="method#executionPath#0;class#App#0" />
                 <element signature="method#getSisenseVersion#0;class#App#0" />
-                <element signature="method#writeToLogger#0;class#App#0" />
                 <element signature="method#createResultFile#0;class#App#0" />
                 <element signature="method#deleteResultFile#0;class#App#0" />
                 <element signature="method#createConfigFile#0;class#App#0" />
+                <element signature="method#getElasticubeName#0;class#App#0" />
                 <element signature="method#getTable#0;class#App#0" />
                 <element signature="method#restartECS#0;class#App#0" />
                 <element signature="method#queryTableIsSuccessful#0;class#App#0" />
@@ -242,6 +239,7 @@
       <find>get res</find>
       <find>created file</find>
       <find>created file in</find>
+      <find>runTime</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -670,10 +668,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1584" />
-    <option name="y" value="88" />
-    <option name="width" value="1318" />
-    <option name="height" value="773" />
+    <option name="x" value="-1866" />
+    <option name="y" value="-7" />
+    <option name="width" value="1874" />
+    <option name="height" value="1216" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -898,7 +896,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1866" y="-7" width="1874" height="1216" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18467475" />
       <window_info id="Structure" order="1" weight="0.25" />
@@ -1119,21 +1116,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5/c9504d3448744739d334bde12bfbc91fd7f85115/httpclient-4.5-sources.jar!/org/apache/http/client/HttpClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="48" column="17" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="628">
-          <caret line="229" column="9" lean-forward="true" selection-start-line="229" selection-start-column="9" selection-end-line="229" selection-end-column="9" />
+        <state relative-caret-position="340">
+          <caret line="138" column="60" lean-forward="true" selection-start-line="138" selection-start-column="60" selection-end-line="138" selection-end-column="60" />
           <folding>
-            <element signature="method#main#0;class#App#0" />
             <element signature="method#preRun#0;class#App#0" />
             <element signature="method#run#0;class#App#0" />
             <element signature="method#validateConfigValues#0;class#App#0" />
             <element signature="method#executionPath#0;class#App#0" />
             <element signature="method#getSisenseVersion#0;class#App#0" />
-            <element signature="method#writeToLogger#0;class#App#0" />
             <element signature="method#createResultFile#0;class#App#0" />
             <element signature="method#deleteResultFile#0;class#App#0" />
             <element signature="method#createConfigFile#0;class#App#0" />
+            <element signature="method#getElasticubeName#0;class#App#0" />
             <element signature="method#getTable#0;class#App#0" />
             <element signature="method#restartECS#0;class#App#0" />
             <element signature="method#queryTableIsSuccessful#0;class#App#0" />
