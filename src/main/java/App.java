@@ -9,6 +9,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
+import tests.ECSTelnetTest;
 import version.VersionRetriever;
 
 import java.io.*;
@@ -63,10 +64,14 @@ public class App {
         String ec = getElasticubeName();
 
         if (ec.isEmpty() && restartECS){
+            ecsPort811Reachable();
+            ecsPort812Reachable();
             restartECS(getSisenseVersion());
             run();
         }
         else if (ec.isEmpty()){
+            ecsPort811Reachable();
+            ecsPort812Reachable();
             writeToLogger("[main] EC result is empty and restartECS=false. Exiting...");
             createResultFile(false);
             System.exit(0);
@@ -135,9 +140,10 @@ public class App {
 
     private static void writeToLogger(String s){
         Date writeDate = new Date();
+        String message = "[" + writeDate.toString() + "] " + s;
         logger = new Logger(executionPath());
-        logger.write("[" + writeDate.toString() + "] " + s);
-        System.out.println(s);
+        logger.write(message);
+        System.out.println(message);
     }
 
     private static void createResultFile(boolean result){
@@ -294,6 +300,18 @@ public class App {
         writeToLogger("[restartECS] Service to restart: " + serviceName);
         CmdOperations.restartECS(rt, serviceName, logger);
 
+    }
+
+    private static boolean ecsPort811Reachable(){
+        String methodName = "[ecsPort811Reachable] ";
+        writeToLogger(methodName + ":" + ECSTelnetTest.port811Reachable());
+        return ECSTelnetTest.port811Reachable();
+    }
+
+    private static boolean ecsPort812Reachable(){
+        String methodName = "[ecsPort812Reachable] ";
+        writeToLogger(methodName + ":" + ECSTelnetTest.port812Reachable());
+        return ECSTelnetTest.port812Reachable();
     }
 
     private static boolean queryTableIsSuccessful(String protocol, String domain, int port, String token, String elasticubeName, String tableName) {
