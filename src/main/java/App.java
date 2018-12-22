@@ -1,5 +1,4 @@
 import cmd_ops.CmdOperations;
-import env_var.EnvironmentalVariables;
 import file_ops.ConfigFile;
 import file_ops.ResultFile;
 import logging.Logger;
@@ -25,13 +24,8 @@ public class App {
 
     private static final Date runTime = new Date();
     private static final Runtime rt = Runtime.getRuntime();
-    private static ConfigFile configFile;
+    private static final ConfigFile configFile = ConfigFile.getInstance();
     private static Logger logger;
-    private static String token;
-    private static String host;
-    private static String protocol;
-    private static int port;
-    private static boolean restartECS;
 
     public static void main(String[] args) {
 
@@ -45,16 +39,7 @@ public class App {
     private static void preRun(){
 
         deleteResultFile();
-        createConfigFile();
-
-        // read configuration file props
-        token = configFile.getToken();
-        host = configFile.getHost();
-        protocol = configFile.getProtocol();
-        port = configFile.getPort();
-        restartECS = configFile.isRestartECS();
-
-        validateConfigValues(token, host, protocol, port, restartECS);
+        validateConfigValues(configFile.getToken(), configFile.getHost(), configFile.getProtocol(), configFile.getPort(), configFile.isRestartECS());
 
     }
 
@@ -63,7 +48,7 @@ public class App {
         // Read EC and table
         String ec = getElasticubeName();
 
-        if (ec.isEmpty() && restartECS){
+        if (ec.isEmpty() && configFile.isRestartECS()){
             ecsPort811Reachable();
             ecsPort812Reachable();
             restartECS(getSisenseVersion());
@@ -79,7 +64,7 @@ public class App {
         else {
             String table = getTable(ec);
 
-            boolean isSuccessful = queryTableIsSuccessful(protocol, host, port, token, ec, table);
+            boolean isSuccessful = queryTableIsSuccessful(configFile.getProtocol(), configFile.getHost(), configFile.getPort(), configFile.getToken(), ec, table);
             writeToLogger("[queryTableIsSuccessful] Table query successful: " + isSuccessful);
 
             createResultFile(isSuccessful);
@@ -123,7 +108,7 @@ public class App {
             writeToLogger(e.getMessage());
             writeToLogger(Arrays.toString(e.getStackTrace()));
         }
-        return null;
+        return jarLocation;
     }
 
     private static String getSisenseVersion(){
@@ -172,15 +157,6 @@ public class App {
             e.printStackTrace();
         }
 
-    }
-
-    private static void createConfigFile() {
-
-        configFile = new ConfigFile(executionPath());
-        writeToLogger("[createConfigFile] Reading config file...");
-        configFile.read();
-        writeToLogger("[createConfigFile] Config file read:");
-        writeToLogger(configFile.toString());
     }
 
     private static String getElasticubeName() {

@@ -1,19 +1,58 @@
 package file_ops;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Properties;
+
 
 public class ConfigFile {
 
-    private String path;
+    private static ConfigFile configFileInstance = new ConfigFile();
     private String token;
     private String host;
     private String protocol;
     private boolean restartECS;
     private int port;
 
-    public ConfigFile(String path) {
-        this.path = path;
+    private ConfigFile(){
+        Properties properties = new Properties();
+        InputStream input;
+
+        try {
+            input = new FileInputStream(executionPath() + "/config.properties");
+            properties.load(input);
+
+            setToken(properties.getProperty("token"));
+            setHost(properties.getProperty("host"));
+            setPort(Integer.parseInt(properties.getProperty("port")));
+            setProtocol(properties.getProperty("protocol"));
+            setRestartECS(Boolean.parseBoolean(properties.getProperty("restartECS")));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ConfigFile getInstance(){
+        if (configFileInstance == null){
+            configFileInstance = new ConfigFile();
+        }
+        return configFileInstance;
+    }
+
+    private static String executionPath(){
+        String jarLocation = null;
+        try {
+            jarLocation = new File(ConfigFile.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath();
+            Path path = Paths.get(jarLocation);
+            return String.valueOf(path.getParent());
+        } catch (IOException | URISyntaxException e) {
+            System.out.println(e.getMessage());
+        }
+        return jarLocation;
     }
 
     private void setToken(String token) {
@@ -48,25 +87,6 @@ public class ConfigFile {
         this.restartECS = restartECS;
     }
 
-    public void read(){
-        Properties properties = new Properties();
-        InputStream input;
-
-        try {
-            input = new FileInputStream(path + "/config.properties");
-            properties.load(input);
-
-            setToken(properties.getProperty("token"));
-            setHost(properties.getProperty("host"));
-            setPort(Integer.parseInt(properties.getProperty("port")));
-            setProtocol(properties.getProperty("protocol"));
-            setRestartECS(Boolean.parseBoolean(properties.getProperty("restartECS")));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     @Override
     public String toString() {
