@@ -1,16 +1,22 @@
 package file_ops;
 
-import java.io.*;
+import logging.Logger;
+import sun.rmi.runtime.Log;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Properties;
+import java.util.*;
 
 
 public class ConfigFile {
 
     private static ConfigFile configFileInstance = new ConfigFile();
+    private Logger logger = Logger.getInstance();
     private String token;
     private String host;
     private String protocol;
@@ -32,7 +38,7 @@ public class ConfigFile {
             setRestartECS(Boolean.parseBoolean(properties.getProperty("restartECS")));
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.write("ERROR: reading configuration file - " + e.getMessage());
         }
     }
 
@@ -43,14 +49,14 @@ public class ConfigFile {
         return configFileInstance;
     }
 
-    private static String executionPath(){
+    private  String executionPath(){
         String jarLocation = null;
         try {
             jarLocation = new File(ConfigFile.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath();
             Path path = Paths.get(jarLocation);
             return String.valueOf(path.getParent());
         } catch (IOException | URISyntaxException e) {
-            System.out.println(e.getMessage());
+            logger.write("ERROR: " + e.getMessage());
         }
         return jarLocation;
     }
@@ -87,6 +93,34 @@ public class ConfigFile {
         this.restartECS = restartECS;
     }
 
+    public String getProtocol() {
+        return protocol;
+    }
+
+    private void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
+    public boolean isConfigFileValid(){
+        HashMap<String, String> configMap = new HashMap<>(5);
+        configMap.put("token", token);
+        configMap.put("host", host);
+        configMap.put("protocol", protocol);
+        configMap.put("port", String.valueOf(port));
+        configMap.put("restartECS", String.valueOf(restartECS));
+
+        Set set = configMap.entrySet();
+        Iterator iterator = set.iterator();
+
+        while (iterator.hasNext()){
+            Map.Entry mapEntry = (Map.Entry) iterator.next();
+            if (String.valueOf(mapEntry.getValue()).isEmpty()){
+                logger.write(mapEntry.getKey() + " is empty.");
+                return false;
+            }
+        }
+        return true;
+    }
 
     @Override
     public String toString() {
@@ -99,12 +133,5 @@ public class ConfigFile {
                 "}";
     }
 
-    public String getProtocol() {
-        return protocol;
-    }
-
-    private void setProtocol(String protocol) {
-        this.protocol = protocol;
-    }
 
 }

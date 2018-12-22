@@ -21,6 +21,7 @@ public class ResultFile {
         file = new File( filePath());
         try {
             file.createNewFile();
+            logger.write("Created result file in " + filePath());
         } catch (IOException e) {
             logger.write("ERROR: Creating new file - " + e.getMessage());
         }
@@ -36,16 +37,18 @@ public class ResultFile {
         return instance;
     }
 
-    public void write(boolean s) {
+    public void write(boolean result) {
         try(FileWriter fileWriter = new FileWriter(file.getAbsolutePath(), false)) {
-            fileWriter.write(String.valueOf(s));
+            fileWriter.write(String.valueOf(result));
+            logger.write("Test succeeded: " + result);
         } catch (IOException e) {
             logger.write("ERROR: writing to result file - " + e.getMessage());
-    }
+        }
     }
 
     public void delete(){
         if (file.exists()) {
+            logger.write("Deleting result file...");
             file.delete();
         }
     }
@@ -55,7 +58,7 @@ public class ResultFile {
         try {
             jarLocation = new File(ResultFile.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath();
             Path path = Paths.get(jarLocation);
-            return String.valueOf(path.getParent()) + "/run/result.txt";
+            return path.getParent() + "/run/result.txt";
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }

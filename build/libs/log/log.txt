@@ -11,3 +11,83 @@ Run at: Sat Dec 22 22:06:30 IST 2018
 [Sat Dec 22 22:06:30 IST 2018] - [main] EC result is empty and restartECS=false. Exiting...
 [Sat Dec 22 22:06:30 IST 2018] - [createResultFile] Created file in /Users/kobbigal/dev/e2ewd/build/libs/run/result.txt
 [Sat Dec 22 22:06:30 IST 2018] - [createResultFile] Test succeeded: false
+[Sat Dec 22 22:50:20 IST 2018] - Created result file in /Users/kobbigal/dev/e2ewd/build/libs/run/result.txt
+[Sat Dec 22 22:50:20 IST 2018] - 
+Run at: Sat Dec 22 22:50:20 IST 2018
+-----------------------
+[Sat Dec 22 22:50:20 IST 2018] - ERROR: retrieving Sisense version - Cannot run program "reg": error=2, No such file or directory
+[Sat Dec 22 22:50:20 IST 2018] - Sisense version detected: CANNOT DETECT
+
+[Sat Dec 22 22:50:20 IST 2018] - Deleting result file...
+[Sat Dec 22 22:50:20 IST 2018] - [getElasticubeName] ERROR: Cannot run program "cmd.exe": error=2, No such file or directory
+[Sat Dec 22 22:50:20 IST 2018] - [TelnetTest] ERROR: connecting to localhost:811 - Connection refused
+[Sat Dec 22 22:50:20 IST 2018] - [TelnetTest] ERROR: connecting to localhost:812 - Connection refused
+[Sat Dec 22 22:50:20 IST 2018] - [main] EC result is empty and restartECS=false. Exiting...
+[Sat Dec 22 22:50:20 IST 2018] - Test succeeded: false
+[Sat Dec 22 22:54:25 IST 2018] - Created result file in /Users/kobbigal/dev/e2ewd/build/libs/run/result.txt
+[Sat Dec 22 22:54:25 IST 2018] - 
+Run at: Sat Dec 22 22:54:24 IST 2018
+-----------------------
+[Sat Dec 22 22:54:25 IST 2018] - ERROR: retrieving Sisense version - Cannot run program "reg": error=2, No such file or directory
+[Sat Dec 22 22:54:25 IST 2018] - Sisense version detected: CANNOT DETECT
+[Sat Dec 22 22:54:25 IST 2018] - Deleting result file...
+[Sat Dec 22 22:54:25 IST 2018] - [getElasticubeName] ERROR: Cannot run program "cmd.exe": error=2, No such file or directory
+[Sat Dec 22 22:54:25 IST 2018] - [TelnetTest] ERROR: connecting to localhost:811 - Connection refused
+[Sat Dec 22 22:54:25 IST 2018] - [TelnetTest] ERROR: connecting to localhost:812 - Connection refused
+[Sat Dec 22 22:54:25 IST 2018] - [main] EC result is empty and restartECS=false. Exiting...
+[Sat Dec 22 22:54:25 IST 2018] - Test succeeded: false
+[Sat Dec 22 22:54:36 IST 2018] - Created result file in /Users/kobbigal/dev/e2ewd/build/libs/run/result.txt
+[Sat Dec 22 22:54:36 IST 2018] - 
+Run at: Sat Dec 22 22:54:36 IST 2018
+-----------------------
+[Sat Dec 22 22:54:36 IST 2018] - ERROR: retrieving Sisense version - Cannot run program "reg": error=2, No such file or directory
+[Sat Dec 22 22:54:36 IST 2018] - Sisense version detected: CANNOT DETECT
+[Sat Dec 22 22:54:36 IST 2018] - Deleting result file...
+[Sat Dec 22 22:54:36 IST 2018] - [getElasticubeName] ERROR: Cannot run program "cmd.exe": error=2, No such file or directory
+[Sat Dec 22 22:54:36 IST 2018] - [TelnetTest] ERROR: connecting to localhost:811 - Connection refused
+[Sat Dec 22 22:54:36 IST 2018] - [TelnetTest] ERROR: connecting to localhost:812 - Connection refused
+[Sat Dec 22 22:54:36 IST 2018] - [main] EC result is empty and restartECS=false. Exiting...
+[Sat Dec 22 22:54:36 IST 2018] - Test succeeded: false
+[Sat Dec 22 22:54:49 IST 2018] - Created result file in /Users/kobbigal/dev/e2ewd/build/libs/run/result.txt
+[Sat Dec 22 22:54:49 IST 2018] - 
+Run at: Sat Dec 22 22:54:49 IST 2018
+-----------------------
+[Sat Dec 22 22:54:49 IST 2018] - ERROR: retrieving Sisense version - Cannot run program "reg": error=2, No such file or directory
+[Sat Dec 22 22:54:49 IST 2018] - Sisense version detected: CANNOT DETECT
+[Sat Dec 22 22:54:49 IST 2018] - Deleting result file...
+[Sat Dec 22 22:54:49 IST 2018] - [getElasticubeName] ERROR: Cannot run program "cmd.exe": error=2, No such file or directory
+[Sat Dec 22 22:54:49 IST 2018] - [TelnetTest] ERROR: connecting to localhost:811 - Connection refused
+[Sat Dec 22 22:54:49 IST 2018] - [TelnetTest] ERROR: connecting to localhost:812 - Connection refused
+[Sat Dec 22 22:54:49 IST 2018] - [main] EC result is empty and restartECS=false. Exiting...
+[Sat Dec 22 22:54:49 IST 2018] - Test succeeded: false
+[Sat Dec 22 22:55:13 IST 2018] - Created result file in /Users/kobbigal/dev/e2ewd/build/libs/run/result.txt
+[Sat Dec 22 22:55:13 IST 2018] - 
+Run at: Sat Dec 22 22:55:13 IST 2018
+-----------------------
+[Sat Dec 22 22:55:13 IST 2018] - ERROR: retrieving Sisense version - Cannot run program "reg": error=2, No such file or directory
+[Sat Dec 22 22:55:13 IST 2018] - Sisense version detected: CANNOT DETECT
+[Sat Dec 22 22:55:13 IST 2018] - Deleting result file...
+[Sat Dec 22 22:55:13 IST 2018] - [getElasticubeName] ERROR: Cannot run program "cmd.exe": error=2, No such file or directory
+[Sat Dec 22 22:55:13 IST 2018] - [TelnetTest] ERROR: connecting to localhost:811 - Connection refused
+[Sat Dec 22 22:55:13 IST 2018] - [TelnetTest] ERROR: connecting to localhost:812 - Connection refused
+[Sat Dec 22 22:55:13 IST 2018] - [main] EC result is empty and restartECS=false. Exiting...
+[Sat Dec 22 22:55:13 IST 2018] - Test succeeded: false
+[Sat Dec 22 23:09:43 IST 2018] - Created result file in /Users/kobbigal/dev/e2ewd/build/libs/run/result.txt
+[Sat Dec 22 23:09:43 IST 2018] - 
+Run at: Sat Dec 22 23:09:43 IST 2018
+-----------------------
+[Sat Dec 22 23:09:43 IST 2018] - ERROR: retrieving Sisense version - Cannot run program "reg": error=2, No such file or directory
+[Sat Dec 22 23:09:43 IST 2018] - Sisense version detected: CANNOT DETECT
+[Sat Dec 22 23:09:43 IST 2018] - Deleting result file...
+[Sat Dec 22 23:09:43 IST 2018] - ConfigFile{
+	token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNWJkNzQwZjJhMjc4MTQyNzUwZjM5OTI5IiwiYXBpU2VjcmV0IjoiYmMyNDc1NjYtZGQwZi0xY2I4LWJlMWYtZDU0YmEzOGM5ZWNhIiwiaWF0IjoxNTQzODU5NjQzfQ.nNwWYv3u5P17-BV3lWalSwTeTmcNg4pfRZi4edhtVhw,
+	host=localhost,
+	port=8081,
+	protocol=http,
+	restartECS=false
+	}
+[Sat Dec 22 23:09:43 IST 2018] - [getElasticubeName] ERROR: Cannot run program "cmd.exe": error=2, No such file or directory
+[Sat Dec 22 23:09:43 IST 2018] - [TelnetTest] ERROR: connecting to localhost:811 - Connection refused
+[Sat Dec 22 23:09:43 IST 2018] - [TelnetTest] ERROR: connecting to localhost:812 - Connection refused
+[Sat Dec 22 23:09:43 IST 2018] - [main] EC result is empty and restartECS=false. Exiting...
+[Sat Dec 22 23:09:43 IST 2018] - Test succeeded: false

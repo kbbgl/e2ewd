@@ -9,29 +9,25 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONObject;
 import tests.TelnetTest;
-import version.VersionRetriever;
 
-import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class App {
 
     private static final Date runTime = new Date();
-    private static final Runtime rt = Runtime.getRuntime();
     private static final ConfigFile configFile = ConfigFile.getInstance();
     private static final ResultFile resultFile = ResultFile.getInstance();
+    private static final CmdOperations operations = CmdOperations.getInstance();
     private static Logger logger = Logger.getInstance();
 
     public static void main(String[] args) {
 
-        writeToLogger("\nRun at: " + runTime.toString() + "\n-----------------------");
-        writeToLogger("Sisense version detected: " + getSisenseVersion() + "\n");
+        logger.write("\nRun at: " + runTime.toString() + "\n-----------------------");
+        logger.write("Sisense version detected: " + operations.getSisenseVersion());
         preRun();
         run();
 
@@ -39,188 +35,46 @@ public class App {
 
     private static void preRun(){
 
-        deleteResultFile();
-        validateConfigValues(configFile.getToken(), configFile.getHost(), configFile.getProtocol(), configFile.getPort(), configFile.isRestartECS());
-
+        resultFile.delete();
+        if (!configFile.isConfigFileValid()){
+            resultFile.delete();
+            logger.write("Exiting...");
+            System.exit(1);
+        }
+        else {
+            logger.write(configFile.toString());
+        }
     }
 
     private static void run(){
 
         // Read EC and table
-        String ec = getElasticubeName();
+        String ec = operations.getElastiCubeName();
 
         if (ec.isEmpty() && configFile.isRestartECS()){
             runECSTelnetTests();
-            restartECS(getSisenseVersion());
+            restartECS(operations.getSisenseVersion());
             run();
         }
         else if (ec.isEmpty()){
             runECSTelnetTests();
-            writeToLogger("[main] EC result is empty and restartECS=false. Exiting...");
-            createResultFile(false);
+            logger.write("[main] EC result is empty and restartECS=false. Exiting...");
+            resultFile.write(false);
             System.exit(0);
         }
         else {
-            String table = getTable(ec);
+            String table = operations.getTable();
 
             boolean isSuccessful = queryTableIsSuccessful(configFile.getProtocol(), configFile.getHost(), configFile.getPort(), configFile.getToken(), ec, table);
-            writeToLogger("[queryTableIsSuccessful] Table query successful: " + isSuccessful);
+            logger.write("[queryTableIsSuccessful] Table query successful: " + isSuccessful);
 
-            createResultFile(isSuccessful);
+            resultFile.write(isSuccessful);
         }
-    }
-
-    private static void validateConfigValues(String token, String host, String protocol, int port, boolean restartECS) {
-
-        String methodName = "[validateConfigValues] ";
-        HashMap<String, String> configMap = new HashMap<>(5);
-
-        configMap.put("token", token);
-        configMap.put("host", host);
-        configMap.put("protocol", protocol);
-        configMap.put("port", String.valueOf(port));
-        configMap.put("restartECS", String.valueOf(restartECS));
-
-        Set set = configMap.entrySet();
-        Iterator iterator = set.iterator();
-        while (iterator.hasNext()){
-
-            Map.Entry mapEntry = (Map.Entry) iterator.next();
-            if (String.valueOf(mapEntry.getValue()).isEmpty()){
-                writeToLogger(methodName + mapEntry.getKey() + " is empty. Exiting...");
-                deleteResultFile();
-                System.exit(1);
-            }
-
-        }
-
-    }
-
-    private static String getSisenseVersion(){
-
-        return VersionRetriever.getVersion(logger);
-    }
-
-    private static void writeToLogger(String s){
-        logger.write(s);
-    }
-
-    private static void createResultFile(boolean result){
-
-        writeToLogger("[createResultFile] Created file in " + resultFile.file.getAbsolutePath());
-        resultFile.write(result);
-        writeToLogger("[createResultFile] Test succeeded: " + result);
-    }
-
-    private static void deleteResultFile(){
-        writeToLogger("[deleteResultFile] Deleting result file...");
-        resultFile.delete();
     }
 
     private static void runECSTelnetTests(){
         TelnetTest.isConnected(logger, "localhost", 811);
         TelnetTest.isConnected(logger, "localhost", 812);
-    }
-
-    private static String getElasticubeName() {
-
-        String ec = "";
-
-        try {
-            String[] psmCmd = new String[]{
-                    "cmd.exe",
-                    "/c",
-                    "SET SISENSE_PSM=true&&\"C:\\Program Files\\Sisense\\Prism\\Psm.exe\"",
-                    "ecs",
-                    "ListCubes",
-                    "serverAddress=localhost"};
-
-            Process listCubesCommand = rt.exec(psmCmd);
-            writeToLogger("[getElasticubeName] running commands: " + Arrays.toString(psmCmd));
-            //listCubesCommand.waitFor();
-
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
-
-            Pattern cubeNamePattern = Pattern.compile("\\[(.*?)]");
-            Pattern errorPattern = Pattern.compile("\\((.*?)\\)");
-
-            String s;
-
-            while ((s = stdInput.readLine()) != null) {
-                System.out.println(s);
-                if (s.startsWith("Cube Name")){
-                    Matcher m = cubeNamePattern.matcher(s);
-                    while (m.find()){
-                        ec = m.group(1);
-                        writeToLogger("[getElasticubeName] ElastiCube found: " + ec);
-                        return ec;
-                    }
-                }
-                else {
-                    Matcher m = errorPattern.matcher(s);
-                    while (m.find()){
-                        writeToLogger("[getElasticubeName] ERROR: " + m.group(1));
-
-                        if (m.group(1).equals("the server, 'localhost', is not responding.")){
-                            return ec;
-                        }
-
-                    }
-                }
-
-            }
-        } catch (IOException e) {
-            writeToLogger("[getElasticubeName] ERROR: " + e.getMessage());
-        }
-
-        return ec;
-    }
-
-    private static String getTable(String ec){
-
-        String[] psmCmd  = {
-                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
-                "ecube",
-                "edit",
-                "tables",
-                "getListOfTables",
-                "serverAddress=localhost",
-                "cubeName=" + ec,
-                "isCustom=false"
-        };
-
-        try {
-            Process readTableProcess = rt.exec(psmCmd);
-            writeToLogger("[getTable] Command sent: " + Arrays.toString(psmCmd));
-
-            BufferedReader stdInput = new BufferedReader(new
-                    InputStreamReader(readTableProcess.getInputStream()));
-
-            String s;
-            String table = null;
-
-            while ((s = stdInput.readLine()) != null) {
-                if (s.contains("Could not find a cube by the name")){
-                    createResultFile(false);
-                }
-
-                if (!s.contains("-") && !s.isEmpty()){
-                    table = s;
-                    writeToLogger("[getTable] Table found: " + table);
-                    break;
-                }
-            }
-
-            return table;
-
-        } catch (Exception e) {
-            createResultFile(false);
-            writeToLogger("[getTable] getTable failed: ");
-            writeToLogger(e.getMessage());
-            writeToLogger(Arrays.toString(e.getStackTrace()));
-        }
-
-        return null;
     }
 
     private static void restartECS(String version){
@@ -234,8 +88,8 @@ public class App {
             serviceName = "ElastiCubeManagmentService";
         }
 
-        writeToLogger("[restartECS] Service to restart: " + serviceName);
-        CmdOperations.restartECS(rt, serviceName, logger);
+        logger.write("[restartECS] Service to restart: " + serviceName);
+        operations.restartService(serviceName);
 
     }
 
@@ -245,7 +99,7 @@ public class App {
         String query = ("SELECT COUNT(*) FROM [" + tableName + "]").replaceAll(" ", "%20");
         String uri = protocol + "://" + domain + ":" + port + "/api/datasources/" + elasticubeName.replaceAll(" ", "%20") + "/sql?query=" + query;
 
-        writeToLogger("[queryTableIsSuccessful] uri: " + uri);
+        logger.write("[queryTableIsSuccessful] uri: " + uri);
 
         try{
 
@@ -260,10 +114,10 @@ public class App {
                 try(InputStream inputStream = entity.getContent()) {
 
                     String result = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
-                    writeToLogger("[queryTableIsSuccessful] Running query: " + query.replaceAll("%20", " "));
+                    logger.write("[queryTableIsSuccessful] Running query: " + query.replaceAll("%20", " "));
                     JSONObject jsonObject = new JSONObject(result);
                     int count = jsonObject.getJSONArray("values").getJSONArray(0).getInt(0);
-                    writeToLogger("[queryTableIsSuccessful] Result: " + count);
+                    logger.write("[queryTableIsSuccessful] Result: " + count);
 
                     if (count > 0){
                         isSuccessful = true;
@@ -272,9 +126,9 @@ public class App {
             }
             return isSuccessful;
         }catch (Exception e){
-            writeToLogger("[queryTableIsSuccessful] query table failed:\n");
-            writeToLogger(e.getMessage());
-            writeToLogger(Arrays.toString(e.getStackTrace()));
+            logger.write("[queryTableIsSuccessful] query table failed:\n");
+            logger.write(e.getMessage());
+            logger.write(Arrays.toString(e.getStackTrace()));
             return false;
         }
 
