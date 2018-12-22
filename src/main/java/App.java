@@ -25,7 +25,7 @@ public class App {
     private static final Date runTime = new Date();
     private static final Runtime rt = Runtime.getRuntime();
     private static final ConfigFile configFile = ConfigFile.getInstance();
-    private static Logger logger;
+    private static Logger logger = Logger.getInstance();
 
     public static void main(String[] args) {
 
@@ -115,20 +115,16 @@ public class App {
 
         String version = null;
         try {
-            version = VersionRetriever.getVersion();
+            version = VersionRetriever.getVersion(logger);
         } catch (IOException e) {
-            e.printStackTrace();
+            writeToLogger(e.getMessage());
         }
 
         return version;
     }
 
     private static void writeToLogger(String s){
-        Date writeDate = new Date();
-        String message = "[" + writeDate.toString() + "] " + s;
-        logger = new Logger(executionPath());
-        logger.write(message);
-        System.out.println(message);
+        logger.write(s);
     }
 
     private static void createResultFile(boolean result){
