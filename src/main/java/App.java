@@ -25,6 +25,7 @@ public class App {
     private static final Date runTime = new Date();
     private static final Runtime rt = Runtime.getRuntime();
     private static final ConfigFile configFile = ConfigFile.getInstance();
+    private static final ResultFile resultFile = ResultFile.getInstance();
     private static Logger logger = Logger.getInstance();
 
     public static void main(String[] args) {
@@ -95,30 +96,9 @@ public class App {
 
     }
 
-    private static String executionPath(){
-        String jarLocation = null;
-        try {
-            jarLocation = new File(App.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath();
-            Path path = Paths.get(jarLocation);
-            return String.valueOf(path.getParent());
-        } catch (IOException | URISyntaxException e) {
-            writeToLogger("Couldn't retrieve jar execution path:");
-            writeToLogger(e.getMessage());
-            writeToLogger(Arrays.toString(e.getStackTrace()));
-        }
-        return jarLocation;
-    }
-
     private static String getSisenseVersion(){
 
-        String version = null;
-        try {
-            version = VersionRetriever.getVersion(logger);
-        } catch (IOException e) {
-            writeToLogger(e.getMessage());
-        }
-
-        return version;
+        return VersionRetriever.getVersion(logger);
     }
 
     private static void writeToLogger(String s){
@@ -126,31 +106,15 @@ public class App {
     }
 
     private static void createResultFile(boolean result){
-        try {
-            ResultFile resultFile = new ResultFile(executionPath());
-            resultFile.create();
-            writeToLogger("[createResultFile] Created file in " + resultFile.path);
-            resultFile.write(result);
-            writeToLogger("[createResultFile] Test succeeded: " + result);
-        } catch (IOException e) {
-            writeToLogger("Couldn't create log file: \n");
-            writeToLogger(Arrays.toString(e.getStackTrace()));
-        }
+
+        writeToLogger("[createResultFile] Created file in " + resultFile.file.getAbsolutePath());
+        resultFile.write(result);
+        writeToLogger("[createResultFile] Test succeeded: " + result);
     }
 
     private static void deleteResultFile(){
-        try {
-            writeToLogger("[deleteResultFile] Deleting result file...");
-            File file = new File(executionPath() + "/run/result.txt");
-            file.delete();
-        } catch (Exception e) {
-            writeToLogger("failed to delete result.txt file:\n");
-            writeToLogger(e.getMessage());
-            writeToLogger(Arrays.toString(e.getStackTrace()));
-            createResultFile(false);
-            e.printStackTrace();
-        }
-
+        writeToLogger("[deleteResultFile] Deleting result file...");
+        resultFile.delete();
     }
 
     private static void runECSTelnetTests(){
@@ -163,8 +127,6 @@ public class App {
         String ec = "";
 
         try {
-
-            Runtime rt = Runtime.getRuntime();
             String[] psmCmd = new String[]{
                     "cmd.exe",
                     "/c",

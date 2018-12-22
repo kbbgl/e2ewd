@@ -8,7 +8,7 @@ import java.io.StringWriter;
 
 public class VersionRetriever {
 
-    public static String getVersion(Logger logger) throws IOException {
+    public static String getVersion(Logger logger) {
 
         try {
             Process process = Runtime.getRuntime().exec("reg QUERY HKEY_LOCAL_MACHINE\\SOFTWARE\\Sisense\\ECS /v Version");

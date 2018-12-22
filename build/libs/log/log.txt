@@ -1,0 +1,13 @@
+[Sat Dec 22 22:06:30 IST 2018] - 
+Run at: Sat Dec 22 22:06:30 IST 2018
+-----------------------
+[Sat Dec 22 22:06:30 IST 2018] - [getVersion] - ERROR: Cannot run program "reg": error=2, No such file or directory
+[Sat Dec 22 22:06:30 IST 2018] - Sisense version detected: CANNOT_DETECT
+
+[Sat Dec 22 22:06:30 IST 2018] - [deleteResultFile] Deleting result file...
+[Sat Dec 22 22:06:30 IST 2018] - [getElasticubeName] ERROR: Cannot run program "cmd.exe": error=2, No such file or directory
+[Sat Dec 22 22:06:30 IST 2018] - [TelnetTest] ERROR: connecting to localhost:811 - Connection refused
+[Sat Dec 22 22:06:30 IST 2018] - [TelnetTest] ERROR: connecting to localhost:812 - Connection refused
+[Sat Dec 22 22:06:30 IST 2018] - [main] EC result is empty and restartECS=false. Exiting...
+[Sat Dec 22 22:06:30 IST 2018] - [createResultFile] Created file in /Users/kobbigal/dev/e2ewd/build/libs/run/result.txt
+[Sat Dec 22 22:06:30 IST 2018] - [createResultFile] Test succeeded: false

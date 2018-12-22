@@ -4,7 +4,6 @@ import logging.Logger;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 public class TelnetTest {
 
@@ -14,6 +13,7 @@ public class TelnetTest {
 
         try (Socket socket = new Socket(host, port)){
             logger.write(className  + socket.isConnected());
+
         } catch (IOException e) {
             logger.write(className  + "ERROR: connecting to " + host + ":" + port + " - " +e.getMessage());
         }
