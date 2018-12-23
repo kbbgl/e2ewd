@@ -10,9 +10,9 @@
 
 ### Tests 
 
-* Verifies web application DB is queriable.
-* Verifies ECS is queriable.
-* Verifies web application API is connected.
+* ElastiCube Server is queriable.
+* ElastiCube Server internal connectivity.
+* REST API is queriable.
 
 ### Result
 Once the application finishes execution, it will create a file in:
@@ -21,10 +21,19 @@ which will contain a `boolean` as the result, i.e. `true` means that the tests r
 
 ### Instructions
 1) Download or clone the project to the Sisense server. 
-2) Launch a Command Prompt and Navigate to `[path/to/dir]/build/libs/` (where `[path/to/dir]` is where you saved the project.)
-3) Open the `config.properties` file and enter the token, protocol, host, port of your Sisense instance and save the file. There's also an option to restart the ElastiCube Server (`restartECS`). If you're planning to set `restartECS=true` , you will need to open the Command Prompt in elevated mode (i.e. as a Administrator) 
+2) Navigate to `[path/to/dir]/build/libs/` (where `[path/to/dir]` is where you saved the project.)
+3) Open the `config.properties` file and enter the:
+ 
+ - Token (`String`) - Can be retrieved using the REST API `GET v1/authentication`
+ - Protocol (`String`) - i.e. `http` or `https`
+ - Host (`String`) -  i.e. `localhost` or your Sisense application gateway
+ - Port (`integer`) - i.e. `80, 8081, 443`
+ - *Restart ECS (`boolean`) -  i.e. `true, false` - default or empty is `false`
+ - REST API Connection Timeout in seconds (`int`) - i.e. `30`
+ 
+ **If you set `restartECS=true` you will have to run the below command in elevated mode (run as Administrator)
 
-4) Run the command:  
+4) Launch a Command Prompt from the current folder and run the following command:  
 
     `java -jar e2ewd.jar`
     
