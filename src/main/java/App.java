@@ -18,16 +18,17 @@ import java.util.stream.Collectors;
 
 public class App {
 
-    private static final Date runTime = new Date();
     private static final ConfigFile configFile = ConfigFile.getInstance();
-    private static final ResultFile resultFile = ResultFile.getInstance();
+    private static ResultFile resultFile = ResultFile.getInstance();;
     private static final CmdOperations operations = CmdOperations.getInstance();
     private static Logger logger = Logger.getInstance();
 
     public static void main(String[] args) {
 
-        logger.write("\nRun at: " + runTime.toString() + "\n-----------------------");
-        logger.write("Sisense version detected: " + operations.getSisenseVersion());
+        logger.write("Starting...");
+        if (!operations.getSisenseVersion().equals("CANNOT DETECT")) {
+            logger.write("Sisense version: " + operations.getSisenseVersion());
+        }
         preRun();
         run();
 
@@ -37,12 +38,12 @@ public class App {
 
         resultFile.delete();
         if (!configFile.isConfigFileValid()){
-            resultFile.delete();
             logger.write("Exiting...");
             System.exit(1);
         }
         else {
             logger.write(configFile.toString());
+            resultFile.create();
         }
     }
 

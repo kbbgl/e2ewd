@@ -3,10 +3,7 @@ package file_ops;
 import logging.Logger;
 import sun.rmi.runtime.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,12 +30,14 @@ public class ConfigFile {
 
             setToken(properties.getProperty("token"));
             setHost(properties.getProperty("host"));
-            setPort(Integer.parseInt(properties.getProperty("port")));
             setProtocol(properties.getProperty("protocol"));
             setRestartECS(Boolean.parseBoolean(properties.getProperty("restartECS")));
+            setPort(Integer.parseInt(properties.getProperty("port")));
 
         } catch (IOException e) {
             logger.write("ERROR: reading configuration file - " + e.getMessage());
+        } catch (NumberFormatException e){
+            logger.write("ERROR: reading reading port - " + e.getMessage());
         }
     }
 
@@ -116,6 +115,10 @@ public class ConfigFile {
             Map.Entry mapEntry = (Map.Entry) iterator.next();
             if (String.valueOf(mapEntry.getValue()).isEmpty()){
                 logger.write(mapEntry.getKey() + " is empty.");
+                return false;
+            }
+            else if (String.valueOf(mapEntry.getValue()).equals("0")){
+                logger.write(mapEntry.getKey() + " is 0.");
                 return false;
             }
         }

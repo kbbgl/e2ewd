@@ -13,19 +13,10 @@ import java.nio.file.Paths;
 public class ResultFile {
 
     private static ResultFile instance;
-    public File file;
+    private final File file = new File(filePath());
     private static Logger logger = Logger.getInstance();
 
     private ResultFile() {
-
-        file = new File( filePath());
-        try {
-            file.createNewFile();
-            logger.write("Created result file in " + filePath());
-        } catch (IOException e) {
-            logger.write("ERROR: Creating new file - " + e.getMessage());
-        }
-
     }
 
     public static ResultFile getInstance(){
@@ -35,6 +26,17 @@ public class ResultFile {
         }
 
         return instance;
+    }
+
+    public void create(){
+        if (!exists()){
+            try {
+                file.createNewFile();
+                logger.write("Created result file in " + filePath());
+            } catch (IOException e) {
+                logger.write("ERROR: Creating new file - " + e.getMessage());
+            }
+        }
     }
 
     public void write(boolean result) {
@@ -47,10 +49,14 @@ public class ResultFile {
     }
 
     public void delete(){
-        if (file.exists()) {
+        if (exists()) {
             logger.write("Deleting result file...");
             file.delete();
         }
+    }
+
+    private boolean exists(){
+        return file.exists();
     }
 
     private static String filePath(){
