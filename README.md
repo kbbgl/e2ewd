@@ -27,7 +27,7 @@ which will contain a `boolean` as the result, i.e. `true` means that the tests r
  - Token (`String`) - Can be retrieved using the REST API `GET v1/authentication`
  - Protocol (`String`) - i.e. `http` or `https`
  - Host (`String`) -  i.e. `localhost` or your Sisense application gateway
- - Port (`integer`) - i.e. `80, 8081, 443`
+ - Port (`int`) - i.e. `80, 8081, 443`
  - *Restart ECS (`boolean`) -  i.e. `true, false` - default or empty is `false`
  - REST API Connection Timeout in seconds (`int`) - i.e. `30`
  
