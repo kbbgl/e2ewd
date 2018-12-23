@@ -6,8 +6,9 @@ import logging.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -31,7 +32,8 @@ public class SisenseRESTAPI {
 
         try{
 
-            HttpClient client = HttpClients.createDefault();
+            RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(configFile.getRequestTimeoutInSeconds() * 1000).setConnectTimeout(configFile.getRequestTimeoutInSeconds() * 1000).build();
+            HttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
             HttpGet get = new HttpGet(uri);
             get.addHeader("authorization", "Bearer " + configFile.getToken());
             HttpResponse response = client.execute(get);

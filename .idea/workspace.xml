@@ -2,22 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c8a9607-8b97-42f8-b6b2-6e5ad6edebd5" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/tests/SisenseRESTAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.9/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.9/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.9/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.9/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.9/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.9/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.9/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.9/taskHistory/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.9/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.9/taskHistory/taskHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/App.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/distributions/e2ewd.tar" beforeDir="false" afterPath="$PROJECT_DIR$/build/distributions/e2ewd.tar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/distributions/e2ewd.zip" beforeDir="false" afterPath="$PROJECT_DIR$/build/distributions/e2ewd.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/libs/e2ewd.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/e2ewd.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/tests/test/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/libs/run/result.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/file_ops/ResultFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/file_ops/ResultFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tests/SisenseRESTAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tests/SisenseRESTAPI.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -94,7 +81,7 @@
         <entry file="file://$PROJECT_DIR$/build/libs/config.properties">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="60">
-              <caret line="4" column="15" selection-start-line="4" selection-start-column="15" selection-end-line="4" selection-end-column="15" />
+              <caret line="4" column="23" selection-start-line="4" selection-end-line="4" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -111,12 +98,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ResultFile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+            <state relative-caret-position="405">
+              <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
               <folding>
+                <element signature="imports" expanded="true" />
                 <element signature="e#1464#1465#0" expanded="true" />
                 <element signature="e#1500#1501#0" expanded="true" />
               </folding>
@@ -140,20 +128,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="64" column="36" selection-start-line="64" selection-start-column="36" selection-end-line="64" selection-end-column="36" />
+            <state relative-caret-position="285">
+              <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
               <folding>
-                <element signature="method#main#0;class#App#0" />
                 <element signature="e#984#1075#1" />
                 <element signature="method#preRun#0;class#App#0" />
                 <element signature="e#1250#1362#1" />
                 <element signature="e#1376#1436#1" />
-                <element signature="method#run#0;class#App#0" />
-                <element signature="e#1622#1730#1" />
-                <element signature="e#1761#1959#1" />
-                <element signature="e#1973#2329#1" />
                 <element signature="method#runECSTelnetTests#0;class#App#0" />
-                <element signature="method#restartECS#0;class#App#0" />
                 <element signature="e#7439#7492#1" />
                 <element signature="e#7506#7573#1" />
               </folding>
@@ -161,11 +143,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/tests/SisenseRESTAPI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="671">
-              <caret line="47" column="78" lean-forward="true" selection-start-line="47" selection-start-column="78" selection-end-line="47" selection-end-column="78" />
+            <state relative-caret-position="446">
+              <caret line="34" column="215" lean-forward="true" selection-start-line="34" selection-start-column="215" selection-end-line="34" selection-end-column="215" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -176,23 +158,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
+            <state relative-caret-position="552">
+              <caret line="103" column="41" selection-start-line="103" selection-start-column="15" selection-end-line="103" selection-end-column="41" />
               <folding>
+                <element signature="imports" expanded="true" />
                 <element signature="method#getInstance#0;class#ConfigFile#0" />
-                <element signature="e#2009#2010#0" expanded="true" />
-                <element signature="e#2082#2083#0" expanded="true" />
-                <element signature="e#2152#2153#0" expanded="true" />
+                <element signature="e#2159#2160#0" expanded="true" />
+                <element signature="e#2232#2233#0" expanded="true" />
+                <element signature="e#2302#2303#0" expanded="true" />
                 <element signature="e#2234#2235#0" expanded="true" />
                 <element signature="e#2266#2267#0" expanded="true" />
                 <element signature="e#2296#2297#0" expanded="true" />
                 <element signature="e#2328#2329#0" expanded="true" />
                 <element signature="e#2359#2360#0" expanded="true" />
                 <element signature="e#2392#2393#0" expanded="true" />
-                <element signature="e#2407#2408#0" expanded="true" />
-                <element signature="e#2505#2506#0" expanded="true" />
-                <element signature="e#2571#2572#0" expanded="true" />
-                <element signature="e#2660#2661#0" expanded="true" />
+                <element signature="e#2557#2558#0" expanded="true" />
+                <element signature="e#2655#2656#0" expanded="true" />
+                <element signature="e#2721#2722#0" expanded="true" />
+                <element signature="e#2810#2811#0" expanded="true" />
+                <element signature="e#2747#2748#0" expanded="true" />
+                <element signature="e#2793#2794#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -266,11 +251,11 @@
         <option value="$PROJECT_DIR$/src/main/java/tests/TelnetTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/ResultFileSingleton.java" />
         <option value="$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java" />
-        <option value="$PROJECT_DIR$/build/libs/config.properties" />
-        <option value="$PROJECT_DIR$/src/main/java/tests/SisenseRESTAPI.java" />
         <option value="$PROJECT_DIR$/src/main/java/App.java" />
-        <option value="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/file_ops/ResultFile.java" />
+        <option value="$PROJECT_DIR$/build/libs/config.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" />
+        <option value="$PROJECT_DIR$/src/main/java/tests/SisenseRESTAPI.java" />
       </list>
     </option>
   </component>
@@ -327,30 +312,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="cmd_ops" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="file_ops" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="logging" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
@@ -729,75 +690,80 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build/libs/config.properties">
+    <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ResultFile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="15" selection-start-line="4" selection-start-column="15" selection-end-line="4" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/SisenseRESTAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="671">
-          <caret line="47" column="78" lean-forward="true" selection-start-line="47" selection-start-column="78" selection-end-line="47" selection-end-column="78" />
+        <state relative-caret-position="405">
+          <caret line="27" column="5" lean-forward="true" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1464#1465#0" expanded="true" />
+            <element signature="e#1500#1501#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="64" column="36" selection-start-line="64" selection-start-column="36" selection-end-line="64" selection-end-column="36" />
+        <state relative-caret-position="285">
+          <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
           <folding>
-            <element signature="method#main#0;class#App#0" />
             <element signature="e#984#1075#1" />
             <element signature="method#preRun#0;class#App#0" />
             <element signature="e#1250#1362#1" />
             <element signature="e#1376#1436#1" />
-            <element signature="method#run#0;class#App#0" />
-            <element signature="e#1622#1730#1" />
-            <element signature="e#1761#1959#1" />
-            <element signature="e#1973#2329#1" />
             <element signature="method#runECSTelnetTests#0;class#App#0" />
-            <element signature="method#restartECS#0;class#App#0" />
             <element signature="e#7439#7492#1" />
             <element signature="e#7506#7573#1" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5/c9504d3448744739d334bde12bfbc91fd7f85115/httpclient-4.5-sources.jar!/org/apache/http/client/config/RequestConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="975">
+          <caret line="484" column="23" selection-start-line="484" selection-start-column="23" selection-end-line="484" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/libs/config.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="23" selection-start-line="4" selection-end-line="4" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
+        <state relative-caret-position="552">
+          <caret line="103" column="41" selection-start-line="103" selection-start-column="15" selection-end-line="103" selection-end-column="41" />
           <folding>
+            <element signature="imports" expanded="true" />
             <element signature="method#getInstance#0;class#ConfigFile#0" />
-            <element signature="e#2009#2010#0" expanded="true" />
-            <element signature="e#2082#2083#0" expanded="true" />
-            <element signature="e#2152#2153#0" expanded="true" />
+            <element signature="e#2159#2160#0" expanded="true" />
+            <element signature="e#2232#2233#0" expanded="true" />
+            <element signature="e#2302#2303#0" expanded="true" />
             <element signature="e#2234#2235#0" expanded="true" />
             <element signature="e#2266#2267#0" expanded="true" />
             <element signature="e#2296#2297#0" expanded="true" />
             <element signature="e#2328#2329#0" expanded="true" />
             <element signature="e#2359#2360#0" expanded="true" />
             <element signature="e#2392#2393#0" expanded="true" />
-            <element signature="e#2407#2408#0" expanded="true" />
-            <element signature="e#2505#2506#0" expanded="true" />
-            <element signature="e#2571#2572#0" expanded="true" />
-            <element signature="e#2660#2661#0" expanded="true" />
+            <element signature="e#2557#2558#0" expanded="true" />
+            <element signature="e#2655#2656#0" expanded="true" />
+            <element signature="e#2721#2722#0" expanded="true" />
+            <element signature="e#2810#2811#0" expanded="true" />
+            <element signature="e#2747#2748#0" expanded="true" />
+            <element signature="e#2793#2794#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ResultFile.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/tests/SisenseRESTAPI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        <state relative-caret-position="446">
+          <caret line="34" column="215" lean-forward="true" selection-start-line="34" selection-start-column="215" selection-end-line="34" selection-end-column="215" />
           <folding>
-            <element signature="e#1464#1465#0" expanded="true" />
-            <element signature="e#1500#1501#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -16,6 +16,7 @@ public class ConfigFile {
     private String token;
     private String host;
     private String protocol;
+    private int requestTimeoutInSeconds;
     private boolean restartECS;
     private int port;
 
@@ -31,6 +32,7 @@ public class ConfigFile {
             setHost(properties.getProperty("host"));
             setProtocol(properties.getProperty("protocol"));
             setRestartECS(Boolean.parseBoolean(properties.getProperty("restartECS")));
+            setRequestTimeoutInSeconds(Integer.parseInt(properties.getProperty("requestTimeoutInSeconds")));
             setPort(Integer.parseInt(properties.getProperty("port")));
 
         } catch (IOException e) {
@@ -99,6 +101,14 @@ public class ConfigFile {
         this.protocol = protocol;
     }
 
+    public int getRequestTimeoutInSeconds() {
+        return requestTimeoutInSeconds;
+    }
+
+    private void setRequestTimeoutInSeconds(int requestTimeoutInSeconds) {
+        this.requestTimeoutInSeconds = requestTimeoutInSeconds;
+    }
+
     public boolean isConfigFileValid(){
         HashMap<String, String> configMap = new HashMap<>(5);
         configMap.put("token", token);
@@ -106,17 +116,16 @@ public class ConfigFile {
         configMap.put("protocol", protocol);
         configMap.put("port", String.valueOf(port));
         configMap.put("restartECS", String.valueOf(restartECS));
+        configMap.put("requestTimeoutInSeconds", String.valueOf(requestTimeoutInSeconds));
 
         Set set = configMap.entrySet();
-        Iterator iterator = set.iterator();
 
-        while (iterator.hasNext()){
-            Map.Entry mapEntry = (Map.Entry) iterator.next();
-            if (String.valueOf(mapEntry.getValue()).isEmpty()){
+        for (Object o : set) {
+            Map.Entry mapEntry = (Map.Entry) o;
+            if (String.valueOf(mapEntry.getValue()).isEmpty()) {
                 logger.write(mapEntry.getKey() + " is empty.");
                 return false;
-            }
-            else if (String.valueOf(mapEntry.getValue()).equals("0")){
+            } else if (String.valueOf(mapEntry.getValue()).equals("0")) {
                 logger.write(mapEntry.getKey() + " is 0.");
                 return false;
             }
@@ -127,13 +136,15 @@ public class ConfigFile {
     @Override
     public String toString() {
         return "ConfigFile{\n\t" +
-                "token=" + token + ",\n\t" +
-                "host=" + host + ",\n\t" +
-                "port=" + port + ",\n\t" +
-                "protocol=" + protocol + ",\n\t" +
-                "restartECS=" + restartECS + "\n\t" +
+                "token:" + token + ",\n\t" +
+                "host:" + host + ",\n\t" +
+                "port:" + port + ",\n\t" +
+                "protocol:" + protocol + ",\n\t" +
+                "requestTimeoutInSeconds:" + requestTimeoutInSeconds + ",\n\t" +
+                "restartECS:" + restartECS + "\n\t" +
                 "}";
     }
+
 
 
 }
