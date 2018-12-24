@@ -97,7 +97,6 @@ public class CmdOperations {
             String s;
 
             while ((s = stdInput.readLine()) != null) {
-                System.out.println(s);
                 if (s.startsWith("Cube Name")){
                     Matcher m = cubeNamePattern.matcher(s);
                     while (m.find()){
