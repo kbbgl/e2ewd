@@ -37,7 +37,7 @@ public class ConfigFile {
             setRestartECS(Boolean.parseBoolean(properties.getProperty("restartECS")));
             setRestartIIS(Boolean.parseBoolean(properties.getProperty("restartIIS")));
             setEcsDump(Boolean.parseBoolean(properties.getProperty("ecsDump")));
-            setIisDump(Boolean.parseBoolean(properties.getProperty("iiDump")));
+            setIisDump(Boolean.parseBoolean(properties.getProperty("iisDump")));
             setRequestTimeoutInSeconds(Integer.parseInt(properties.getProperty("requestTimeoutInSeconds")));
             setPort(Integer.parseInt(properties.getProperty("port")));
 

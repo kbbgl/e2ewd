@@ -4,6 +4,9 @@ import file_ops.ResultFile;
 import logging.Logger;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,9 +14,10 @@ import java.util.regex.Pattern;
 public class CmdOperations {
 
     private static CmdOperations instance;
-    private static final Runtime runtime = Runtime.getRuntime();
-    private static final Logger logger = Logger.getInstance();
-    private static final ResultFile resultFile = ResultFile.getInstance();
+    private final Runtime runtime = Runtime.getRuntime();
+    private final Logger logger = Logger.getInstance();
+    private final ResultFile resultFile = ResultFile.getInstance();
+    private final String path = executionPath() + "\\procdump\\procdump.exe";
 
     private CmdOperations(){
 
@@ -152,20 +156,16 @@ public class CmdOperations {
 
     public void w3wpDump(){
 
-        String command = "procdump.exe -accepteula -o w3wp";
+        String command = path + " -accepteula -o w3wp";
         logger.write("[w3wpDump] - running...");
 
         try {
+
             Process process = runtime.exec(command);
+            process.waitFor();
 
-            try (InputStream stream = process.getInputStream()){
-                int c;
-                while ((c = stream.read()) != -1){
-                    logger.write(String.valueOf(c));
-                }
-            }
 
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             logger.write("ERROR: running command" + command + " - " + e.getMessage());
         }
 
@@ -173,20 +173,16 @@ public class CmdOperations {
 
     public void ecsDump(){
 
-        String command = "procdump.exe -accepteula -o elasticube.managementservice";
+        String command = path + " -accepteula -o ElastiCube.ManagementService";
         logger.write("[ecsDump] - running...");
 
         try {
+
             Process process = runtime.exec(command);
+            process.waitFor();
 
-            try (InputStream stream = process.getInputStream()){
-                int c;
-                while ((c = stream.read()) != -1){
-                    logger.write(String.valueOf(c));
-                }
-            }
 
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             logger.write("ERROR: running command" + command + " - " + e.getMessage());
         }
 
@@ -264,5 +260,17 @@ public class CmdOperations {
             logger.write( methodName + "ERROR: " + e.getMessage());
         }
 
+    }
+
+    private String executionPath(){
+        String jarLocation = null;
+        try {
+            jarLocation = new File(Logger.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath();
+            Path path = Paths.get(jarLocation);
+            return String.valueOf(path.getParent());
+        } catch (IOException | URISyntaxException e) {
+            System.out.println(e.getMessage());
+        }
+        return jarLocation;
     }
 }

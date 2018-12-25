@@ -26,15 +26,18 @@ public class SisenseRESTAPI {
     public static boolean queryTableIsSuccessful() {
 
         String query = ("SELECT COUNT(*) FROM [" + ops.getTable() + "]").replaceAll(" ", "%20");
-        String uri = configFile.getProtocol() + "://" + configFile.getHost() + ":" + configFile.getPort() + "/api/datasources/" + ops.getElastiCubeName().replaceAll(" ", "%20") + "/sql?query=" + query;
 
-        logger.write("[queryTableIsSuccessful] uri: " + uri);
+
+        logger.write("[queryTableIsSuccessful] uri: " + returnUri(query));
 
         try{
 
-            RequestConfig requestConfig = RequestConfig.custom().setConnectionRequestTimeout(configFile.getRequestTimeoutInSeconds() * 1000).setConnectTimeout(configFile.getRequestTimeoutInSeconds() * 1000).build();
+            RequestConfig requestConfig = RequestConfig.custom()
+                    .setConnectionRequestTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
+                    .setConnectTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
+                    .build();
             HttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
-            HttpGet get = new HttpGet(uri);
+            HttpGet get = new HttpGet(returnUri(query));
             get.addHeader("authorization", "Bearer " + configFile.getToken());
             HttpResponse response = client.execute(get);
             HttpEntity entity = response.getEntity();
@@ -62,6 +65,23 @@ public class SisenseRESTAPI {
         }
 
         return false;
+    }
+
+    private static String returnUri(String query){
+
+        if (configFile.getPort() != 443){
+            return configFile.getProtocol() +
+                    "://" + configFile.getHost() + ":" +
+                    configFile.getPort() + "/api/datasources/" +
+                    ops.getElastiCubeName().replaceAll(" ", "%20") +
+                    "/sql?query=" + query;
+        }
+        else {
+            return configFile.getProtocol() +
+                    "://" + configFile.getHost() + "/api/datasources/" +
+                    ops.getElastiCubeName().replaceAll(" ", "%20") +
+                    "/sql?query=" + query;
+        }
     }
 
 }

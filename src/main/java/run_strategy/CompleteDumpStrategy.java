@@ -12,8 +12,8 @@ public class CompleteDumpStrategy implements RunStrategy {
     public void execute() {
 
         logger.write("CompleteDumpStrategy chosen");
-        cmdOperations.ecsDump();
         cmdOperations.w3wpDump();
+        cmdOperations.ecsDump();
 
     }
 }

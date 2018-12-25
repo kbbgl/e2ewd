@@ -63,7 +63,7 @@ public class ResultFile {
         try {
             jarLocation = new File(ResultFile.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath();
             Path path = Paths.get(jarLocation);
-            return path.getParent() + "/run/result.txt";
+            return path.getParent() + "\\run\\result.txt";
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
