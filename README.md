@@ -19,6 +19,9 @@ Once the application finishes execution, it will create a file in:
 `[path/to/dir]/build/libs/run/result.txt`
 which will contain a `boolean` as the result, i.e. `true` means that the tests ran successfully.
 
+If you've set `ecsDump`, `iisDump` to `true`, it will create a dump file of the respective process in the parent folder. 
+The dump includes a snapshot of the process memory set which can be useful in troubleshooting the root cause.  
+
 ### Instructions
 1) Download or clone the project to the Sisense server. 
 2) Navigate to `[path/to/dir]/build/libs/` (where `[path/to/dir]` is where you saved the project.)

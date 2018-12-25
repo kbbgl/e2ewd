@@ -156,7 +156,7 @@ public class CmdOperations {
 
     public void w3wpDump(){
 
-        String command = path + " -accepteula -o w3wp";
+        String command = path + " -accepteula -o -ma w3wp iis_dump.dmp";
         logger.write("[w3wpDump] - running...");
 
         try {
@@ -173,7 +173,7 @@ public class CmdOperations {
 
     public void ecsDump(){
 
-        String command = path + " -accepteula -o ElastiCube.ManagementService";
+        String command = path + " -accepteula -o -ma ElastiCube.ManagementService ecs_dump.dmp";
         logger.write("[ecsDump] - running...");
 
         try {
