@@ -63,7 +63,7 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\e2ewd.jar;%APP_HOME%\lib\httpclient-4.5.jar;%APP_HOME%\lib\httpcore-4.4.1.jar;%APP_HOME%\lib\json-20090211.jar;%APP_HOME%\lib\commons-logging-1.2.jar;%APP_HOME%\lib\commons-codec-1.9.jar
+set CLASSPATH=%APP_HOME%\lib\e2ewd.jar;%APP_HOME%\lib\httpclient-4.5.jar;%APP_HOME%\lib\httpcore-4.4.1.jar;%APP_HOME%\lib\json-20090211.jar;%APP_HOME%\lib\commons-io-2.6.jar;%APP_HOME%\lib\commons-logging-1.2.jar;%APP_HOME%\lib\commons-codec-1.9.jar
 
 @rem Execute e2ewd
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %E2EWD_OPTS%  -classpath "%CLASSPATH%" App %CMD_LINE_ARGS%

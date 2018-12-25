@@ -18,6 +18,9 @@ public class ConfigFile {
     private String protocol;
     private int requestTimeoutInSeconds;
     private boolean restartECS;
+    private boolean restartIIS;
+    private boolean ecsDump;
+    private boolean iisDump;
     private int port;
 
     private ConfigFile(){
@@ -32,6 +35,9 @@ public class ConfigFile {
             setHost(properties.getProperty("host"));
             setProtocol(properties.getProperty("protocol"));
             setRestartECS(Boolean.parseBoolean(properties.getProperty("restartECS")));
+            setRestartIIS(Boolean.parseBoolean(properties.getProperty("restartIIS")));
+            setEcsDump(Boolean.parseBoolean(properties.getProperty("ecsDump")));
+            setIisDump(Boolean.parseBoolean(properties.getProperty("iiDump")));
             setRequestTimeoutInSeconds(Integer.parseInt(properties.getProperty("requestTimeoutInSeconds")));
             setPort(Integer.parseInt(properties.getProperty("port")));
 
@@ -49,7 +55,7 @@ public class ConfigFile {
         return configFileInstance;
     }
 
-    private  String executionPath(){
+    private String executionPath(){
         String jarLocation = null;
         try {
             jarLocation = new File(ConfigFile.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath();
@@ -85,7 +91,7 @@ public class ConfigFile {
         return this.token;
     }
 
-    public boolean isRestartECS() {
+    public boolean restartECS() {
         return restartECS;
     }
 
@@ -109,6 +115,30 @@ public class ConfigFile {
         this.requestTimeoutInSeconds = requestTimeoutInSeconds;
     }
 
+    public boolean restartIIS() {
+        return restartIIS;
+    }
+
+    private void setRestartIIS(boolean restartIIS) {
+        this.restartIIS = restartIIS;
+    }
+
+    public boolean isEcsDump() {
+        return ecsDump;
+    }
+
+    private void setEcsDump(boolean ecsDump) {
+        this.ecsDump = ecsDump;
+    }
+
+    public boolean isIisDump() {
+        return iisDump;
+    }
+
+    private void setIisDump(boolean iisDump) {
+        this.iisDump = iisDump;
+    }
+
     public boolean isConfigFileValid(){
         HashMap<String, String> configMap = new HashMap<>(5);
         configMap.put("token", token);
@@ -116,6 +146,9 @@ public class ConfigFile {
         configMap.put("protocol", protocol);
         configMap.put("port", String.valueOf(port));
         configMap.put("restartECS", String.valueOf(restartECS));
+        configMap.put("restartIIS", String.valueOf(restartIIS));
+        configMap.put("iisDump", String.valueOf(iisDump));
+        configMap.put("ecsDump", String.valueOf(ecsDump));
         configMap.put("requestTimeoutInSeconds", String.valueOf(requestTimeoutInSeconds));
 
         Set set = configMap.entrySet();
@@ -141,10 +174,11 @@ public class ConfigFile {
                 "port:" + port + ",\n\t" +
                 "protocol:" + protocol + ",\n\t" +
                 "requestTimeoutInSeconds:" + requestTimeoutInSeconds + ",\n\t" +
-                "restartECS:" + restartECS + "\n\t" +
+                "restartECS:" + restartECS + ",\n\t" +
+                "restartIIS:" + restartIIS + ",\n\t" +
+                "iisDump:" + iisDump + ",\n\t" +
+                "ecsDump:" + ecsDump + "\n\t" +
                 "}";
     }
-
-
 
 }

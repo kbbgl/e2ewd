@@ -29,7 +29,7 @@ which will contain a `boolean` as the result, i.e. `true` means that the tests r
  - Host (`String`) -  i.e. `localhost` or your Sisense application gateway
  - Port (`int`) - i.e. `80, 8081, 443`
  - *Restart ECS (`boolean`) -  i.e. `true, false` - default or empty is `false`
- - REST API Connection Timeout in seconds (`int`) - i.e. `30`
+ - REST API connection timeout in seconds (`int`) - i.e. `30`
  
  **If you set `restartECS=true` you will have to run the below command in elevated mode (run as Administrator)
 

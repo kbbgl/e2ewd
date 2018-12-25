@@ -64,7 +64,7 @@ case "`uname`" in
     ;;
 esac
 
-CLASSPATH=$APP_HOME/lib/e2ewd.jar:$APP_HOME/lib/httpclient-4.5.jar:$APP_HOME/lib/httpcore-4.4.1.jar:$APP_HOME/lib/json-20090211.jar:$APP_HOME/lib/commons-logging-1.2.jar:$APP_HOME/lib/commons-codec-1.9.jar
+CLASSPATH=$APP_HOME/lib/e2ewd.jar:$APP_HOME/lib/httpclient-4.5.jar:$APP_HOME/lib/httpcore-4.4.1.jar:$APP_HOME/lib/json-20090211.jar:$APP_HOME/lib/commons-io-2.6.jar:$APP_HOME/lib/commons-logging-1.2.jar:$APP_HOME/lib/commons-codec-1.9.jar
 
 # Determine the Java command to use to start the JVM.
 if [ -n "$JAVA_HOME" ] ; then

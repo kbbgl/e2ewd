@@ -141,7 +141,7 @@ public class CmdOperations {
             }
             stream.close();
 
-            return stringWriter.toString().trim().split("   ")[3];
+            return stringWriter.toString().split("   ")[3].trim();
 
         } catch (IOException e) {
             logger.write("ERROR: retrieving Sisense version - " + e.getMessage());
@@ -150,10 +150,93 @@ public class CmdOperations {
 
     }
 
-    public void restartService(String serviceName){
+    public void w3wpDump(){
+
+        String command = "procdump.exe -accepteula -o w3wp";
+        logger.write("[w3wpDump] - running...");
+
+        try {
+            Process process = runtime.exec(command);
+
+            try (InputStream stream = process.getInputStream()){
+                int c;
+                while ((c = stream.read()) != -1){
+                    logger.write(String.valueOf(c));
+                }
+            }
+
+        } catch (IOException e) {
+            logger.write("ERROR: running command" + command + " - " + e.getMessage());
+        }
+
+    }
+
+    public void ecsDump(){
+
+        String command = "procdump.exe -accepteula -o elasticube.managementservice";
+        logger.write("[ecsDump] - running...");
+
+        try {
+            Process process = runtime.exec(command);
+
+            try (InputStream stream = process.getInputStream()){
+                int c;
+                while ((c = stream.read()) != -1){
+                    logger.write(String.valueOf(c));
+                }
+            }
+
+        } catch (IOException e) {
+            logger.write("ERROR: running command" + command + " - " + e.getMessage());
+        }
+
+    }
+
+    public void restartECS(){
+
+        String serviceName;
+        if (getSisenseVersion().startsWith("7.2")){
+            serviceName = "Sisense.ECMS";
+        }
+        else {
+            serviceName = "ElastiCubeManagmentService";
+        }
 
         String methodName = "[restartService] ";
         String restartCommand = "powershell.exe Restart-Service -DisplayName " + serviceName + " -Force";
+        logger.write( methodName + "running command " + restartCommand);
+        try {
+            Process psProcess = runtime.exec(restartCommand);
+            psProcess.waitFor();
+            psProcess.getOutputStream().close();
+
+            String line;
+
+            logger.write(methodName + "restart command output:");
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream()))) {
+                while ((line = reader.readLine()) != null){
+                    logger.write(line);
+                }
+            }
+
+            String error;
+            try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream()))) {
+                while ((error = errorReader.readLine()) != null){
+                    logger.write(error);
+                }
+            }
+
+        } catch (IOException | InterruptedException e) {
+            logger.write( methodName + "ERROR: " + e.getMessage());
+        }
+
+    }
+
+    public void restartIIS(){
+
+        String methodName = "[restartIIS] ";
+        String restartCommand = "iisreset";
         logger.write( methodName + "running command " + restartCommand);
         try {
             Process psProcess = runtime.exec(restartCommand);

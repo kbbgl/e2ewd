@@ -2,8 +2,16 @@ import cmd_ops.CmdOperations;
 import file_ops.ConfigFile;
 import file_ops.ResultFile;
 import logging.Logger;
+import run_strategy.*;
 import tests.SisenseRESTAPI;
 import tests.TelnetTest;
+
+//TODO
+// add to configuration:
+// take dump
+// email that dump occurred or event viewer with dump location
+// number of retries
+
 
 public class App {
 
@@ -11,6 +19,7 @@ public class App {
     private static ResultFile resultFile = ResultFile.getInstance();;
     private static final CmdOperations operations = CmdOperations.getInstance();
     private static Logger logger = Logger.getInstance();
+    private static StrategyContext strategyContext = new StrategyContext();
 
     public static void main(String[] args) {
 
@@ -41,17 +50,12 @@ public class App {
         // Read EC and table
         String ec = operations.getElastiCubeName();
 
-        if (ec.isEmpty() && configFile.isRestartECS()){
+        if (ec.isEmpty()){
             runECSTelnetTests();
-            restartECS();
+            setAndExecuteStrategy();
             run();
         }
-        else if (ec.isEmpty()){
-            runECSTelnetTests();
-            logger.write("[main] EC result is empty and restartECS=false. Exiting...");
-            resultFile.write(false);
-            System.exit(0);
-        }
+
         else {
             resultFile.write(SisenseRESTAPI.queryTableIsSuccessful());
         }
@@ -62,19 +66,25 @@ public class App {
         TelnetTest.isConnected(logger, "localhost", 812);
     }
 
-    private static void restartECS(){
+    private static void setAndExecuteStrategy(){
 
-        String serviceName;
+        if (configFile.isEcsDump() && configFile.isIisDump() && !configFile.restartECS() && !configFile.restartIIS()){
+            strategyContext.setStrategy(new CompleteDumpStrategy());
+        } else if (configFile.isEcsDump() && configFile.isIisDump() && configFile.restartECS() && configFile.restartIIS()){
+            strategyContext.setStrategy(new CompleteResetAndDumpStrategy());
+        } else if (!configFile.isEcsDump() && !configFile.isIisDump() && configFile.restartECS() && configFile.restartIIS()){
+            strategyContext.setStrategy(new CompleteResetStrategy());
+        } else if (configFile.isEcsDump() && !configFile.isIisDump() && !configFile.restartECS() && !configFile.restartIIS()){
+            strategyContext.setStrategy(new ECSDumpStrategy());
+        } else if (!configFile.isEcsDump() && !configFile.isIisDump() && configFile.restartECS() && !configFile.restartIIS()){
+            strategyContext.setStrategy(new ECSResetStrategy());
+        } else if (!configFile.isEcsDump() && configFile.isIisDump() && !configFile.restartECS() && !configFile.restartIIS()){
+            strategyContext.setStrategy(new IISDumpStrategy());
+        } else if (!configFile.isEcsDump() && !configFile.isIisDump() && !configFile.restartECS() && configFile.restartIIS()){
+            strategyContext.setStrategy(new IISResetStrategy());
+        } else
+            strategyContext.setStrategy(new NoResetNoDumpStrategy());
 
-        if (operations.getSisenseVersion().startsWith("7.2")){
-            serviceName = "Sisense.ECMS";
-        }
-        else {
-            serviceName = "ElastiCubeManagmentService";
-        }
-
-        logger.write("[restartECS] Service to restart: " + serviceName);
-        operations.restartService(serviceName);
-
+        strategyContext.runStrategy();
     }
 }
