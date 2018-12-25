@@ -2,53 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c8a9607-8b97-42f8-b6b2-6e5ad6edebd5" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/fileContent/annotation-processors.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/fileContent/annotation-processors.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/fileContent/fileContent.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/taskHistory/fileSnapshots.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/taskHistory/fileSnapshots.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/taskHistory/taskHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.2.1/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.2.1/taskHistory/taskHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/e2ewd_main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/e2ewd_main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/e2ewd_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/e2ewd_test.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/cmd_ops/CmdOperations.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/cmd_ops/CmdOperations.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/test/ECSRestartTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/test/EnvVariableTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/test/ResultFileSingleton.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/test/TestConfigInstance.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/distributions/e2ewd.tar" beforeDir="false" afterPath="$PROJECT_DIR$/build/distributions/e2ewd.tar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/distributions/e2ewd.zip" beforeDir="false" afterPath="$PROJECT_DIR$/build/distributions/e2ewd.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/libs/e2ewd.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/e2ewd.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/libs/service.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/css/base-style.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/css/style.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/reports/tests/test/js/report.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/scripts/e2ewd" beforeDir="false" afterPath="$PROJECT_DIR$/build/scripts/e2ewd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/scripts/e2ewd.bat" beforeDir="false" afterPath="$PROJECT_DIR$/build/scripts/e2ewd.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/test-results/test/binary/output.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/test-results/test/binary/output.bin.idx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/test-results/test/binary/results.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/App.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/cmd_ops/CmdOperations.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/cmd_ops/CmdOperations.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/env_var/EnvironmentalVariables.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/file_ops/ConfigFile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/file_ops/ConfigFile.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/file_ops/ResultFile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/file_ops/ResultFile.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/logging/Logger.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/logging/Logger.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/version/VersionRetriever.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/classes/AppTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ECSRestartTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/EnvVariableTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ResultFileSingleton.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TestConfigInstance.java" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -97,34 +51,135 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="55" column="18" lean-forward="true" selection-start-line="55" selection-start-column="18" selection-end-line="55" selection-end-column="18" />
+            <state relative-caret-position="408">
+              <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
               <folding>
                 <element signature="method#main#0;class#App#0" />
                 <element signature="e#751#842#1" />
                 <element signature="method#preRun#0;class#App#0" />
                 <element signature="e#992#1071#1" />
                 <element signature="e#1085#1178#1" />
+                <element signature="method#run#0;class#App#0" />
+                <element signature="e#1354#1443#1" />
+                <element signature="e#1685#1767#1" />
                 <element signature="method#runECSTelnetTests#0;class#App#0" />
+                <element signature="method#strategy#0;class#App#0" />
+                <element signature="e#2840#2898#1" />
+                <element signature="e#3088#3118#1" />
+                <element signature="e#3082#3113#1" />
+                <element signature="e#3364#3395#1" />
+                <element signature="e#3533#3564#1" />
+                <element signature="e#3703#3734#1" />
+                <element signature="e#3872#3901#1" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/run_strategy/StrategyContext.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/run_strategy/CompleteDumpStrategy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="16" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
+            <state relative-caret-position="238">
+              <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
               <folding>
-                <element signature="e#140#141#0" expanded="true" />
-                <element signature="e#180#181#0" expanded="true" />
-                <element signature="e#212#213#0" expanded="true" />
-                <element signature="e#246#247#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="440">
+              <caret line="169" column="9" lean-forward="true" selection-start-line="169" selection-start-column="9" selection-end-line="169" selection-end-column="9" />
+              <folding>
+                <element signature="method#CmdOperations#0;class#CmdOperations#0" />
+                <element signature="method#getInstance#0;class#CmdOperations#0" />
+                <element signature="e#569#624#1" />
+                <element signature="method#getTable#0;class#CmdOperations#0" />
+                <element signature="e#1040#1820#0" />
+                <element signature="e#1432#1782#1" />
+                <element signature="e#1502#1566#1" />
+                <element signature="e#1621#1768#1" />
+                <element signature="e#1841#2051#0" />
+                <element signature="method#getElastiCubeName#0;class#CmdOperations#0" />
+                <element signature="e#2157#3722#0" />
+                <element signature="e#2947#3712#1" />
+                <element signature="e#2995#3295#1" />
+                <element signature="e#3093#3277#1" />
+                <element signature="e#3317#3697#1" />
+                <element signature="e#3412#3679#1" />
+                <element signature="e#3590#3656#1" />
+                <element signature="e#3745#3830#0" />
+                <element signature="method#getSisenseVersion#0;class#CmdOperations#0" />
+                <element signature="e#3910#4391#0" />
+                <element signature="e#4230#4284#1" />
+                <element signature="e#4414#4544#0" />
+                <element signature="e#4705#4995#0" />
+                <element signature="e#4824#4984#0" />
+                <element signature="e#4898#4970#1" />
+                <element signature="e#5018#5116#0" />
+                <element signature="e#5299#5589#0" />
+                <element signature="e#5418#5578#0" />
+                <element signature="e#5492#5564#1" />
+                <element signature="e#5612#5710#0" />
+                <element signature="method#restartECS#0;class#CmdOperations#0" />
+                <element signature="method#restartIIS#0;class#CmdOperations#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="243">
+                <caret line="33" column="1" selection-start-line="33" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="952">
+              <caret line="132" lean-forward="true" selection-start-line="132" selection-end-line="132" />
+              <folding>
+                <element signature="method#ConfigFile#0;class#ConfigFile#0" />
+                <element signature="e#702#1516#0" />
+                <element signature="e#1539#1633#0" />
+                <element signature="e#1665#1753#0" />
+                <element signature="method#getInstance#0;class#ConfigFile#0" />
+                <element signature="e#1844#1906#1" />
+                <element signature="method#executionPath#0;class#ConfigFile#0" />
+                <element signature="e#2032#2277#0" />
+                <element signature="e#2321#2386#0" />
+                <element signature="n#!!block;n#getPort#0;n#ConfigFile#0" />
+                <element signature="n#!!block;n#getHost#0;n#ConfigFile#0" />
+                <element signature="n#!!block;n#getToken#0;n#ConfigFile#0" />
+                <element signature="method#setRequestTimeoutInSeconds#0;class#ConfigFile#0" />
+                <element signature="method#isConfigFileValid#0;class#ConfigFile#0" />
+                <element signature="e#4539#4935#1" />
+                <element signature="e#4652#4761#1" />
+                <element signature="e#4820#4925#1" />
+                <element signature="method#toString#0;class#ConfigFile#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build/libs/config.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="13" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -197,7 +252,6 @@
         <option value="$PROJECT_DIR$/src/test/java/ResultFileSingleton.java" />
         <option value="$PROJECT_DIR$/src/main/java/file_ops/ResultFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/tests/SisenseRESTAPI.java" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/test/java/CmdOperationsTest.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/test/java/procdumptest.java" />
@@ -221,6 +275,7 @@
         <option value="$PROJECT_DIR$/src/main/java/run_strategy/ECSResetStrategy.java" />
         <option value="$PROJECT_DIR$/src/main/java/run_strategy/IISResetStrategy.java" />
         <option value="$PROJECT_DIR$/src/main/java/App.java" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -319,13 +374,6 @@
               <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-            </path>
-            <path>
-              <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
-              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -557,16 +605,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="412">
-            <caret line="39" column="51" selection-start-line="39" selection-start-column="51" selection-end-line="39" selection-end-column="51" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-64">
@@ -695,95 +733,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/run_strategy/CompleteDumpStrategy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1683">
-          <caret line="159" column="29" lean-forward="true" selection-start-line="159" selection-start-column="29" selection-end-line="159" selection-end-column="29" />
-          <folding>
-            <element signature="method#getInstance#0;class#ConfigFile#0" />
-            <element signature="method#executionPath#0;class#ConfigFile#0" />
-            <element signature="n#!!block;n#getPort#0;n#ConfigFile#0" />
-            <element signature="n#!!block;n#getHost#0;n#ConfigFile#0" />
-            <element signature="n#!!block;n#getToken#0;n#ConfigFile#0" />
-            <element signature="method#setRequestTimeoutInSeconds#0;class#ConfigFile#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build/libs/config.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="13" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="266" column="5" lean-forward="true" selection-start-line="266" selection-start-column="5" selection-end-line="266" selection-end-column="5" />
-          <folding>
-            <element signature="method#CmdOperations#0;class#CmdOperations#0" />
-            <element signature="method#getInstance#0;class#CmdOperations#0" />
-            <element signature="e#569#624#1" />
-            <element signature="method#getTable#0;class#CmdOperations#0" />
-            <element signature="e#1040#1820#0" />
-            <element signature="e#1432#1782#1" />
-            <element signature="e#1502#1566#1" />
-            <element signature="e#1621#1768#1" />
-            <element signature="e#1841#2051#0" />
-            <element signature="method#getElastiCubeName#0;class#CmdOperations#0" />
-            <element signature="e#2157#3722#0" />
-            <element signature="e#2947#3712#1" />
-            <element signature="e#2995#3295#1" />
-            <element signature="e#3093#3277#1" />
-            <element signature="e#3317#3697#1" />
-            <element signature="e#3412#3679#1" />
-            <element signature="e#3590#3656#1" />
-            <element signature="e#3745#3830#0" />
-            <element signature="method#getSisenseVersion#0;class#CmdOperations#0" />
-            <element signature="e#3910#4391#0" />
-            <element signature="e#4230#4284#1" />
-            <element signature="e#4414#4544#0" />
-            <element signature="method#w3wpDump#0;class#CmdOperations#0" />
-            <element signature="e#4705#4995#0" />
-            <element signature="e#4824#4984#0" />
-            <element signature="e#4898#4970#1" />
-            <element signature="e#5018#5116#0" />
-            <element signature="method#ecsDump#0;class#CmdOperations#0" />
-            <element signature="e#5299#5589#0" />
-            <element signature="e#5418#5578#0" />
-            <element signature="e#5492#5564#1" />
-            <element signature="e#5612#5710#0" />
-            <element signature="method#restartService#0;class#CmdOperations#0" />
-            <element signature="e#5822#5875#1" />
-            <element signature="e#5889#5956#1" />
-            <element signature="e#6012#6793#0" />
-            <element signature="e#6364#6497#0" />
-            <element signature="e#6424#6483#1" />
-            <element signature="e#6642#6782#0" />
-            <element signature="e#6708#6768#1" />
-            <element signature="e#6839#6918#0" />
-            <element signature="method#restartIIS#0;class#CmdOperations#0" />
-            <element signature="e#7210#7991#0" />
-            <element signature="e#7562#7695#0" />
-            <element signature="e#7622#7681#1" />
-            <element signature="e#7840#7980#0" />
-            <element signature="e#7906#7966#1" />
-            <element signature="e#8037#8116#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/run_strategy/CompleteResetAndDumpStrategy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -866,16 +815,122 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="55" column="18" lean-forward="true" selection-start-line="55" selection-start-column="18" selection-end-line="55" selection-end-column="18" />
+        <state relative-caret-position="408">
+          <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
           <folding>
             <element signature="method#main#0;class#App#0" />
             <element signature="e#751#842#1" />
             <element signature="method#preRun#0;class#App#0" />
             <element signature="e#992#1071#1" />
             <element signature="e#1085#1178#1" />
+            <element signature="method#run#0;class#App#0" />
+            <element signature="e#1354#1443#1" />
+            <element signature="e#1685#1767#1" />
             <element signature="method#runECSTelnetTests#0;class#App#0" />
+            <element signature="method#strategy#0;class#App#0" />
+            <element signature="e#2840#2898#1" />
+            <element signature="e#3088#3118#1" />
+            <element signature="e#3082#3113#1" />
+            <element signature="e#3364#3395#1" />
+            <element signature="e#3533#3564#1" />
+            <element signature="e#3703#3734#1" />
+            <element signature="e#3872#3901#1" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/run_strategy/CompleteDumpStrategy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="952">
+          <caret line="132" lean-forward="true" selection-start-line="132" selection-end-line="132" />
+          <folding>
+            <element signature="method#ConfigFile#0;class#ConfigFile#0" />
+            <element signature="e#702#1516#0" />
+            <element signature="e#1539#1633#0" />
+            <element signature="e#1665#1753#0" />
+            <element signature="method#getInstance#0;class#ConfigFile#0" />
+            <element signature="e#1844#1906#1" />
+            <element signature="method#executionPath#0;class#ConfigFile#0" />
+            <element signature="e#2032#2277#0" />
+            <element signature="e#2321#2386#0" />
+            <element signature="n#!!block;n#getPort#0;n#ConfigFile#0" />
+            <element signature="n#!!block;n#getHost#0;n#ConfigFile#0" />
+            <element signature="n#!!block;n#getToken#0;n#ConfigFile#0" />
+            <element signature="method#setRequestTimeoutInSeconds#0;class#ConfigFile#0" />
+            <element signature="method#isConfigFileValid#0;class#ConfigFile#0" />
+            <element signature="e#4539#4935#1" />
+            <element signature="e#4652#4761#1" />
+            <element signature="e#4820#4925#1" />
+            <element signature="method#toString#0;class#ConfigFile#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="169" column="9" lean-forward="true" selection-start-line="169" selection-start-column="9" selection-end-line="169" selection-end-column="9" />
+          <folding>
+            <element signature="method#CmdOperations#0;class#CmdOperations#0" />
+            <element signature="method#getInstance#0;class#CmdOperations#0" />
+            <element signature="e#569#624#1" />
+            <element signature="method#getTable#0;class#CmdOperations#0" />
+            <element signature="e#1040#1820#0" />
+            <element signature="e#1432#1782#1" />
+            <element signature="e#1502#1566#1" />
+            <element signature="e#1621#1768#1" />
+            <element signature="e#1841#2051#0" />
+            <element signature="method#getElastiCubeName#0;class#CmdOperations#0" />
+            <element signature="e#2157#3722#0" />
+            <element signature="e#2947#3712#1" />
+            <element signature="e#2995#3295#1" />
+            <element signature="e#3093#3277#1" />
+            <element signature="e#3317#3697#1" />
+            <element signature="e#3412#3679#1" />
+            <element signature="e#3590#3656#1" />
+            <element signature="e#3745#3830#0" />
+            <element signature="method#getSisenseVersion#0;class#CmdOperations#0" />
+            <element signature="e#3910#4391#0" />
+            <element signature="e#4230#4284#1" />
+            <element signature="e#4414#4544#0" />
+            <element signature="e#4705#4995#0" />
+            <element signature="e#4824#4984#0" />
+            <element signature="e#4898#4970#1" />
+            <element signature="e#5018#5116#0" />
+            <element signature="e#5299#5589#0" />
+            <element signature="e#5418#5578#0" />
+            <element signature="e#5492#5564#1" />
+            <element signature="e#5612#5710#0" />
+            <element signature="method#restartECS#0;class#CmdOperations#0" />
+            <element signature="method#restartIIS#0;class#CmdOperations#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/libs/config.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="13" lean-forward="true" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="243">
+            <caret line="33" column="1" selection-start-line="33" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

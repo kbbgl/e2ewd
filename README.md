@@ -29,9 +29,12 @@ which will contain a `boolean` as the result, i.e. `true` means that the tests r
  - Host (`String`) -  i.e. `localhost` or your Sisense application gateway
  - Port (`int`) - i.e. `80, 8081, 443`
  - *Restart ECS (`boolean`) -  i.e. `true, false` - default or empty is `false`
+ - *Restart IIS (`boolean`) 
+ - Create IIS dump (`boolean`) 
+ - Create ElastiCube Server dump (`boolean`) 
  - REST API connection timeout in seconds (`int`) - i.e. `30`
  
- **If you set `restartECS=true` you will have to run the below command in elevated mode (run as Administrator)
+ **If you set this option to `true` you will have to run the below command in elevated mode (run as Administrator)
 
 4) Launch a Command Prompt from the current folder and run the following command:  
 
@@ -46,4 +49,4 @@ which will contain a `boolean` as the result, i.e. `true` means that the tests r
     
 ### Troubleshooting
 See log file located in:
-`[path/to/dir]/build/libs/log/log.txt`
+`[path/to/dir]\build\libs\log\log.txt`
