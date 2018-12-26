@@ -37,7 +37,7 @@ The dump includes a snapshot of the process memory set which can be useful in tr
  - Create ElastiCube Server dump (`boolean`) 
  - REST API connection timeout in seconds (`int`) - i.e. `30`
  
- **If you set this option to `true` you will have to run the below command in elevated mode (run as Administrator)
+ *If you set this option to `true` you will have to run the below command in elevated mode (run as Administrator)
 
 4) Launch a Command Prompt from the current folder and run the following command:  
 
