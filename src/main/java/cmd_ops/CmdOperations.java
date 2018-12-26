@@ -169,6 +169,8 @@ public class CmdOperations {
             logger.write("ERROR: running command" + command + " - " + e.getMessage());
         }
 
+        logger.write("[w3wpDump] - end run");
+
     }
 
     public void ecsDump(){
@@ -185,6 +187,8 @@ public class CmdOperations {
         } catch (IOException | InterruptedException e) {
             logger.write("ERROR: running command" + command + " - " + e.getMessage());
         }
+
+        logger.write("[ecsDump] - end run");
 
     }
 

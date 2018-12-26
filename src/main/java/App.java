@@ -8,7 +8,6 @@ import tests.TelnetTest;
 
 //TODO
 // add to configuration:
-// take dump
 // email that dump occurred or event viewer with dump location
 // number of retries
 
@@ -28,7 +27,9 @@ public class App {
             logger.write("Sisense version: " + operations.getSisenseVersion());
         }
         preRun();
-        run();
+
+        int attempt = 1;
+        run(attempt);
 
     }
 
@@ -45,15 +46,19 @@ public class App {
         }
     }
 
-    private static void run(){
+    private static void run(int attempt){
 
-        // Read EC and table
-        String ec = operations.getElastiCubeName();
+        logger.write("[App.run] - Attempt number " + attempt);
 
-        if (ec.isEmpty()){
+        if (attempt > 5) {
+            logger.write("5 run attempts exceeded. Exiting...");
+            System.exit(0);
+        }
+
+        if (operations.getElastiCubeName().isEmpty()){
             runECSTelnetTests();
             setAndExecuteStrategy();
-            run();
+            run(++attempt);
         }
 
         else {
