@@ -62,6 +62,7 @@ public class App {
         }
 
         else {
+            logger.write("[App.run] Found ElastiCube: " + operations.getElastiCubeName());
             resultFile.write(SisenseRESTAPI.queryTableIsSuccessful());
         }
     }

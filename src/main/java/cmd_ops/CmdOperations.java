@@ -91,7 +91,6 @@ public class CmdOperations {
                     "serverAddress=localhost"};
 
             Process listCubesCommand = runtime.exec(psmCmd);
-            logger.write("[getElasticubeName] running commands: " + Arrays.toString(psmCmd));
 
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
 
@@ -105,7 +104,6 @@ public class CmdOperations {
                     Matcher m = cubeNamePattern.matcher(s);
                     while (m.find()){
                         ec = m.group(1);
-                        logger.write("[getElasticubeName] ElastiCube found: " + ec);
                         return ec;
                     }
                 }
