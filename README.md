@@ -27,7 +27,7 @@ The dump includes a snapshot of the process memory set which can be useful in tr
 2) Navigate to `[path/to/dir]/build/libs/` (where `[path/to/dir]` is where you saved the project.)
 3) Open the `config.properties` file and enter the:
  
- - Token (`String`) - Can be retrieved using the REST API `GET v1/authentication`
+ - Token (`String`) - Can be retrieved using the REST API `POST v1/authentication`
  - Protocol (`String`) - i.e. `http` or `https`
  - Host (`String`) -  i.e. `localhost` or your Sisense application gateway
  - Port (`int`) - i.e. `80, 8081, 443`
@@ -36,7 +36,7 @@ The dump includes a snapshot of the process memory set which can be useful in tr
  - Create IIS dump (`boolean`) 
  - Create ElastiCube Server dump (`boolean`) 
  - REST API connection timeout in seconds (`int`) - i.e. `30`
- - Slack Webhook (`String`) - to retrieve, i.e. `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`
+ - Slack Webhook URL (`String`) - to retrieve, i.e. `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`
  please visit [Slack Webhook documentation](https://api.slack.com/incoming-webhooks) to retrieve.
  
  *If you set this option to `true` you will have to run the below command in elevated mode (run as Administrator)

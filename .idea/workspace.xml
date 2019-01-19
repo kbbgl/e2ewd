@@ -51,8 +51,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="309">
-                <caret line="39" column="97" lean-forward="false" selection-start-line="39" selection-start-column="97" selection-end-line="39" selection-end-column="97" />
+              <first_editor relative-caret-position="269">
+                <caret line="29" column="82" lean-forward="true" selection-start-line="29" selection-start-column="82" selection-end-line="29" selection-end-column="82" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -91,8 +91,8 @@
       <file leaf-file-name="config.properties" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build/libs/config.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="26" lean-forward="true" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+            <state relative-caret-position="60">
+              <caret line="4" column="93" lean-forward="false" selection-start-line="4" selection-start-column="93" selection-end-line="4" selection-end-column="93" />
               <folding />
             </state>
           </provider>
@@ -594,8 +594,8 @@
         <option value="$PROJECT_DIR$/src/main/java/unit_tests/MainTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/App.java" />
-        <option value="$PROJECT_DIR$/build/libs/config.properties" />
         <option value="$PROJECT_DIR$/src/main/java/integrations/SlackClient.java" />
+        <option value="$PROJECT_DIR$/build/libs/config.properties" />
         <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
@@ -1288,14 +1288,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build/libs/config.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="26" lean-forward="true" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/unit_tests/MainTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="116">
@@ -1317,11 +1309,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/build/libs/config.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="93" lean-forward="false" selection-start-line="4" selection-start-column="93" selection-end-line="4" selection-end-column="93" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="309">
-            <caret line="39" column="97" lean-forward="false" selection-start-line="39" selection-start-column="97" selection-end-line="39" selection-end-column="97" />
+          <first_editor relative-caret-position="269">
+            <caret line="29" column="82" lean-forward="true" selection-start-line="29" selection-start-column="82" selection-end-line="29" selection-end-column="82" />
             <folding />
           </first_editor>
           <second_editor />
