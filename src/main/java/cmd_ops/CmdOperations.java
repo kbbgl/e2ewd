@@ -264,6 +264,31 @@ public class CmdOperations {
 
     }
 
+    public String getHostname(){
+
+        String hostname = "";
+        String cmd = "hostname";
+        try {
+            Process getHostnameProcess = runtime.exec(cmd);
+            logger.write("[getHostname] command send " + cmd);
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(getHostnameProcess.getInputStream()));
+
+            String s;
+            while ((s = reader.readLine()) != null){
+                hostname = s;
+            }
+
+            return hostname;
+
+        } catch (IOException e) {
+            logger.write("[getHostname] ERROR: Can't get hostname - " + e.getMessage());
+        }
+
+        return null;
+
+    }
+
     private String executionPath(){
         String jarLocation = null;
         try {
