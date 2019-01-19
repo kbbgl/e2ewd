@@ -1,6 +1,7 @@
 import cmd_ops.CmdOperations;
 import file_ops.ConfigFile;
 import file_ops.ResultFile;
+import integrations.SlackClient;
 import logging.Logger;
 import run_strategy.*;
 import tests.SisenseRESTAPI;
@@ -19,6 +20,7 @@ public class App {
     private static final CmdOperations operations = CmdOperations.getInstance();
     private static Logger logger = Logger.getInstance();
     private static StrategyContext strategyContext = new StrategyContext();
+    private static SlackClient slackClient = SlackClient.getInstance();
 
     public static void main(String[] args) {
 
@@ -63,7 +65,16 @@ public class App {
 
         else {
             logger.write("[App.run] Found ElastiCube: " + operations.getElastiCubeName());
-            resultFile.write(SisenseRESTAPI.queryTableIsSuccessful());
+
+            boolean testResult = SisenseRESTAPI.queryTableIsSuccessful();
+
+            // Check whether the test failed and Slack webhook is set
+            if (!testResult && !ConfigFile.getInstance().getSlackWebhookURL().isEmpty()){
+                slackClient.sendMessage();
+            }
+
+            resultFile.write(testResult);
+
         }
     }
 

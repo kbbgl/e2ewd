@@ -22,6 +22,7 @@ public class ConfigFile {
     private boolean ecsDump;
     private boolean iisDump;
     private int port;
+    private String slackWebhookURL;
 
     private ConfigFile(){
         Properties properties = new Properties();
@@ -40,6 +41,7 @@ public class ConfigFile {
             setIisDump(Boolean.parseBoolean(properties.getProperty("iisDump")));
             setRequestTimeoutInSeconds(Integer.parseInt(properties.getProperty("requestTimeoutInSeconds")));
             setPort(Integer.parseInt(properties.getProperty("port")));
+            setSlackWebhookURL(properties.getProperty("slackWebhookURL"));
 
         } catch (IOException e) {
             logger.write("ERROR: reading configuration file - " + e.getMessage());
@@ -139,6 +141,14 @@ public class ConfigFile {
         this.iisDump = iisDump;
     }
 
+    public String getSlackWebhookURL() {
+        return slackWebhookURL;
+    }
+
+    public void setSlackWebhookURL(String slackWebhookURL) {
+        this.slackWebhookURL = slackWebhookURL;
+    }
+
     public boolean isConfigFileValid(){
         HashMap<String, String> configMap = new HashMap<>(5);
         configMap.put("token", token);
@@ -150,6 +160,7 @@ public class ConfigFile {
         configMap.put("iisDump", String.valueOf(iisDump));
         configMap.put("ecsDump", String.valueOf(ecsDump));
         configMap.put("requestTimeoutInSeconds", String.valueOf(requestTimeoutInSeconds));
+        configMap.put("slackWebhookURL", slackWebhookURL);
 
         Set set = configMap.entrySet();
 
