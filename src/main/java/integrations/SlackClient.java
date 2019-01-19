@@ -38,8 +38,6 @@ public class SlackClient {
 
     private SlackClient(){
 
-        ConfigFile.getInstance().setSlackWebhookURL("https://hooks.slack.com/services/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");
-
         System.out.println(ConfigFile.getInstance().getSlackWebhookURL());
         post = new HttpPost(ConfigFile.getInstance().getSlackWebhookURL());
         post.addHeader("Content-type", "application/json");
