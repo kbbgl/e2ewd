@@ -50,6 +50,15 @@ public class ConfigFile {
         }
     }
 
+    public void createFile(){
+        File file = new File(executionPath() + "/config.properties");
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            logger.write("[ConfigFile.createFile] ERROR: Couldn't create file + " + e.getMessage());
+        }
+    }
+
     public static ConfigFile getInstance(){
         if (configFileInstance == null){
             configFileInstance = new ConfigFile();
@@ -145,7 +154,7 @@ public class ConfigFile {
         return slackWebhookURL;
     }
 
-    public void setSlackWebhookURL(String slackWebhookURL) {
+    private void setSlackWebhookURL(String slackWebhookURL) {
         this.slackWebhookURL = slackWebhookURL;
     }
 
