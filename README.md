@@ -36,6 +36,7 @@ The dump includes a snapshot of the process memory set which can be useful in tr
  - Create IIS dump (`boolean`) 
  - Create ElastiCube Server dump (`boolean`) 
  - REST API connection timeout in seconds (`int`) - i.e. `30`
+ - Slack webhook URL (`String`) - to retrieve, visit [Slack Incoming webhook documentation](https://api.slack.com/incoming-webhooks). The URL should look like `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX`. 
  
  *If you set this option to `true` you will have to run the below command in elevated mode (run as Administrator)
 
