@@ -55,8 +55,7 @@ public class SlackClient {
             String result = new BufferedReader(new InputStreamReader(responseData.getContent()))
                     .lines().collect(Collectors.joining("\n"));
 
-            System.out.println(result);
-            logger.write("[SlackClient.sendMessage] response: " + result);
+            logger.write("[SlackClient.sendMessage] Sent message to webhook. Response: " + result);
 
         } catch (UnsupportedEncodingException e) {
             logger.write("[SlackClient.sendMessage] ERROR: Encoding exception " + e.getMessage());

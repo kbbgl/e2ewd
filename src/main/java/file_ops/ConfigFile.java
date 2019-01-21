@@ -189,7 +189,7 @@ public class ConfigFile {
                 "restartIIS:" + restartIIS + ",\n\t" +
                 "iisDump:" + iisDump + ",\n\t" +
                 "ecsDump:" + ecsDump + "\n\t" +
+                "slackWebhookURL:" + slackWebhookURL + "\n\t" +
                 "}";
     }
-
 }

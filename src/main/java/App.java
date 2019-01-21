@@ -50,12 +50,17 @@ public class App {
 
     private static void run(int attempt){
 
-        logger.write("[App.run] - Attempt number " + attempt);
-
         if (attempt > 5) {
-            logger.write("5 run attempts exceeded. Exiting...");
+            logger.write("[App.run] 5 run attempts exceeded. Exiting...");
+
+            if (!ConfigFile.getInstance().getSlackWebhookURL().isEmpty()){
+                SlackClient.getInstance().sendMessage();
+            }
+
             System.exit(0);
         }
+
+        logger.write("[App.run] - Attempt number " + attempt);
 
         if (operations.getElastiCubeName().isEmpty()){
             runECSTelnetTests();
@@ -70,7 +75,7 @@ public class App {
 
             // Check whether the test failed and Slack webhook is set
             if (!testResult && !ConfigFile.getInstance().getSlackWebhookURL().isEmpty()){
-                slackClient.sendMessage();
+                SlackClient.getInstance().sendMessage();
             }
 
             resultFile.write(testResult);

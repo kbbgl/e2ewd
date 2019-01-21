@@ -1,0 +1,145 @@
+[Mon Jan 21 15:26:39 IST 2019] - [getHostname] command send hostname
+[Mon Jan 21 15:26:39 IST 2019] - Starting...
+[Mon Jan 21 15:26:39 IST 2019] - Sisense version: 7.2.1.10084
+[Mon Jan 21 15:26:39 IST 2019] - Deleting result file...
+[Mon Jan 21 15:26:39 IST 2019] - ConfigFile{
+	token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNWJkNzQwZjJhMjc4MTQyNzUwZjM5OTI5IiwiYXBpU2VjcmV0IjoiYmMyNDc1NjYtZGQwZi0xY2I4LWJlMWYtZDU0YmEzOGM5ZWNhIiwiaWF0IjoxNTQ4MDc3MTcwfQ.T79s6MZ8UjxkkEGgac_vjnPSbNlIUN1obyCGijcQ2BQ,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:30,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	}
+[Mon Jan 21 15:26:39 IST 2019] - Created result file in C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\run\result.txt
+[Mon Jan 21 15:26:39 IST 2019] - [App.run] - Attempt number 1
+[Mon Jan 21 15:26:42 IST 2019] - [App.run] Found ElastiCube: Sample ECommerce
+[Mon Jan 21 15:26:43 IST 2019] - [getTable] Command sent: [C:\Program Files\Sisense\Prism\Psm.exe, ecube, edit, tables, getListOfTables, serverAddress=localhost, cubeName=Sample ECommerce, isCustom=false]
+[Mon Jan 21 15:27:00 IST 2019] - [getTable] Table found: Brand
+[Mon Jan 21 15:27:02 IST 2019] - [queryTableIsSuccessful] uri: http://localhost:8081/api/datasources/Sample%20ECommerce/sql?query=SELECT%20COUNT(*)%20FROM%20[Brand]
+[Mon Jan 21 15:27:05 IST 2019] - [queryTableIsSuccessful] Running query: SELECT COUNT(*) FROM [Brand]
+[Mon Jan 21 15:27:05 IST 2019] - [queryTableIsSuccessful] Result: 2427
+[Mon Jan 21 15:27:05 IST 2019] - Test succeeded: true
+[Mon Jan 21 15:27:37 IST 2019] - [getHostname] command send hostname
+[Mon Jan 21 15:27:37 IST 2019] - Starting...
+[Mon Jan 21 15:27:37 IST 2019] - Sisense version: 7.2.1.10084
+[Mon Jan 21 15:27:37 IST 2019] - Deleting result file...
+[Mon Jan 21 15:27:37 IST 2019] - ConfigFile{
+	token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNWJkNzQwZjJhMjc4MTQyNzUwZjM5OTI5IiwiYXBpU2VjcmV0IjoiYmMyNDc1NjYtZGQwZi0xY2I4LWJlMWYtZDU0YmEzOGM5ZWNhIiwiaWF0IjoxNTQ4MDc3MTcwfQ.T79s6MZ8UjxkkEGgac_vjnPSbNlIUN1obyCGijcQ2BQ,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:30,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	}
+[Mon Jan 21 15:27:37 IST 2019] - Created result file in C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\run\result.txt
+[Mon Jan 21 15:27:37 IST 2019] - [App.run] - Attempt number 1
+[Mon Jan 21 15:27:52 IST 2019] - [getElasticubeName] ERROR: the server, 'localhost', is not responding.
+[Mon Jan 21 15:27:53 IST 2019] - [TelnetTest] ERROR: connecting to localhost:811 - Connection refused: connect
+[Mon Jan 21 15:27:54 IST 2019] - [TelnetTest] ERROR: connecting to localhost:812 - Connection refused: connect
+[Mon Jan 21 15:27:54 IST 2019] - NoResetNoDumpStrategy chosen
+[Mon Jan 21 15:27:54 IST 2019] - All restart and dump options are false. Exiting...
+[Mon Jan 21 15:27:54 IST 2019] - Test succeeded: false
+[Mon Jan 21 15:30:00 IST 2019] - [getHostname] command send hostname
+[Mon Jan 21 15:30:00 IST 2019] - Starting...
+[Mon Jan 21 15:30:00 IST 2019] - Sisense version: 7.2.1.10084
+[Mon Jan 21 15:30:00 IST 2019] - Deleting result file...
+[Mon Jan 21 15:30:00 IST 2019] - ConfigFile{
+	token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNWJkNzQwZjJhMjc4MTQyNzUwZjM5OTI5IiwiYXBpU2VjcmV0IjoiYmMyNDc1NjYtZGQwZi0xY2I4LWJlMWYtZDU0YmEzOGM5ZWNhIiwiaWF0IjoxNTQ4MDc3MTcwfQ.T79s6MZ8UjxkkEGgac_vjnPSbNlIUN1obyCGijcQ2BQ,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:30,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURLhttps://hooks.slack.com/services/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
+	}
+[Mon Jan 21 15:30:00 IST 2019] - Created result file in C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\run\result.txt
+[Mon Jan 21 15:30:00 IST 2019] - [App.run] - Attempt number 1
+[Mon Jan 21 15:30:16 IST 2019] - [getElasticubeName] ERROR: the server, 'localhost', is not responding.
+[Mon Jan 21 15:30:17 IST 2019] - [TelnetTest] ERROR: connecting to localhost:811 - Connection refused: connect
+[Mon Jan 21 15:30:18 IST 2019] - [TelnetTest] ERROR: connecting to localhost:812 - Connection refused: connect
+[Mon Jan 21 15:30:18 IST 2019] - NoResetNoDumpStrategy chosen
+[Mon Jan 21 15:30:18 IST 2019] - All restart and dump options are false. Exiting...
+[Mon Jan 21 15:30:18 IST 2019] - Test succeeded: false
+[Mon Jan 21 15:36:44 IST 2019] - [getHostname] command send hostname
+[Mon Jan 21 15:36:44 IST 2019] - Starting...
+[Mon Jan 21 15:36:44 IST 2019] - Sisense version: 7.2.1.10084
+[Mon Jan 21 15:36:44 IST 2019] - Deleting result file...
+[Mon Jan 21 15:36:44 IST 2019] - ConfigFile{
+	token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNWJkNzQwZjJhMjc4MTQyNzUwZjM5OTI5IiwiYXBpU2VjcmV0IjoiYmMyNDc1NjYtZGQwZi0xY2I4LWJlMWYtZDU0YmEzOGM5ZWNhIiwiaWF0IjoxNTQ4MDc3MTcwfQ.T79s6MZ8UjxkkEGgac_vjnPSbNlIUN1obyCGijcQ2BQ,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:30,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/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
+	}
+[Mon Jan 21 15:36:44 IST 2019] - Created result file in C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\run\result.txt
+[Mon Jan 21 15:36:44 IST 2019] - [App.run] - Attempt number 1
+[Mon Jan 21 15:36:59 IST 2019] - [getElasticubeName] ERROR: the server, 'localhost', is not responding.
+[Mon Jan 21 15:37:00 IST 2019] - [TelnetTest] ERROR: connecting to localhost:811 - Connection refused: connect
+[Mon Jan 21 15:37:01 IST 2019] - [TelnetTest] ERROR: connecting to localhost:812 - Connection refused: connect
+[Mon Jan 21 15:37:01 IST 2019] - NoResetNoDumpStrategy chosen
+[Mon Jan 21 15:37:01 IST 2019] - All restart and dump options are false. Exiting...
+[Mon Jan 21 15:37:01 IST 2019] - Test succeeded: false
+[Mon Jan 21 15:39:18 IST 2019] - [getHostname] command send hostname
+[Mon Jan 21 15:39:19 IST 2019] - Starting...
+[Mon Jan 21 15:39:19 IST 2019] - Sisense version: 7.2.1.10084
+[Mon Jan 21 15:39:19 IST 2019] - Deleting result file...
+[Mon Jan 21 15:39:19 IST 2019] - ConfigFile{
+	token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNWJkNzQwZjJhMjc4MTQyNzUwZjM5OTI5IiwiYXBpU2VjcmV0IjoiYmMyNDc1NjYtZGQwZi0xY2I4LWJlMWYtZDU0YmEzOGM5ZWNhIiwiaWF0IjoxNTQ4MDc3MTcwfQ.T79s6MZ8UjxkkEGgac_vjnPSbNlIUN1obyCGijcQ2BQ,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:30,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/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
+	}
+[Mon Jan 21 15:39:19 IST 2019] - Created result file in C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\run\result.txt
+[Mon Jan 21 15:39:19 IST 2019] - [App.run] - Attempt number 1
+[Mon Jan 21 15:39:34 IST 2019] - [getElasticubeName] ERROR: the server, 'localhost', is not responding.
+[Mon Jan 21 15:39:35 IST 2019] - [TelnetTest] ERROR: connecting to localhost:811 - Connection refused: connect
+[Mon Jan 21 15:39:36 IST 2019] - [TelnetTest] ERROR: connecting to localhost:812 - Connection refused: connect
+[Mon Jan 21 15:39:36 IST 2019] - NoResetNoDumpStrategy chosen
+[Mon Jan 21 15:39:36 IST 2019] - All restart and dump options are false. Exiting...
+[Mon Jan 21 15:39:36 IST 2019] - Test succeeded: false
+[Mon Jan 21 15:39:37 IST 2019] - [SlackClient.sendMessage] response: ok
+[Mon Jan 21 15:50:41 IST 2019] - [getHostname] command send hostname
+[Mon Jan 21 15:50:41 IST 2019] - Starting...
+[Mon Jan 21 15:50:41 IST 2019] - Sisense version: 7.2.1.10084
+[Mon Jan 21 15:50:41 IST 2019] - Deleting result file...
+[Mon Jan 21 15:50:41 IST 2019] - ConfigFile{
+	token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjoiNWJkNzQwZjJhMjc4MTQyNzUwZjM5OTI5IiwiYXBpU2VjcmV0IjoiYmMyNDc1NjYtZGQwZi0xY2I4LWJlMWYtZDU0YmEzOGM5ZWNhIiwiaWF0IjoxNTQ4MDc3MTcwfQ.T79s6MZ8UjxkkEGgac_vjnPSbNlIUN1obyCGijcQ2BQ,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:30,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/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
+	}
+[Mon Jan 21 15:50:41 IST 2019] - Created result file in C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\run\result.txt
+[Mon Jan 21 15:50:41 IST 2019] - [App.run] - Attempt number 1
+[Mon Jan 21 15:50:56 IST 2019] - [getElasticubeName] ERROR: the server, 'localhost', is not responding.
+[Mon Jan 21 15:50:57 IST 2019] - [TelnetTest] ERROR: connecting to localhost:811 - Connection refused: connect
+[Mon Jan 21 15:50:58 IST 2019] - [TelnetTest] ERROR: connecting to localhost:812 - Connection refused: connect
+[Mon Jan 21 15:50:58 IST 2019] - NoResetNoDumpStrategy chosen
+[Mon Jan 21 15:50:58 IST 2019] - All restart and dump options are false. Exiting...
+[Mon Jan 21 15:50:58 IST 2019] - Test succeeded: false
+[Mon Jan 21 15:50:59 IST 2019] - [SlackClient.sendMessage] Sent message to webhook. Response: ok
