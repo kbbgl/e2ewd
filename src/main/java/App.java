@@ -1,6 +1,7 @@
 import cmd_ops.CmdOperations;
 import file_ops.ConfigFile;
 import file_ops.ResultFile;
+import integrations.SlackClient;
 import logging.Logger;
 import run_strategy.*;
 import tests.SisenseRESTAPI;
@@ -48,12 +49,19 @@ public class App {
 
     private static void run(int attempt){
 
-        logger.write("[App.run] - Attempt number " + attempt);
+
 
         if (attempt > 5) {
             logger.write("5 run attempts exceeded. Exiting...");
+
+            if (!ConfigFile.getInstance().getSlackWebhookURL().isEmpty()){
+                SlackClient.getInstance().sendMessage();
+            }
+
             System.exit(0);
         }
+
+        logger.write("[App.run] - Attempt number " + attempt);
 
         if (operations.getElastiCubeName().isEmpty()){
             runECSTelnetTests();
@@ -63,6 +71,16 @@ public class App {
 
         else {
             logger.write("[App.run] Found ElastiCube: " + operations.getElastiCubeName());
+
+            boolean testResult = SisenseRESTAPI.queryTableIsSuccessful();
+
+            // Check whether the test failed and Slack webhook is set
+            if (!testResult && !ConfigFile.getInstance().getSlackWebhookURL().isEmpty()){
+                SlackClient.getInstance().sendMessage();
+            }
+
+            resultFile.write(testResult);
+
             resultFile.write(SisenseRESTAPI.queryTableIsSuccessful());
         }
     }
