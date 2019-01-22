@@ -1,72 +1,42 @@
 package installer.controller;
 
+import installer.InstallerMain;
+import installer.model.Configuration;
+import installer.tasks.CreateConfigurationFileTask;
 import installer.view.RootLayout;
 import javafx.application.Platform;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Optional;
 import java.util.Properties;
-
-
-// TODO two actions:
-// 1) Get server information from ZK/Config Manager
-// 2) Create config.properties
-// 3) Write to config file.
+import java.util.stream.Collectors;
 
 public class InstallerSubmitController {
 
     private RootLayout rootLayout;
+    private CreateConfigurationFileTask task;
 
     public InstallerSubmitController(RootLayout rootLayout){
         this.rootLayout = rootLayout;
     }
 
-    // TODO get server information from Config Manager
-    private void getServerInformation(){
-
-    }
-
     public void submitForm(){
-        File file = new File(rootLayout.getAppContext().getRunningDirectory());
 
-        try {
-            if (!file.createNewFile()){
+        task = new CreateConfigurationFileTask(InstallerMain.getRunningDirectory(), this.rootLayout);
+        Thread backgroundThread = new Thread(task);
+        backgroundThread.setDaemon(true);
+        backgroundThread.start();
 
-                System.out.println("File already exists");
-
-                Optional<ButtonType> result = rootLayout.fileAlreadyExistsAlertResult(file);
-
-                if (!result.isPresent()){
-                    System.out.println("No option chosen. Operation cancelled");
-                } else if (result.get() == ButtonType.YES){
-                    file.delete();
-                    file.createNewFile();
-
-                    Properties properties = new Properties();
-                    properties.setProperty("slackWebhookURL", rootLayout.getSlackWebhookURL());
-                    properties.setProperty("requestTimeoutInSeconds", String.valueOf(rootLayout.getTimeout()));
-                    properties.setProperty("restartECS", String.valueOf(rootLayout.isRestartECS()));
-                    properties.setProperty("restartIIS", String.valueOf(rootLayout.isRestartIIS()));
-                    properties.setProperty("ecsDump", String.valueOf(rootLayout.createECSDump()));
-                    properties.setProperty("iisDump", String.valueOf(rootLayout.createIISDump()));
-
-                    OutputStream outputStream = new FileOutputStream(file);
-                    properties.store(outputStream, "e2ewd configuration created by installer");
-
-                    rootLayout.showConfirmationAlert(file);
-
-                }
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 }

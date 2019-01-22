@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c8a9607-8b97-42f8-b6b2-6e5ad6edebd5" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules/e2ewd_main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/e2ewd_main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/e2ewd_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/e2ewd_test.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/installer/InstallerMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/installer/InstallerMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/installer/controller/InstallerSubmitController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/installer/controller/InstallerSubmitController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/installer/view/RootLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/installer/view/RootLayout.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -23,116 +21,130 @@
     </projectState>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="84" selection-start-line="84" selection-end-line="84" />
-              <folding>
-                <element signature="method#main#0;class#App#0" />
-                <element signature="e#942#1033#1" />
-                <element signature="method#preRun#0;class#App#0" />
-                <element signature="e#1216#1295#1" />
-                <element signature="e#1309#1402#1" />
-                <element signature="method#run#0;class#App#0" />
-                <element signature="e#1542#1646#1" />
-                <element signature="e#1701#1810#1" />
-                <element signature="e#1825#2264#1" />
-                <element signature="e#2152#2210#1" />
-                <element signature="method#runECSTelnetTests#0;class#App#0" />
-                <element signature="method#setAndExecuteStrategy#0;class#App#0" />
-                <element signature="e#2607#2687#1" />
-                <element signature="e#2800#2888#1" />
-                <element signature="e#3003#3084#1" />
-                <element signature="e#3200#3275#1" />
-                <element signature="e#3391#3467#1" />
-                <element signature="e#3583#3658#1" />
-                <element signature="e#3774#3850#1" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/run_strategy/CompleteResetAndDumpStrategy.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="493">
-                <caret line="29" column="82" selection-start-line="29" selection-start-column="82" selection-end-line="29" selection-end-column="82" />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/installer/InstallerMain.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="35" column="49" lean-forward="true" selection-start-line="35" selection-start-column="49" selection-end-line="35" selection-end-column="49" />
-              <folding>
-                <element signature="e#1194#1195#0" expanded="true" />
-                <element signature="e#1272#1273#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/installer/controller/InstallerSubmitController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="30" selection-start-line="30" selection-end-line="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/installer/view/RootLayout.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="33" column="31" selection-start-line="33" selection-start-column="31" selection-end-line="33" selection-end-column="31" />
-              <folding>
-                <element signature="method#getTimeout#0;class#RootLayout#0" />
-                <element signature="e#1878#1950#0" />
-                <element signature="e#1982#2129#0" />
-                <element signature="n#!!block;n#isRestartECS#0;n#RootLayout#0" />
-                <element signature="n#!!block;n#isRestartIIS#0;n#RootLayout#0" />
-                <element signature="n#!!block;n#getSlackWebhookURL#0;n#RootLayout#0" />
-                <element signature="n#!!block;n#createIISDump#0;n#RootLayout#0" />
-                <element signature="n#!!block;n#createECSDump#0;n#RootLayout#0" />
-                <element signature="method#fileAlreadyExistsAlertResult#0;class#RootLayout#0" />
-                <element signature="method#showConfirmationAlert#0;class#RootLayout#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
-              <folding>
-                <element signature="method#setRequestTimeoutInSeconds#0;class#ConfigFile#0" />
-                <element signature="method#isConfigFileValid#0;class#ConfigFile#0" />
-                <element signature="method#toString#0;class#ConfigFile#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="425">
+                  <caret line="105" column="5" lean-forward="true" selection-start-line="105" selection-start-column="5" selection-end-line="105" selection-end-column="5" />
+                  <folding>
+                    <element signature="method#main#0;class#App#0" />
+                    <element signature="e#942#1033#1" />
+                    <element signature="method#preRun#0;class#App#0" />
+                    <element signature="e#1216#1295#1" />
+                    <element signature="e#1309#1402#1" />
+                    <element signature="method#run#0;class#App#0" />
+                    <element signature="e#1542#1646#1" />
+                    <element signature="e#1701#1810#1" />
+                    <element signature="e#1825#2264#1" />
+                    <element signature="e#2152#2210#1" />
+                    <element signature="method#runECSTelnetTests#0;class#App#0" />
+                    <element signature="method#setAndExecuteStrategy#0;class#App#0" />
+                    <element signature="e#2607#2687#1" />
+                    <element signature="e#2800#2888#1" />
+                    <element signature="e#3003#3084#1" />
+                    <element signature="e#3200#3275#1" />
+                    <element signature="e#3391#3467#1" />
+                    <element signature="e#3583#3658#1" />
+                    <element signature="e#3774#3850#1" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/installer/InstallerMain.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="612">
+                  <caret line="45" column="18" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
+                  <folding>
+                    <element signature="e#1194#1195#0" expanded="true" />
+                    <element signature="e#1272#1273#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/installer/controller/InstallerSubmitController.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="86">
+                  <caret line="31" selection-start-line="31" selection-end-line="31" />
+                  <folding>
+                    <element signature="n#!!block;n#InstallerSubmitController#0;n#InstallerSubmitController#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/installer/view/RootLayout.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="264">
+                  <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+                  <folding>
+                    <element signature="method#getTimeout#0;class#RootLayout#0" />
+                    <element signature="e#1878#1950#0" />
+                    <element signature="e#1982#2129#0" />
+                    <element signature="n#!!block;n#isRestartECS#0;n#RootLayout#0" />
+                    <element signature="n#!!block;n#isRestartIIS#0;n#RootLayout#0" />
+                    <element signature="n#!!block;n#getSlackWebhookURL#0;n#RootLayout#0" />
+                    <element signature="n#!!block;n#createIISDump#0;n#RootLayout#0" />
+                    <element signature="n#!!block;n#createECSDump#0;n#RootLayout#0" />
+                    <element signature="method#fileAlreadyExistsAlertResult#0;class#RootLayout#0" />
+                    <element signature="method#showConfirmationAlert#0;class#RootLayout#0" />
+                    <element signature="method#showError#0;class#RootLayout#0" />
+                    <element signature="method#showTerminateInstallationAlert#0;class#RootLayout#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/main/java/installer/tasks/CreateConfigurationFileTask.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="411">
+                  <caret line="115" column="68" lean-forward="true" selection-start-line="115" selection-start-column="68" selection-end-line="115" selection-end-column="68" />
+                  <folding>
+                    <element signature="method#getServerInformation#0;class#CreateConfigurationFileTask#0" />
+                    <element signature="e#1595#1670#1" />
+                    <element signature="e#1676#1750#1" />
+                    <element signature="method#writeConfigurationToFile#0;class#CreateConfigurationFileTask#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/installer/model/Configuration.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="510">
+                  <caret line="119" column="61" lean-forward="true" selection-start-line="119" selection-start-column="61" selection-end-line="119" selection-end-column="61" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/main/java/installer/controller/InstallerSubmitController.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="289">
+                  <caret line="38" selection-start-line="38" selection-end-line="38" />
+                  <folding>
+                    <element signature="n#!!block;n#InstallerSubmitController#0;n#InstallerSubmitController#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -146,9 +158,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Logger</find>
-      <find>s</find>
-      <find>table found</find>
       <find>running</find>
       <find>reading</find>
       <find>test s</find>
@@ -176,6 +185,9 @@
       <find>getElast</find>
       <find>getElastiCubeName</find>
       <find>settoken</find>
+      <find>submitOptionsButton</find>
+      <find>getFormInformation</find>
+      <find>catch</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -230,6 +242,9 @@
         <option value="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/installer/view/RootLayout.java" />
         <option value="$PROJECT_DIR$/src/main/java/installer/InstallerMain.java" />
+        <option value="$PROJECT_DIR$/src/main/java/installer/model/Configuration.java" />
+        <option value="$PROJECT_DIR$/src/main/java/installer/controller/InstallerSubmitController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/installer/tasks/CreateConfigurationFileTask.java" />
       </list>
     </option>
   </component>
@@ -278,6 +293,12 @@
               <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="build" type="462c0819:PsiDirectoryNode" />
               <item name="libs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
+              <item name="e2ewd" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="build" type="462c0819:PsiDirectoryNode" />
+              <item name="scripts" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="e2ewd" type="b2602c69:ProjectViewProjectNode" />
@@ -344,10 +365,10 @@
     <property name="SearchEverywhereHistoryKey" value="lookupallho&#9;PSI&#9;JAVA://java.net.InetAddressImpl#lookupAllHostAddr&#10;Inet4AddressImpl&#9;FILE&#9;jar://C:/Program Files/Java/jdk1.8.0_151/jre/lib/rt.jar!/java/net/Inet4AddressImpl.class" />
     <property name="ignore_missing_gitignore" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Java" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Java" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -476,7 +497,7 @@
     <frame x="54" y="-8" width="1874" height="1216" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19349504" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.19349504" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -549,13 +570,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/ConfigFile.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/AppTest.java" />
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_92.jdk/Contents/Home/src.zip!/java/io/InputStream.java" />
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="5" column="38" selection-start-line="5" selection-start-column="38" selection-end-line="5" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/tests/TelnetTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
@@ -568,17 +582,6 @@
         <state relative-caret-position="360">
           <caret line="58" column="16" selection-start-line="58" selection-start-column="16" selection-end-line="58" selection-end-column="16" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/tests/SisenseRESTAPI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#returnUri#0;class#SisenseRESTAPI#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -638,16 +641,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="493">
-            <caret line="29" column="82" selection-start-line="29" selection-start-column="82" selection-end-line="29" selection-end-column="82" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -660,10 +653,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/scripts/e2ewd">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="19" lean-forward="true" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build/scripts/e2ewd.bat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-697" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="435">
+            <caret line="29" column="82" selection-start-line="29" selection-start-column="82" selection-end-line="29" selection-end-column="82" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/tests/SisenseRESTAPI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#returnUri#0;class#SisenseRESTAPI#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="84" selection-start-line="84" selection-end-line="84" />
+        <state relative-caret-position="425">
+          <caret line="105" column="5" lean-forward="true" selection-start-line="105" selection-start-column="5" selection-end-line="105" selection-end-column="5" />
           <folding>
             <element signature="method#main#0;class#App#0" />
             <element signature="e#942#1033#1" />
@@ -688,17 +721,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/installer/controller/InstallerSubmitController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/installer/InstallerMain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="30" selection-start-line="30" selection-end-line="30" />
+        <state relative-caret-position="612">
+          <caret line="45" column="18" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
+          <folding>
+            <element signature="e#1194#1195#0" expanded="true" />
+            <element signature="e#1272#1273#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/installer/view/RootLayout.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="33" column="31" selection-start-line="33" selection-start-column="31" selection-end-line="33" selection-end-column="31" />
+        <state relative-caret-position="264">
+          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
           <folding>
             <element signature="method#getTimeout#0;class#RootLayout#0" />
             <element signature="e#1878#1950#0" />
@@ -710,17 +747,38 @@
             <element signature="n#!!block;n#createECSDump#0;n#RootLayout#0" />
             <element signature="method#fileAlreadyExistsAlertResult#0;class#RootLayout#0" />
             <element signature="method#showConfirmationAlert#0;class#RootLayout#0" />
+            <element signature="method#showError#0;class#RootLayout#0" />
+            <element signature="method#showTerminateInstallationAlert#0;class#RootLayout#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/installer/InstallerMain.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/installer/model/Configuration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="35" column="49" lean-forward="true" selection-start-line="35" selection-start-column="49" selection-end-line="35" selection-end-column="49" />
+        <state relative-caret-position="510">
+          <caret line="119" column="61" lean-forward="true" selection-start-line="119" selection-start-column="61" selection-end-line="119" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/installer/controller/InstallerSubmitController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="86">
+          <caret line="31" selection-start-line="31" selection-end-line="31" />
           <folding>
-            <element signature="e#1194#1195#0" expanded="true" />
-            <element signature="e#1272#1273#0" expanded="true" />
+            <element signature="n#!!block;n#InstallerSubmitController#0;n#InstallerSubmitController#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/installer/tasks/CreateConfigurationFileTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="411">
+          <caret line="115" column="68" lean-forward="true" selection-start-line="115" selection-start-column="68" selection-end-line="115" selection-end-column="68" />
+          <folding>
+            <element signature="method#getServerInformation#0;class#CreateConfigurationFileTask#0" />
+            <element signature="e#1595#1670#1" />
+            <element signature="e#1676#1750#1" />
+            <element signature="method#writeConfigurationToFile#0;class#CreateConfigurationFileTask#0" />
           </folding>
         </state>
       </provider>

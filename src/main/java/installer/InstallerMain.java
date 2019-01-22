@@ -43,7 +43,7 @@ public class InstallerMain extends Application {
 //        return runningDirectory;
 //    }
 
-    public String getRunningDirectory(){
+    public static String getRunningDirectory(){
         return "C:\\temp\\config.properties";
     }
 }

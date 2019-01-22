@@ -3,6 +3,7 @@ package installer.view;
 import file_ops.ConfigFile;
 import installer.InstallerMain;
 import installer.controller.InstallerSubmitController;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -23,7 +24,6 @@ public class RootLayout extends GridPane {
     private InstallerSubmitController controller = new InstallerSubmitController(this);
     private InstallerMain context;
 
-
     public RootLayout(InstallerMain context){
 
         this.context = context;
@@ -31,9 +31,8 @@ public class RootLayout extends GridPane {
         slackWebhookURL.setPromptText("i.e. https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX");
         submitOptionsButton.setOnAction(event -> {
 
+
             controller.submitForm();
-
-
         });
 
         this.setAlignment(Pos.CENTER);
@@ -119,5 +118,26 @@ public class RootLayout extends GridPane {
         );
 
         alert.showAndWait();
+    }
+
+    public void showError(String errorMessage){
+        Alert alert = new Alert(
+                Alert.AlertType.ERROR,
+                errorMessage,
+                ButtonType.OK
+        );
+
+        alert.showAndWait();
+    }
+
+    public void showTerminateInstallationAlert() {
+        Alert alert = new Alert(
+                Alert.AlertType.CONFIRMATION,
+                "Installation settings will not be overwritten. Click OK to terminate installation",
+                ButtonType.OK
+        );
+
+        alert.showAndWait();
+        Platform.exit();
     }
 }
