@@ -2,12 +2,14 @@ package installer.view;
 
 import file_ops.ConfigFile;
 import installer.InstallerMain;
+import installer.controller.InstallerSubmitController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.io.File;
+import java.util.Optional;
 
 public class RootLayout extends GridPane {
 
@@ -18,15 +20,18 @@ public class RootLayout extends GridPane {
     private CheckBox iisDumpCheckBox = new CheckBox();
     private CheckBox ecsDumpCheckBox = new CheckBox();
     private Button submitOptionsButton = new Button("Install");
+    private InstallerSubmitController controller = new InstallerSubmitController(this);
+    private InstallerMain context;
 
 
     public RootLayout(InstallerMain context){
 
+        this.context = context;
         timeoutInput.setPromptText("Default: 300");
         slackWebhookURL.setPromptText("i.e. https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX");
         submitOptionsButton.setOnAction(event -> {
 
-            File file = new File(context.getRunningDirectory());
+            controller.submitForm();
 
 
         });
@@ -89,5 +94,30 @@ public class RootLayout extends GridPane {
 
     public boolean createECSDump(){
         return ecsDumpCheckBox.isSelected();
+    }
+
+    public InstallerMain getAppContext() {
+        return context;
+    }
+
+    public Optional<ButtonType> fileAlreadyExistsAlertResult(File file) {
+        Alert alert = new Alert(
+                Alert.AlertType.WARNING,
+                "File " + file.getAbsolutePath() + " already exists. Overwrite?",
+                ButtonType.YES,
+                ButtonType.NO
+        );
+
+        return alert.showAndWait();
+    }
+
+    public void showConfirmationAlert(File file) {
+        Alert alert = new Alert(
+                Alert.AlertType.CONFIRMATION,
+                "File " + file.getAbsolutePath() + " created.",
+                ButtonType.OK
+        );
+
+        alert.showAndWait();
     }
 }

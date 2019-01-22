@@ -33,6 +33,7 @@ public class InstallerMain extends Application {
 
         Scene scene = new Scene(rootLayout, 400, 300);
 
+        primaryStage.setTitle("e2ewd Installer");
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -43,6 +44,6 @@ public class InstallerMain extends Application {
 //    }
 
     public String getRunningDirectory(){
-        return "/Users/kobbigal/dev/dir_for_testing/config.properties";
+        return "C:\\temp\\config.properties";
     }
 }
