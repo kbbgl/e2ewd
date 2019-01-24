@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1c8a9607-8b97-42f8-b6b2-6e5ad6edebd5" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java" afterDir="false" />
-    </list>
+    <list default="true" id="1c8a9607-8b97-42f8-b6b2-6e5ad6edebd5" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -71,11 +69,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="371">
-              <caret line="272" column="75" lean-forward="true" selection-start-line="272" selection-start-column="75" selection-end-line="272" selection-end-column="75" />
+            <state relative-caret-position="524">
+              <caret line="285" column="9" lean-forward="true" selection-start-line="285" selection-start-column="9" selection-end-line="285" selection-end-column="9" />
               <folding>
                 <element signature="method#CmdOperations#0;class#CmdOperations#0" />
                 <element signature="method#getInstance#0;class#CmdOperations#0" />
@@ -131,6 +129,18 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/integrations/SlackClient.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="231">
+              <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
@@ -158,7 +168,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>s</find>
       <find>table found</find>
       <find>running</find>
       <find>reading</find>
@@ -188,6 +197,7 @@
       <find>getElastiCubeName</find>
       <find>querytableissucce</find>
       <find>gethostname</find>
+      <find>System.out.print</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -231,7 +241,6 @@
         <option value="$PROJECT_DIR$/src/main/java/run_strategy/CompleteDumpStrategy.java" />
         <option value="$PROJECT_DIR$/src/main/java/tests/SisenseRESTAPI.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/main/java/integrations/SlackClient.java" />
         <option value="$PROJECT_DIR$/src/main/java/run_strategy/NoResetNoDumpStrategy.java" />
         <option value="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" />
         <option value="$PROJECT_DIR$/build/libs/config.properties" />
@@ -240,6 +249,7 @@
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/main/java/App.java" />
         <option value="$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java" />
+        <option value="$PROJECT_DIR$/src/main/java/integrations/SlackClient.java" />
       </list>
     </option>
   </component>
@@ -652,16 +662,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/integrations/SlackClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="42" column="59" lean-forward="true" selection-start-line="42" selection-start-column="59" selection-end-line="42" selection-end-column="59" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build/libs/config.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -752,8 +752,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="371">
-          <caret line="272" column="75" lean-forward="true" selection-start-line="272" selection-start-column="75" selection-end-line="272" selection-end-column="75" />
+        <state relative-caret-position="524">
+          <caret line="285" column="9" lean-forward="true" selection-start-line="285" selection-start-column="9" selection-end-line="285" selection-end-column="9" />
           <folding>
             <element signature="method#CmdOperations#0;class#CmdOperations#0" />
             <element signature="method#getInstance#0;class#CmdOperations#0" />
@@ -804,6 +804,16 @@
             <element signature="method#executionPath#0;class#CmdOperations#0" />
             <element signature="e#8735#8976#0" />
             <element signature="e#9020#9079#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/integrations/SlackClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="39" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
