@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c8a9607-8b97-42f8-b6b2-6e5ad6edebd5" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -51,11 +51,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="81" column="41" selection-start-line="81" selection-start-column="41" selection-end-line="81" selection-end-column="41" />
+            <state relative-caret-position="255">
+              <caret line="64" lean-forward="true" selection-start-line="64" selection-end-line="64" />
               <folding>
                 <element signature="method#runECSTelnetTests#0;class#App#0" />
                 <element signature="method#setAndExecuteStrategy#0;class#App#0" />
@@ -66,6 +66,66 @@
                 <element signature="e#3391#3467#1" />
                 <element signature="e#3583#3658#1" />
                 <element signature="e#3774#3850#1" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="371">
+              <caret line="272" column="75" lean-forward="true" selection-start-line="272" selection-start-column="75" selection-end-line="272" selection-end-column="75" />
+              <folding>
+                <element signature="method#CmdOperations#0;class#CmdOperations#0" />
+                <element signature="method#getInstance#0;class#CmdOperations#0" />
+                <element signature="e#717#772#1" />
+                <element signature="method#getTable#0;class#CmdOperations#0" />
+                <element signature="e#1188#1968#0" />
+                <element signature="e#1580#1930#1" />
+                <element signature="e#1650#1714#1" />
+                <element signature="e#1769#1916#1" />
+                <element signature="e#1989#2199#0" />
+                <element signature="method#getElastiCubeName#0;class#CmdOperations#0" />
+                <element signature="e#2305#3691#0" />
+                <element signature="e#3001#3681#1" />
+                <element signature="e#3049#3264#1" />
+                <element signature="e#3147#3246#1" />
+                <element signature="e#3286#3666#1" />
+                <element signature="e#3381#3648#1" />
+                <element signature="e#3559#3625#1" />
+                <element signature="e#3714#3799#0" />
+                <element signature="method#getSisenseVersion#0;class#CmdOperations#0" />
+                <element signature="e#3879#4360#0" />
+                <element signature="e#4199#4253#1" />
+                <element signature="e#4383#4513#0" />
+                <element signature="method#w3wpDump#0;class#CmdOperations#0" />
+                <element signature="e#4686#4784#0" />
+                <element signature="e#4830#4928#0" />
+                <element signature="method#ecsDump#0;class#CmdOperations#0" />
+                <element signature="e#5170#5268#0" />
+                <element signature="e#5314#5412#0" />
+                <element signature="method#restartECS#0;class#CmdOperations#0" />
+                <element signature="e#5576#5629#1" />
+                <element signature="e#5643#5710#1" />
+                <element signature="e#5952#6733#0" />
+                <element signature="e#6304#6437#0" />
+                <element signature="e#6364#6423#1" />
+                <element signature="e#6582#6722#0" />
+                <element signature="e#6648#6708#1" />
+                <element signature="e#6779#6858#0" />
+                <element signature="method#restartIIS#0;class#CmdOperations#0" />
+                <element signature="e#7072#7853#0" />
+                <element signature="e#7424#7557#0" />
+                <element signature="e#7484#7543#1" />
+                <element signature="e#7702#7842#0" />
+                <element signature="e#7768#7828#1" />
+                <element signature="e#7899#7978#0" />
+                <element signature="e#8412#8457#1" />
+                <element signature="e#8521#8621#0" />
+                <element signature="method#executionPath#0;class#CmdOperations#0" />
+                <element signature="e#8735#8976#0" />
+                <element signature="e#9020#9079#0" />
               </folding>
             </state>
           </provider>
@@ -98,7 +158,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Logger</find>
       <find>s</find>
       <find>table found</find>
       <find>running</find>
@@ -128,6 +187,7 @@
       <find>getElast</find>
       <find>getElastiCubeName</find>
       <find>querytableissucce</find>
+      <find>gethostname</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -172,7 +232,6 @@
         <option value="$PROJECT_DIR$/src/main/java/tests/SisenseRESTAPI.java" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/java/integrations/SlackClient.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java" />
         <option value="$PROJECT_DIR$/src/main/java/run_strategy/NoResetNoDumpStrategy.java" />
         <option value="$PROJECT_DIR$/src/main/java/file_ops/ConfigFile.java" />
         <option value="$PROJECT_DIR$/build/libs/config.properties" />
@@ -180,6 +239,7 @@
         <option value="$PROJECT_DIR$/build/libs/run/result.txt" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/main/java/App.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java" />
       </list>
     </option>
   </component>
@@ -592,66 +652,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="231" column="5" lean-forward="true" selection-start-line="231" selection-start-column="5" selection-end-line="231" selection-end-column="5" />
-          <folding>
-            <element signature="method#CmdOperations#0;class#CmdOperations#0" />
-            <element signature="method#getInstance#0;class#CmdOperations#0" />
-            <element signature="e#717#772#1" />
-            <element signature="method#getTable#0;class#CmdOperations#0" />
-            <element signature="e#1188#1968#0" />
-            <element signature="e#1580#1930#1" />
-            <element signature="e#1650#1714#1" />
-            <element signature="e#1769#1916#1" />
-            <element signature="e#1989#2199#0" />
-            <element signature="method#getElastiCubeName#0;class#CmdOperations#0" />
-            <element signature="e#2305#3691#0" />
-            <element signature="e#3001#3681#1" />
-            <element signature="e#3049#3264#1" />
-            <element signature="e#3147#3246#1" />
-            <element signature="e#3286#3666#1" />
-            <element signature="e#3381#3648#1" />
-            <element signature="e#3559#3625#1" />
-            <element signature="e#3714#3799#0" />
-            <element signature="method#getSisenseVersion#0;class#CmdOperations#0" />
-            <element signature="e#3879#4360#0" />
-            <element signature="e#4199#4253#1" />
-            <element signature="e#4383#4513#0" />
-            <element signature="method#w3wpDump#0;class#CmdOperations#0" />
-            <element signature="e#4686#4784#0" />
-            <element signature="e#4830#4928#0" />
-            <element signature="method#ecsDump#0;class#CmdOperations#0" />
-            <element signature="e#5170#5268#0" />
-            <element signature="e#5314#5412#0" />
-            <element signature="method#restartECS#0;class#CmdOperations#0" />
-            <element signature="e#5576#5629#1" />
-            <element signature="e#5643#5710#1" />
-            <element signature="e#5952#6733#0" />
-            <element signature="e#6304#6437#0" />
-            <element signature="e#6364#6423#1" />
-            <element signature="e#6582#6722#0" />
-            <element signature="e#6648#6708#1" />
-            <element signature="e#6779#6858#0" />
-            <element signature="method#restartIIS#0;class#CmdOperations#0" />
-            <element signature="e#7072#7853#0" />
-            <element signature="e#7424#7557#0" />
-            <element signature="e#7484#7543#1" />
-            <element signature="e#7702#7842#0" />
-            <element signature="e#7768#7828#1" />
-            <element signature="e#7899#7978#0" />
-            <element signature="method#getHostname#0;class#CmdOperations#0" />
-            <element signature="e#8096#8498#0" />
-            <element signature="e#8412#8457#1" />
-            <element signature="e#8521#8621#0" />
-            <element signature="method#executionPath#0;class#CmdOperations#0" />
-            <element signature="e#8735#8976#0" />
-            <element signature="e#9020#9079#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/integrations/SlackClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="439">
@@ -734,8 +734,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/App.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="81" column="41" selection-start-line="81" selection-start-column="41" selection-end-line="81" selection-end-column="41" />
+        <state relative-caret-position="255">
+          <caret line="64" lean-forward="true" selection-start-line="64" selection-end-line="64" />
           <folding>
             <element signature="method#runECSTelnetTests#0;class#App#0" />
             <element signature="method#setAndExecuteStrategy#0;class#App#0" />
@@ -746,6 +746,64 @@
             <element signature="e#3391#3467#1" />
             <element signature="e#3583#3658#1" />
             <element signature="e#3774#3850#1" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cmd_ops/CmdOperations.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="272" column="75" lean-forward="true" selection-start-line="272" selection-start-column="75" selection-end-line="272" selection-end-column="75" />
+          <folding>
+            <element signature="method#CmdOperations#0;class#CmdOperations#0" />
+            <element signature="method#getInstance#0;class#CmdOperations#0" />
+            <element signature="e#717#772#1" />
+            <element signature="method#getTable#0;class#CmdOperations#0" />
+            <element signature="e#1188#1968#0" />
+            <element signature="e#1580#1930#1" />
+            <element signature="e#1650#1714#1" />
+            <element signature="e#1769#1916#1" />
+            <element signature="e#1989#2199#0" />
+            <element signature="method#getElastiCubeName#0;class#CmdOperations#0" />
+            <element signature="e#2305#3691#0" />
+            <element signature="e#3001#3681#1" />
+            <element signature="e#3049#3264#1" />
+            <element signature="e#3147#3246#1" />
+            <element signature="e#3286#3666#1" />
+            <element signature="e#3381#3648#1" />
+            <element signature="e#3559#3625#1" />
+            <element signature="e#3714#3799#0" />
+            <element signature="method#getSisenseVersion#0;class#CmdOperations#0" />
+            <element signature="e#3879#4360#0" />
+            <element signature="e#4199#4253#1" />
+            <element signature="e#4383#4513#0" />
+            <element signature="method#w3wpDump#0;class#CmdOperations#0" />
+            <element signature="e#4686#4784#0" />
+            <element signature="e#4830#4928#0" />
+            <element signature="method#ecsDump#0;class#CmdOperations#0" />
+            <element signature="e#5170#5268#0" />
+            <element signature="e#5314#5412#0" />
+            <element signature="method#restartECS#0;class#CmdOperations#0" />
+            <element signature="e#5576#5629#1" />
+            <element signature="e#5643#5710#1" />
+            <element signature="e#5952#6733#0" />
+            <element signature="e#6304#6437#0" />
+            <element signature="e#6364#6423#1" />
+            <element signature="e#6582#6722#0" />
+            <element signature="e#6648#6708#1" />
+            <element signature="e#6779#6858#0" />
+            <element signature="method#restartIIS#0;class#CmdOperations#0" />
+            <element signature="e#7072#7853#0" />
+            <element signature="e#7424#7557#0" />
+            <element signature="e#7484#7543#1" />
+            <element signature="e#7702#7842#0" />
+            <element signature="e#7768#7828#1" />
+            <element signature="e#7899#7978#0" />
+            <element signature="e#8412#8457#1" />
+            <element signature="e#8521#8621#0" />
+            <element signature="method#executionPath#0;class#CmdOperations#0" />
+            <element signature="e#8735#8976#0" />
+            <element signature="e#9020#9079#0" />
           </folding>
         </state>
       </provider>

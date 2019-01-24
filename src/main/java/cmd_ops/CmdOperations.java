@@ -270,7 +270,7 @@ public class CmdOperations {
         String cmd = "hostname";
         try {
             Process getHostnameProcess = runtime.exec(cmd);
-            logger.write("[getHostname] command send " + cmd);
+            logger.write("[getHostname] sending command '" + cmd + "'...");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(getHostnameProcess.getInputStream()));
 
