@@ -80,8 +80,6 @@ public class App {
             }
 
             resultFile.write(testResult);
-
-            resultFile.write(SisenseRESTAPI.queryTableIsSuccessful());
         }
     }
 
