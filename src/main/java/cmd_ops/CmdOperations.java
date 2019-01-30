@@ -2,12 +2,15 @@ package cmd_ops;
 
 import file_ops.ResultFile;
 import logging.Logger;
+import models.ElastiCube;
 
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,7 +35,7 @@ public class CmdOperations {
         return instance;
     }
 
-    public String getTable(){
+    public String getTable(String elastiCube){
         String[] psmCmd  = {
                 "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
                 "ecube",
@@ -40,7 +43,7 @@ public class CmdOperations {
                 "tables",
                 "getListOfTables",
                 "serverAddress=localhost",
-                "cubeName=" + getElastiCubeName(),
+                "cubeName=" + elastiCube,
                 "isCustom=false"
         };
 
@@ -125,6 +128,63 @@ public class CmdOperations {
         }
 
         return ec;
+    }
+
+    public List<ElastiCube> getListElastiCubes(){
+        List<ElastiCube> elasticubes = new ArrayList<>();
+
+        try {
+            String[] psmCmd = new String[]{
+                    "cmd.exe",
+                    "/c",
+                    "SET SISENSE_PSM=true&&\"C:\\Program Files\\Sisense\\Prism\\Psm.exe\"",
+                    "ecs",
+                    "ListCubes",
+                    "serverAddress=localhost"};
+
+            Process listCubesCommand = runtime.exec(psmCmd);
+
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
+
+            Pattern listCubesPattern = Pattern.compile("Cube Name \\[(.*?)] ID : \\[(.*?)] FarmPath \\[(.*?)] Status \\[(.*?)]");
+            Pattern errorPattern = Pattern.compile("\\((.*?)\\)");
+
+            String s;
+
+            while ((s = stdInput.readLine()) != null) {
+
+                if (s.startsWith("Cube Name")){
+                    Matcher cubeNameMatcher = listCubesPattern.matcher(s);
+                    while (cubeNameMatcher.find()){
+                        // TODO parse state
+                        ElastiCube elastiCube = new ElastiCube(cubeNameMatcher.group(1), cubeNameMatcher.group(4));
+
+                        logger.write("[getListElastiCubes] found " + elastiCube);
+
+                        // filter out all non running ElastiCubes
+                        if (elastiCube.getState().equals("RUNNING")){
+                            elasticubes.add(elastiCube);
+                        }
+
+                    }
+                } else {
+                    Matcher m = errorPattern.matcher(s);
+                    while (m.find()){
+                        logger.write("[getListElastiCubes] ERROR: " + m.group(1));
+
+                        if (m.group(1).equals("the server, 'localhost', is not responding.")){
+                            return null;
+                        }
+
+                    }
+                }
+            }
+        } catch (IOException e) {
+            //logger.write("[getListElastiCubes] ERROR: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return elasticubes;
     }
 
     public String getSisenseVersion(){

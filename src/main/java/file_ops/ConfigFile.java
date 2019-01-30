@@ -44,7 +44,7 @@ public class ConfigFile {
             setSlackWebhookURL(properties.getProperty("slackWebhookURL"));
 
         } catch (IOException e) {
-            logger.write("ERROR: reading configuration file - " + e.getMessage());
+            logger.write("[ConfigFile.instance] ERROR: reading configuration file - " + e.getMessage());
         } catch (NumberFormatException e){
             logger.write("ERROR: reading reading port - " + e.getMessage());
         }

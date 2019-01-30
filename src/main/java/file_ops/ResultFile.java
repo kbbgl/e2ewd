@@ -31,9 +31,9 @@ public class ResultFile {
         if (!exists()){
             try {
                 file.createNewFile();
-                logger.write("Created result file in " + filePath());
+                logger.write("[ResultFile.create] Created result file in " + filePath());
             } catch (IOException e) {
-                logger.write("ERROR: Creating new file - " + e.getMessage());
+                logger.write("[ResultFile.create] ERROR: Creating new file - " + e.getMessage());
             }
         }
     }
@@ -41,15 +41,15 @@ public class ResultFile {
     public void write(boolean result) {
         try(FileWriter fileWriter = new FileWriter(file.getAbsolutePath(), false)) {
             fileWriter.write(String.valueOf(result));
-            logger.write("Test succeeded: " + result);
+            logger.write("[ResultFile.write] Test succeeded: " + result);
         } catch (IOException e) {
-            logger.write("ERROR: writing to result file - " + e.getMessage());
+            logger.write("[ResultFile.write] ERROR: writing to result file - " + e.getMessage());
         }
     }
 
     public void delete(){
         if (exists()) {
-            logger.write("Deleting result file...");
+            logger.write("[ResultFile.delete] Deleting result file...");
             file.delete();
         }
     }

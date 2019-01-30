@@ -8,21 +8,26 @@
 [![Depfu](https://img.shields.io/depfu/depfu/example-ruby.svg)](https://github.com/kbbgl/e2ewd)
 
 
+
 ### Tests 
 
 * ElastiCube Server is queriable.
 * ElastiCube Server internal connectivity.
 * REST API is queriable.
 
+Tests are performed for all ElastiCubes with are in _RUNNING_ mode.
+
 ### Result
 Once the application finishes execution, it will create a file in:
 `[path/to/dir]/build/libs/run/result.txt`
-which will contain a `boolean` as the result, i.e. `true` means that the tests ran successfully.
+which will contain a `boolean` as the result, i.e. `true` means that **ALL** ElastiCube tests ran successfully.
 
 If you've set `ecsDump`, `iisDump` to `true`, it will create a dump file of the respective process in the parent folder. 
 The dump includes a snapshot of the process memory set which can be useful in troubleshooting the root cause.  
 
 ### Instructions
+Installer available [here](https://github.com/kbbgl/e2ewd_installer). It will download assets and create the configuration file automatically.
+
 1) Download or clone the project to the Sisense server. 
 2) Navigate to `[path/to/dir]/build/libs/` (where `[path/to/dir]` is where you saved the project.)
 3) Open the `config.properties` file and enter the:
