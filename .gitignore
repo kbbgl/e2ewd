@@ -9,6 +9,7 @@
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/modules/e2ewd_test.iml
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
@@ -85,3 +86,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+build/tmp/compileJava/
