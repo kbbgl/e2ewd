@@ -4,6 +4,7 @@ public class ElastiCube {
 
     private String name;
     private String state;
+    private int port;
 
     public ElastiCube(String name, String state){
         this.name = name;
@@ -18,11 +19,20 @@ public class ElastiCube {
         return state;
     }
 
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
     @Override
     public String toString() {
         return "ElastiCube{" +
                 "name='" + name + '\'' +
                 ", state='" + state + '\'' +
+                ", port=" + port +
                 '}';
     }
 }

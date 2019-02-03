@@ -29,6 +29,7 @@ public class App {
 
     public static void main(String[] args) {
 
+
         logger.write("[App.main] - Starting...");
         if (!operations.getSisenseVersion().equals("CANNOT DETECT")) {
             logger.write("[App.main] Sisense version: " + operations.getSisenseVersion());

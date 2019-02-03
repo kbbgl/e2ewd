@@ -81,53 +81,83 @@ public class CmdOperations {
         return null;
     }
 
-    public String getElastiCubeName(){
-        String ec = "";
+//    public String getElastiCubeName(){
+//        String ec = "";
+//
+//        try {
+//            String[] psmCmd = new String[]{
+//                    "cmd.exe",
+//                    "/c",
+//                    "SET SISENSE_PSM=true&&\"C:\\Program Files\\Sisense\\Prism\\Psm.exe\"",
+//                    "ecs",
+//                    "ListCubes",
+//                    "serverAddress=localhost"};
+//
+//            Process listCubesCommand = runtime.exec(psmCmd);
+//
+//            BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
+//
+//            Pattern cubeNamePattern = Pattern.compile("\\[(.*?)]");
+//            Pattern errorPattern = Pattern.compile("\\((.*?)\\)");
+//
+//            String s;
+//
+//            while ((s = stdInput.readLine()) != null) {
+//                if (s.startsWith("Cube Name")){
+//                    Matcher m = cubeNamePattern.matcher(s);
+//                    while (m.find()){
+//                        ec = m.group(1);
+//                        return ec;
+//                    }
+//                }
+//                else {
+//                    Matcher m = errorPattern.matcher(s);
+//                    while (m.find()){
+//                        logger.write("[getElasticubeName] ERROR: " + m.group(1));
+//
+//                        if (m.group(1).equals("the server, 'localhost', is not responding.")){
+//                            return ec;
+//                        }
+//
+//                    }
+//                }
+//
+//            }
+//        } catch (IOException e) {
+//            logger.write("[getElasticubeName] ERROR: " + e.getMessage());
+//        }
+//
+//        return ec;
+//    }
 
-        try {
-            String[] psmCmd = new String[]{
-                    "cmd.exe",
-                    "/c",
-                    "SET SISENSE_PSM=true&&\"C:\\Program Files\\Sisense\\Prism\\Psm.exe\"",
-                    "ecs",
-                    "ListCubes",
-                    "serverAddress=localhost"};
+    private void setElastiCubePort(ElastiCube elastiCube) throws IOException {
 
-            Process listCubesCommand = runtime.exec(psmCmd);
+        String[] psmCmd = new String[]{
+                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
+                "ecube",
+                "info",
+                "name=" + elastiCube.getName(),
+                "serverAddress=localhost"};
 
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
+        Process ecubePortCommand = Runtime.getRuntime().exec(psmCmd);
+        logger.write("[setElastiCubePort] Command sent: " + Arrays.toString(psmCmd));
 
-            Pattern cubeNamePattern = Pattern.compile("\\[(.*?)]");
-            Pattern errorPattern = Pattern.compile("\\((.*?)\\)");
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubePortCommand.getInputStream()));
+        BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubePortCommand.getErrorStream()));
 
-            String s;
-
-            while ((s = stdInput.readLine()) != null) {
-                if (s.startsWith("Cube Name")){
-                    Matcher m = cubeNamePattern.matcher(s);
-                    while (m.find()){
-                        ec = m.group(1);
-                        return ec;
-                    }
-                }
-                else {
-                    Matcher m = errorPattern.matcher(s);
-                    while (m.find()){
-                        logger.write("[getElasticubeName] ERROR: " + m.group(1));
-
-                        if (m.group(1).equals("the server, 'localhost', is not responding.")){
-                            return ec;
-                        }
-
-                    }
-                }
-
+        String s;
+        while ((s = stdInput.readLine()) != null){
+            if (s.startsWith("Port")){
+                int port = Integer.parseInt(s.split("Port: ")[1]);
+                elastiCube.setPort(port);
             }
-        } catch (IOException e) {
-            logger.write("[getElasticubeName] ERROR: " + e.getMessage());
         }
 
-        return ec;
+        String e;
+        while ((e = errorStream.readLine()) != null){
+            logger.write("[setElastiCubePort] ERROR " + e);
+        }
+
     }
 
     public List<ElastiCube> getListElastiCubes(){
@@ -143,6 +173,7 @@ public class CmdOperations {
                     "serverAddress=localhost"};
 
             Process listCubesCommand = runtime.exec(psmCmd);
+            logger.write("[getListElastiCubes] Command sent: " + Arrays.toString(psmCmd));
 
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
 
@@ -158,6 +189,7 @@ public class CmdOperations {
                     while (cubeNameMatcher.find()){
                         // TODO parse state
                         ElastiCube elastiCube = new ElastiCube(cubeNameMatcher.group(1), cubeNameMatcher.group(4));
+                        setElastiCubePort(elastiCube);
 
                         logger.write("[getListElastiCubes] found " + elastiCube);
 
@@ -180,7 +212,7 @@ public class CmdOperations {
                 }
             }
         } catch (IOException e) {
-            //logger.write("[getListElastiCubes] ERROR: " + e.getMessage());
+            logger.write("[getListElastiCubes] ERROR: " + e.getMessage());
             e.printStackTrace();
         }
 
