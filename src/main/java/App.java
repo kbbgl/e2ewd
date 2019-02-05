@@ -5,19 +5,12 @@ import integrations.SlackClient;
 import logging.Logger;
 import models.ElastiCube;
 import run_strategy.*;
+import tests.MonetDBTest;
 import tests.SisenseRESTAPI;
 import tests.TelnetTest;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-//TODO
-// add to configuration:
-// email that dump occurred or event viewer with dump location
-// number of retries
-
+import java.io.IOException;
+import java.util.*;
 
 public class App {
 
@@ -70,6 +63,7 @@ public class App {
         List<ElastiCube> elastiCubeList = operations.getListElastiCubes();
         logger.write("[App.run] Found " + elastiCubeList.size() + " running ElastiCubes.");
 
+        // Check if ECS returned 0 ElastiCubes
         if (elastiCubeList.size() == 0){
             runECSTelnetTests();
             setAndExecuteStrategy();
@@ -78,6 +72,7 @@ public class App {
 
         else {
 
+            // Get list of ElastiCubes
             Map<String, Boolean> tests = new HashMap<>(elastiCubeList.size());
             for (ElastiCube elasticube : elastiCubeList){
                 tests.put(elasticube.getName(), SisenseRESTAPI.queryTableIsSuccessful(elasticube.getName()));
@@ -89,8 +84,26 @@ public class App {
             for (Map.Entry<String, Boolean> entry : tests.entrySet()){
                 if (!entry.getValue()){
                     testResult = false;
-                    logger.write("[App.run] Test failed for " + entry.getKey());
+//                    logger.write("[App.run] Test failed for " + entry.getKey());
                 }
+                // Remove ElastiCubes which API query was successful for
+                else {
+                    elastiCubeList.remove(entry.getKey());
+                }
+            }
+
+            // Run MonetDB tests on ElastiCubes that failed REST API call
+            MonetDBTest monetDBTest = new MonetDBTest(elastiCubeList);
+            try {
+                Map<String, Boolean> monetDBTestSet = monetDBTest.resultSet();
+                logger.write("[App.run] MonetDB test results: ");
+                logger.write("[App.run] " + Arrays.toString(monetDBTestSet.entrySet().toArray()));
+//                for (Map.Entry<String, Boolean> entry : monetDBTestSet.entrySet()){
+//                    logger.write(entry.getKey() + " - " + entry.getValue());
+//                }
+
+            } catch (IOException e) {
+                logger.write("[App.run] ERROR - " + e.getMessage());
             }
 
             // Check whether the test failed and Slack webhook is set

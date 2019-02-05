@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,7 @@ public class CmdOperations {
     private final Runtime runtime = Runtime.getRuntime();
     private final Logger logger = Logger.getInstance();
     private final ResultFile resultFile = ResultFile.getInstance();
-    private final String path = executionPath() + "\\procdump\\procdump.exe";
+    private final String procdumpPath = executionPath() + "\\procdump\\procdump.exe";
 
     private CmdOperations(){
 
@@ -130,7 +131,7 @@ public class CmdOperations {
 //        return ec;
 //    }
 
-    private void setElastiCubePort(ElastiCube elastiCube) throws IOException {
+    private void setElastiCubeProperties(ElastiCube elastiCube) throws IOException {
 
         String[] psmCmd = new String[]{
                 "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
@@ -140,7 +141,7 @@ public class CmdOperations {
                 "serverAddress=localhost"};
 
         Process ecubePortCommand = Runtime.getRuntime().exec(psmCmd);
-        logger.write("[setElastiCubePort] Command sent: " + Arrays.toString(psmCmd));
+        logger.write("[setElastiCubeProperties] Command sent: " + Arrays.toString(psmCmd));
 
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubePortCommand.getInputStream()));
         BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubePortCommand.getErrorStream()));
@@ -155,7 +156,7 @@ public class CmdOperations {
 
         String e;
         while ((e = errorStream.readLine()) != null){
-            logger.write("[setElastiCubePort] ERROR " + e);
+            logger.write("[setElastiCubeProperties] ERROR " + e);
         }
 
     }
@@ -189,7 +190,7 @@ public class CmdOperations {
                     while (cubeNameMatcher.find()){
                         // TODO parse state
                         ElastiCube elastiCube = new ElastiCube(cubeNameMatcher.group(1), cubeNameMatcher.group(4));
-                        setElastiCubePort(elastiCube);
+                        setElastiCubeProperties(elastiCube);
 
                         logger.write("[getListElastiCubes] found " + elastiCube);
 
@@ -219,6 +220,57 @@ public class CmdOperations {
         return elasticubes;
     }
 
+    public boolean isMonetDBQuerySuccessful(ElastiCube elastiCube) throws IOException {
+
+        boolean success = false;
+
+        String[] psmCmd = new String[]{
+                "cmd.exe",
+                "/c",
+                "mclient.exe",
+                "-p" + elastiCube.getPort(),
+                "-fcsv",
+                "-s",
+                "\"SELECT 1\""};
+
+        Process monetDBQueryCmd = runtime.exec(psmCmd, null, new File(executionPath() + "\\mclient\\"));
+        logger.write("[isMonetDBQuerySuccessful] Command sent: " + Arrays.toString(psmCmd));
+
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getInputStream()));
+        BufferedReader errorStream = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getErrorStream()));
+
+        String s;
+        while ((s = stdInput.readLine()) != null) {
+            try {
+                if (Integer.parseInt(s) == 1){
+                    success = true;
+
+                }
+
+            } catch (NumberFormatException e){
+
+                logger.write("[isMonetDBQuerySuccessful] ERROR - " + e.getMessage());
+                return success;
+
+            }
+
+//            logger.write("[isMonetDBQuerySuccessful] result for " + elastiCube.getName() + ": " + s);
+//            if (Integer.parseInt(s) == 1) {
+//                return true;
+//            }
+        }
+
+        String e;
+        while ((e = errorStream.readLine()) != null){
+            logger.write("[isMonetDBQuerySuccessful] ERROR " + e);
+        }
+
+        logger.write("[isMonetDBQuerySuccessful] Test successful for " + elastiCube.getName() + ": " + success);
+
+        return success;
+
+    }
+
     public String getSisenseVersion(){
 
         try {
@@ -246,7 +298,7 @@ public class CmdOperations {
 
     public void w3wpDump(){
 
-        String command = path + " -accepteula -o -ma w3wp iis_dump.dmp";
+        String command = procdumpPath + " -accepteula -o -ma w3wp iis_dump.dmp";
         logger.write("[w3wpDump] - running...");
 
         try {
@@ -265,7 +317,7 @@ public class CmdOperations {
 
     public void ecsDump(){
 
-        String command = path + " -accepteula -o -ma ElastiCube.ManagementService ecs_dump.dmp";
+        String command = procdumpPath + " -accepteula -o -ma ElastiCube.ManagementService ecs_dump.dmp";
         logger.write("[ecsDump] - running...");
 
         try {
@@ -362,13 +414,14 @@ public class CmdOperations {
         String cmd = "hostname";
         try {
             Process getHostnameProcess = runtime.exec(cmd);
-            logger.write("[getHostname] sending command '" + cmd + "'...");
+
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(getHostnameProcess.getInputStream()));
 
             String s;
             while ((s = reader.readLine()) != null){
                 hostname = s;
+                logger.write("[getHostname] hostname: '" + hostname + "'");
             }
 
             return hostname;

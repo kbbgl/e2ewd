@@ -35,4 +35,12 @@ public class ElastiCube {
                 ", port=" + port +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object elastiCubeName) {
+        if (elastiCubeName == null) return false;
+        if (!(elastiCubeName instanceof String)) return false;
+
+        return elastiCubeName.equals(this.name);
+    }
 }

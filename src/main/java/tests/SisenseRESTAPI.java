@@ -50,7 +50,7 @@ public class SisenseRESTAPI {
                 try(InputStream inputStream = entity.getContent()) {
 
                     String result = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
-                    logger.write("[queryTableIsSuccessful] Running query: " + query.replaceAll("%20", " "));
+//                    logger.write("[queryTableIsSuccessful] Running query: " + query.replaceAll("%20", " "));
 //                    System.out.println("[queryTableIsSuccessful] Running query: " + query.replaceAll("%20", " "));
 
 
@@ -59,25 +59,20 @@ public class SisenseRESTAPI {
                         JSONObject jsonObject = new JSONObject(result);
                         int count = jsonObject.getJSONArray("values").getJSONArray(0).getInt(0);
                         logger.write("[queryTableIsSuccessful] Result: " + count);
-//                        System.out.println("[queryTableIsSuccessful] Result: " + count);
                         if (count > 0){
                             return true;
                         }
                     } else {
-//                        System.out.println("[queryTableIsSuccessful] query table failed.");
-//                        System.out.println("[queryTableIsSuccessful] call returned " + responseCode);
-//                        System.out.println("[queryTableIsSuccessful] response: " + result);
                         logger.write("[queryTableIsSuccessful] query table failed.");
-                        logger.write("[queryTableIsSuccessful] called returned " + responseCode);
-                        logger.write("[queryTableIsSuccessful] response: " + result);
+                        logger.write("[queryTableIsSuccessful] call returned " + responseCode);
+                        if (!result.isEmpty()){
+                            logger.write("[queryTableIsSuccessful] response: " + result);
+                        }
                         return false;
                     }
                 }
             }
         }catch (Exception e){
-//            System.out.println("[queryTableIsSuccessful] query table failed:");
-//            System.out.println(e.getMessage());
-//            System.out.println(Arrays.toString(e.getStackTrace()));
             logger.write("[queryTableIsSuccessful] query table failed:");
             logger.write(e.getMessage());
             logger.write(Arrays.toString(e.getStackTrace()));
