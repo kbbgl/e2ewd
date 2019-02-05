@@ -31,13 +31,11 @@ public class SisenseRESTAPI {
 
     public static boolean queryTableIsSuccessful(String elastiCubeName) {
 
-        String table = ops.getTable(elastiCubeName);
-        String column = ops.getColumn(elastiCubeName, table);
         JSONObject jaql;
 
         try{
 
-            jaql = createJAQL(elastiCubeName, table, column);
+            jaql = createJAQL(elastiCubeName);
             RequestConfig requestConfig = RequestConfig.custom()
                     .setConnectionRequestTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
                     .setConnectTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
@@ -48,10 +46,6 @@ public class SisenseRESTAPI {
             post.addHeader("authorization", "Bearer " + configFile.getToken());
             post.setEntity(new StringEntity(jaql.toString(), ContentType.APPLICATION_JSON));
             HttpResponse response = client.execute(post);
-//            HttpGet get = new HttpGet(returnUri(query, elastiCubeName));
-//            get.addHeader("authorization", "Bearer " + configFile.getToken());
-//            HttpResponse response = client.execute(get);
-//            logger.write("[queryTableIsSuccessful] GET " + returnUri(query, elastiCubeName));
             HttpEntity entity = response.getEntity();
             int responseCode = response.getStatusLine().getStatusCode();
 
@@ -60,7 +54,7 @@ public class SisenseRESTAPI {
                 try(InputStream inputStream = entity.getContent()) {
 
                     String result = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
-                    System.out.println("[queryTableIsSuccessful] Sending POST " + post.getURI().toString() + ", JAQL: " + jaql.toString());
+                    logger.write("[queryTableIsSuccessful] Sending POST " + post.getURI().toString() + ", JAQL: " + jaql.toString());
 //                    System.out.println("Response code: " + responseCode);
 //                    System.out.println("Result " + result);
 
@@ -128,20 +122,36 @@ public class SisenseRESTAPI {
         }
     }
 
-    private static JSONObject createJAQL(String elastiCube, String table, String column) throws JSONException {
+    // Count for table and column
+//    private static JSONObject createJAQL(String elastiCube, String table, String column) throws JSONException {
+//
+//        JSONObject rootObject = new JSONObject();
+//        JSONArray metadataArray = new JSONArray();
+//        JSONObject metadataObject = new JSONObject();
+//
+//        rootObject.put("datasource", elastiCube);
+//        metadataObject.put("dim", "[" + table + "." + column + "]");
+//        metadataObject.put("agg", "count");
+//        metadataArray.put(metadataObject);
+//        rootObject.put("metadata", metadataArray);
+//
+//        return rootObject;
+//
+//    }
+
+    private static JSONObject createJAQL(String elastiCube) throws JSONException {
 
         JSONObject rootObject = new JSONObject();
         JSONArray metadataArray = new JSONArray();
-        JSONObject metadataObject = new JSONObject();
+
+        JSONObject jaqlObject = new JSONObject();
 
         rootObject.put("datasource", elastiCube);
-        metadataObject.put("dim", "[" + table + "." + column + "]");
-        metadataObject.put("agg", "count");
-        metadataArray.put(metadataObject);
+        jaqlObject.put("formula", "1");
+        metadataArray.put(jaqlObject);
         rootObject.put("metadata", metadataArray);
 
         return rootObject;
-
     }
 
 }
