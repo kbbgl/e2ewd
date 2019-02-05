@@ -29,10 +29,10 @@ public class ElastiCube {
 
     @Override
     public String toString() {
-        return "ElastiCube{" +
-                "name='" + name + '\'' +
-                ", state='" + state + '\'' +
-                ", port=" + port +
+        return "{" +
+                "\"name\":\"" + name + "\"" +
+                ", \"state\":\"" + state + "\"" +
+                ", \"port\":" + port +
                 '}';
     }
 
