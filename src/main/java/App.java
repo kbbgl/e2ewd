@@ -97,6 +97,7 @@ public class App {
             MonetDBTest monetDBTest = new MonetDBTest(elastiCubeList);
             if (elastiCubeList.size() > 0){
                 logger.write("[App.run] Running MonetDB tests... ");
+
                 try {
                     Map<String, Boolean> monetDBTestSet = monetDBTest.resultSet();
                     logger.write("[App.run] MonetDB test results: ");
