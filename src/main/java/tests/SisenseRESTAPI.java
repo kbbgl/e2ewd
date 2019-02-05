@@ -28,8 +28,6 @@ public class SisenseRESTAPI {
 
         String query = ("SELECT 1 FROM [" + ops.getTable(elastiCubeName) + "]").replaceAll(" ", "%20");
 
-        logger.write("[queryTableIsSuccessful] uri: " + returnUri(query, elastiCubeName));
-//        System.out.println("[queryTableIsSuccessful] uri: " + returnUri(query, elastiCubeName));
 
         try{
 
@@ -40,8 +38,8 @@ public class SisenseRESTAPI {
             HttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
             HttpGet get = new HttpGet(returnUri(query, elastiCubeName));
             get.addHeader("authorization", "Bearer " + configFile.getToken());
-//            get.addHeader("authorization", "Bearer .eyJ1c2VyIjoiNWJkNzQwZjJhMjc4MTQyNzUwZjM5OTI5IiwiYXBpU2VjcmV0IjoiYmMyNDc1NjYtZGQwZi0xY2I4LWJlMWYtZDU0YmEzOGM5ZWNhIiwiaWF0IjoxNTQ4Nzc1NTkyfQ.0zIoJVm1U5RBSgmb3y1Z8d0fFLS9R4Ze12qZDx7P3S8");
             HttpResponse response = client.execute(get);
+            logger.write("[queryTableIsSuccessful] GET " + returnUri(query, elastiCubeName));
             HttpEntity entity = response.getEntity();
             int responseCode = response.getStatusLine().getStatusCode();
 
@@ -51,20 +49,20 @@ public class SisenseRESTAPI {
 
                     String result = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
 //                    logger.write("[queryTableIsSuccessful] Running query: " + query.replaceAll("%20", " "));
-//                    System.out.println("[queryTableIsSuccessful] Running query: " + query.replaceAll("%20", " "));
 
 
                     if (responseCode == 200){
 
                         JSONObject jsonObject = new JSONObject(result);
                         int count = jsonObject.getJSONArray("values").getJSONArray(0).getInt(0);
-                        logger.write("[queryTableIsSuccessful] Result: " + count);
+
                         if (count > 0){
+//                            logger.write("[queryTableIsSuccessful] query table: " + true);
                             return true;
                         }
                     } else {
                         logger.write("[queryTableIsSuccessful] query table failed.");
-                        logger.write("[queryTableIsSuccessful] call returned " + responseCode);
+                        logger.write("[queryTableIsSuccessful] call response code " + responseCode);
                         if (!result.isEmpty()){
                             logger.write("[queryTableIsSuccessful] response: " + result);
                         }
@@ -75,7 +73,6 @@ public class SisenseRESTAPI {
         }catch (Exception e){
             logger.write("[queryTableIsSuccessful] query table failed:");
             logger.write(e.getMessage());
-            logger.write(Arrays.toString(e.getStackTrace()));
             return false;
         }
 
@@ -98,12 +95,5 @@ public class SisenseRESTAPI {
                     "/sql?query=" + query;
         }
     }
-
-//    private static String returnUri(String query, String elasticube){
-//
-//            return "http://localhost:8081/api/datasources/" +
-//                    elasticube.replaceAll(" ", "%20") +
-//                    "/sql?query=" + query;
-//    }
 
 }

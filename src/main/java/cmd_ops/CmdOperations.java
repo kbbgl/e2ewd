@@ -50,7 +50,7 @@ public class CmdOperations {
 
         try {
             Process readTableProcess = runtime.exec(psmCmd);
-            logger.write("[getTable] Command sent: " + Arrays.toString(psmCmd));
+//            logger.write("[getTable] Command sent: " + Arrays.toString(psmCmd));
 
             BufferedReader stdInput = new BufferedReader(new
                     InputStreamReader(readTableProcess.getInputStream()));
@@ -65,7 +65,7 @@ public class CmdOperations {
 
                 if (!s.contains("-") && !s.isEmpty()){
                     table = s;
-                    logger.write("[getTable] Table found: " + table);
+                    //logger.write("[getTable] Table " + table + " found in " + elastiCube);
                     break;
                 }
             }
@@ -141,7 +141,7 @@ public class CmdOperations {
                 "serverAddress=localhost"};
 
         Process ecubePortCommand = Runtime.getRuntime().exec(psmCmd);
-        logger.write("[setElastiCubeProperties] Command sent: " + Arrays.toString(psmCmd));
+//        logger.write("[setElastiCubeProperties] Command sent: " + Arrays.toString(psmCmd));
 
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubePortCommand.getInputStream()));
         BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubePortCommand.getErrorStream()));
@@ -174,7 +174,7 @@ public class CmdOperations {
                     "serverAddress=localhost"};
 
             Process listCubesCommand = runtime.exec(psmCmd);
-            logger.write("[getListElastiCubes] Command sent: " + Arrays.toString(psmCmd));
+//            logger.write("[getListElastiCubes] Command sent: " + Arrays.toString(psmCmd));
 
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
 
@@ -192,7 +192,7 @@ public class CmdOperations {
                         ElastiCube elastiCube = new ElastiCube(cubeNameMatcher.group(1), cubeNameMatcher.group(4));
                         setElastiCubeProperties(elastiCube);
 
-                        logger.write("[getListElastiCubes] found " + elastiCube);
+//                        logger.write("[getListElastiCubes] found " + elastiCube);
 
                         // filter out all non running ElastiCubes
                         if (elastiCube.getState().equals("RUNNING")){

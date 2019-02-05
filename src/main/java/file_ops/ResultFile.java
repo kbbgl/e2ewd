@@ -31,7 +31,7 @@ public class ResultFile {
         if (!exists()){
             try {
                 file.createNewFile();
-                logger.write("[ResultFile.create] Created result file in " + filePath());
+//                logger.write("[ResultFile.create] Created result file in " + filePath());
             } catch (IOException e) {
                 logger.write("[ResultFile.create] ERROR: Creating new file - " + e.getMessage());
             }
@@ -49,7 +49,7 @@ public class ResultFile {
 
     public void delete(){
         if (exists()) {
-            logger.write("[ResultFile.delete] Deleting result file...");
+//            logger.write("[ResultFile.delete] Deleting result file...");
             file.delete();
         }
     }
