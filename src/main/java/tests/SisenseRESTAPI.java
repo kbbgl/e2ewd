@@ -54,7 +54,7 @@ public class SisenseRESTAPI {
                 try(InputStream inputStream = entity.getContent()) {
 
                     String result = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
-                    logger.write("[queryTableIsSuccessful] Sending POST " + post.getURI().toString() + ", JAQL: " + jaql.toString());
+//                    logger.write("[queryTableIsSuccessful] Sending POST " + post.getURI().toString() + ", JAQL: " + jaql.toString());
 //                    System.out.println("Response code: " + responseCode);
 //                    System.out.println("Result " + result);
 
