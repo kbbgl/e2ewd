@@ -82,6 +82,51 @@ public class CmdOperations {
         return null;
     }
 
+    public String getColumn(String elastiCube, String table){
+
+        String column = "";
+
+        String[] psmCmd  = {
+                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
+                "ecube",
+                "edit",
+                "fields",
+                "getListOfFields",
+                "serverAddress=localhost",
+                "cubeName=" + elastiCube,
+                "tableName=" + table,
+                "isCustom=false"
+        };
+
+        try {
+            Process readColumnProcess = runtime.exec(psmCmd);
+
+            BufferedReader stdInput = new BufferedReader(new
+                    InputStreamReader(readColumnProcess.getInputStream()));
+
+            String s;
+
+            while ((s = stdInput.readLine()) != null) {
+
+                if (!s.contains("-") && !s.isEmpty()){
+                    column = s;
+                    break;
+                }
+            }
+
+            return column;
+
+        } catch (Exception e) {
+            resultFile.write(false);
+            logger.write("[getColumn] getColumn failed: ");
+            logger.write(e.getMessage());
+            logger.write(Arrays.toString(e.getStackTrace()));
+        }
+
+        return null;
+
+    }
+
 //    public String getElastiCubeName(){
 //        String ec = "";
 //
