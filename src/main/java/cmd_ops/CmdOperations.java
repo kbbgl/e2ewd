@@ -251,7 +251,7 @@ public class CmdOperations {
                         logger.write("[getListElastiCubes] ERROR: " + m.group(1));
 
                         if (m.group(1).equals("the server, 'localhost', is not responding.")){
-                            return null;
+                            elasticubes = null;
                         }
 
                     }

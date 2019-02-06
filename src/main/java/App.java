@@ -64,13 +64,20 @@ public class App {
         logger.write("[App.run] Attempt number " + attempt);
         logger.write("[App.run] Retrieving list of ElastiCubes...");
         List<ElastiCube> elastiCubeList = operations.getListElastiCubes();
+
+        // Check if ECS returned 0 ElastiCubes with error
+        if (elastiCubeList == null){
+            setAndExecuteStrategy();
+            runECSTelnetTests();
+            run(++attempt);
+        }
+
         logger.write("[App.run] Found " + elastiCubeList.size() + " running ElastiCubes: \n" + Arrays.toString(elastiCubeList.toArray()));
 
-        // Check if ECS returned 0 ElastiCubes
         if (elastiCubeList.size() == 0){
-            runECSTelnetTests();
-            setAndExecuteStrategy();
-            run(++attempt);
+            logger.write("[App.run] No ElastiCubes found., no errors from ECS. Exiting...");
+            resultFile.write(true);
+            System.exit(1);
         }
 
         else {
@@ -91,7 +98,7 @@ public class App {
                 }
                 // Remove ElastiCubes which API query was successful for
                 else {
-                    elastiCubeList.removeIf(elastiCube -> elastiCube.getName() == entry.getKey());
+                    elastiCubeList.removeIf(elastiCube -> elastiCube.getName().equals(entry.getKey()));
                 }
             }
 
