@@ -466,7 +466,7 @@ public class CmdOperations {
             String s;
             while ((s = reader.readLine()) != null){
                 hostname = s;
-                logger.write("[getHostname] hostname: '" + hostname + "'");
+//                logger.write("[getHostname] hostname: '" + hostname + "'");
             }
 
             return hostname;
