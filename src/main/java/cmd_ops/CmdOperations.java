@@ -279,7 +279,7 @@ public class CmdOperations {
                 "\"SELECT 1\""};
 
         Process monetDBQueryCmd = runtime.exec(psmCmd, null, new File(executionPath() + "\\mclient\\"));
-        logger.write("[isMonetDBQuerySuccessful] Command sent: " + Arrays.toString(psmCmd));
+//        logger.write("[isMonetDBQuerySuccessful] Command sent: " + Arrays.toString(psmCmd));
 
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getInputStream()));
         BufferedReader errorStream = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getErrorStream()));

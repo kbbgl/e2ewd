@@ -3,7 +3,9 @@ import file_ops.ConfigFile;
 import file_ops.ResultFile;
 import integrations.SlackClient;
 import logging.Logger;
+import logging.TestResultToJSONConverter;
 import models.ElastiCube;
+import org.json.JSONException;
 import run_strategy.*;
 import tests.MonetDBTest;
 import tests.SisenseRESTAPI;
@@ -20,7 +22,7 @@ public class App {
     private static Logger logger = Logger.getInstance();
     private static StrategyContext strategyContext = new StrategyContext();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JSONException {
 
 
         logger.write("[App.main] STARTING...");
@@ -47,7 +49,7 @@ public class App {
         }
     }
 
-    private static void run(int attempt){
+    private static void run(int attempt) throws JSONException {
 
         if (attempt > 5) {
             logger.write("5 run attempts exceeded. Exiting...");
@@ -60,6 +62,7 @@ public class App {
         }
 
         logger.write("[App.run] - Attempt number " + attempt);
+        logger.write("[App.run] Retrieving list of ElastiCubes...");
         List<ElastiCube> elastiCubeList = operations.getListElastiCubes();
         logger.write("[App.run] Found " + elastiCubeList.size() + " running ElastiCubes: \n" + Arrays.toString(elastiCubeList.toArray()));
 
@@ -81,11 +84,10 @@ public class App {
 
             boolean testResult = true;
             logger.write("[App.run] REST API test results:");
-            logger.write("[App.run] " + Arrays.toString(tests.entrySet().toArray()));
+            logger.write("[App.run] " + TestResultToJSONConverter.toJSON(tests));
             for (Map.Entry<String, Boolean> entry : tests.entrySet()){
                 if (!entry.getValue()){
                     testResult = false;
-//                    logger.write("[App.run] Test failed for " + entry.getKey());
                 }
                 // Remove ElastiCubes which API query was successful for
                 else {
@@ -101,7 +103,7 @@ public class App {
                 try {
                     Map<String, Boolean> monetDBTestSet = monetDBTest.resultSet();
                     logger.write("[App.run] MonetDB test results: ");
-                    logger.write("[App.run] " + Arrays.toString(monetDBTestSet.entrySet().toArray()));
+                    logger.write("[App.run] " + TestResultToJSONConverter.toJSON(monetDBTestSet));
 
                 } catch (IOException e) {
                     logger.write("[App.run] ERROR - " + e.getMessage());
