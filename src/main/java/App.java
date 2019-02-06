@@ -61,7 +61,7 @@ public class App {
             System.exit(0);
         }
 
-        logger.write("[App.run] - Attempt number " + attempt);
+        logger.write("[App.run] Attempt number " + attempt);
         logger.write("[App.run] Retrieving list of ElastiCubes...");
         List<ElastiCube> elastiCubeList = operations.getListElastiCubes();
         logger.write("[App.run] Found " + elastiCubeList.size() + " running ElastiCubes: \n" + Arrays.toString(elastiCubeList.toArray()));
