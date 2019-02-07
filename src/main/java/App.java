@@ -74,6 +74,7 @@ public class App {
 
         logger.write("[App.run] Found " + elastiCubeList.size() + " running ElastiCubes: \n" + Arrays.toString(elastiCubeList.toArray()));
 
+        // Check if ECS returned 0 ElastiCubes without error
         if (elastiCubeList.size() == 0){
             logger.write("[App.run] No ElastiCubes found., no errors from ECS. Exiting...");
             resultFile.write(true);
@@ -122,6 +123,8 @@ public class App {
             }
 
             resultFile.write(testResult);
+            logger.write("[App.run] EXITING...");
+            System.exit(1);
         }
     }
 
