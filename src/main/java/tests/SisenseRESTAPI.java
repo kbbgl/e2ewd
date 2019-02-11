@@ -1,14 +1,11 @@
 package tests;
 
-import cmd_ops.CmdOperations;
 import file_ops.ConfigFile;
 import logging.Logger;
-import models.ElastiCube;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -20,14 +17,12 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class SisenseRESTAPI {
 
     private static final Logger logger = Logger.getInstance();
     private static final ConfigFile configFile = ConfigFile.getInstance();
-    private static final CmdOperations ops = CmdOperations.getInstance();
 
     public static boolean queryTableIsSuccessful(String elastiCubeName) {
 

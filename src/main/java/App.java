@@ -17,7 +17,7 @@ import java.util.*;
 public class App {
 
     private static final ConfigFile configFile = ConfigFile.getInstance();
-    private static ResultFile resultFile = ResultFile.getInstance();;
+    private static ResultFile resultFile = ResultFile.getInstance();
     private static final CmdOperations operations = CmdOperations.getInstance();
     private static Logger logger = Logger.getInstance();
     private static StrategyContext strategyContext = new StrategyContext();
@@ -70,61 +70,62 @@ public class App {
             setAndExecuteStrategy();
             runECSTelnetTests();
             run(++attempt);
-        }
+        } else {
 
-        logger.write("[App.run] Found " + elastiCubeList.size() + " running ElastiCubes: \n" + Arrays.toString(elastiCubeList.toArray()));
 
-        // Check if ECS returned 0 ElastiCubes without error
-        if (elastiCubeList.size() == 0){
-            logger.write("[App.run] No ElastiCubes found., no errors from ECS. Exiting...");
-            resultFile.write(true);
-            System.exit(1);
-        }
-
-        else {
-
-            // Get list of ElastiCubes
-            Map<String, Boolean> tests = new HashMap<>(elastiCubeList.size());
-            logger.write("[App.run] Running REST API tests... ");
-            for (ElastiCube elasticube : elastiCubeList){
-                tests.put(elasticube.getName(), SisenseRESTAPI.queryTableIsSuccessful(elasticube.getName()));
+            // Check if ECS returned 0 ElastiCubes without error
+            if (elastiCubeList.size() == 0){
+                logger.write("[App.run] No ElastiCubes found, no errors from ECS. Exiting...");
+                resultFile.write(true);
+                System.exit(1);
             }
+            else {
 
-            boolean testResult = true;
-            logger.write("[App.run] REST API test results:");
-            logger.write("[App.run] " + TestResultToJSONConverter.toJSON(tests));
-            for (Map.Entry<String, Boolean> entry : tests.entrySet()){
-                if (!entry.getValue()){
-                    testResult = false;
+                logger.write("[App.run] Found " + elastiCubeList.size() + " running ElastiCubes: \n" + Arrays.toString(elastiCubeList.toArray()));
+
+                // Get list of ElastiCubes
+                Map<String, Boolean> tests = new HashMap<>(elastiCubeList.size());
+                logger.write("[App.run] Running REST API tests... ");
+                for (ElastiCube elasticube : elastiCubeList){
+                    tests.put(elasticube.getName(), SisenseRESTAPI.queryTableIsSuccessful(elasticube.getName()));
                 }
-                // Remove ElastiCubes which API query was successful for
-                else {
-                    elastiCubeList.removeIf(elastiCube -> elastiCube.getName().equals(entry.getKey()));
+
+                boolean testResult = true;
+                logger.write("[App.run] REST API test results:");
+                logger.write("[App.run] " + TestResultToJSONConverter.toJSON(tests));
+                for (Map.Entry<String, Boolean> entry : tests.entrySet()){
+                    if (!entry.getValue()){
+                        testResult = false;
+                    }
+                    // Remove ElastiCubes which API query was successful for
+                    else {
+                        elastiCubeList.removeIf(elastiCube -> elastiCube.getName().equals(entry.getKey()));
+                    }
                 }
-            }
 
-            // Run MonetDB tests on ElastiCubes that failed REST API call
-            MonetDBTest monetDBTest = new MonetDBTest(elastiCubeList);
-            if (elastiCubeList.size() > 0){
-                logger.write("[App.run] Running MonetDB tests... ");
+                // Run MonetDB tests on ElastiCubes that failed REST API call
+                MonetDBTest monetDBTest = new MonetDBTest(elastiCubeList);
+                if (elastiCubeList.size() > 0){
+                    logger.write("[App.run] Running MonetDB tests... ");
 
-                try {
-                    Map<String, Boolean> monetDBTestSet = monetDBTest.resultSet();
-                    logger.write("[App.run] MonetDB test results: ");
-                    logger.write("[App.run] " + TestResultToJSONConverter.toJSON(monetDBTestSet));
+                    try {
+                        Map<String, Boolean> monetDBTestSet = monetDBTest.resultSet();
+                        logger.write("[App.run] MonetDB test results: ");
+                        logger.write("[App.run] " + TestResultToJSONConverter.toJSON(monetDBTestSet));
 
-                } catch (IOException e) {
-                    logger.write("[App.run] ERROR - " + e.getMessage());
+                    } catch (IOException | InterruptedException e) {
+                        logger.write("[App.run] ERROR - " + e.getMessage());
+                    }
                 }
-            }
-            // Check whether the test failed and Slack webhook is set
-            if (!testResult && !ConfigFile.getInstance().getSlackWebhookURL().isEmpty()){
-                SlackClient.getInstance().sendMessage();
-            }
+                // Check whether the test failed and Slack webhook is set
+                if (!testResult && !ConfigFile.getInstance().getSlackWebhookURL().isEmpty()){
+                    SlackClient.getInstance().sendMessage();
+                }
 
-            resultFile.write(testResult);
-            logger.write("[App.run] EXITING...");
-            System.exit(1);
+                resultFile.write(testResult);
+                logger.write("[App.run] EXITING...");
+                System.exit(1);
+            }
         }
     }
 

@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="e2ewd.main" target="1.8" />
+      <module name="e2ewd.test" target="1.8" />
       <module name="e2ewd_main" target="1.8" />
       <module name="e2ewd_test" target="1.8" />
     </bytecodeTargetLevel>

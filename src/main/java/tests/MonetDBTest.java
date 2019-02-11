@@ -17,7 +17,7 @@ public class MonetDBTest {
     }
 
 
-    public Map<String, Boolean> resultSet() throws IOException {
+    public Map<String, Boolean> resultSet() throws IOException, InterruptedException {
 
         Map<String, Boolean> map = new HashMap<>(elastiCubes.size());
         for (ElastiCube elastiCube : elastiCubes){

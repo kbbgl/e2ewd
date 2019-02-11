@@ -1,6 +1,5 @@
 package cmd_ops;
 
-import file_ops.ResultFile;
 import logging.Logger;
 import models.ElastiCube;
 
@@ -8,9 +7,7 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,7 +17,6 @@ public class CmdOperations {
     private static CmdOperations instance;
     private final Runtime runtime = Runtime.getRuntime();
     private final Logger logger = Logger.getInstance();
-    private final ResultFile resultFile = ResultFile.getInstance();
     private final String procdumpPath = executionPath() + "\\procdump\\procdump.exe";
 
     private CmdOperations(){
@@ -36,96 +32,96 @@ public class CmdOperations {
         return instance;
     }
 
-    public String getTable(String elastiCube){
-        String[] psmCmd  = {
-                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
-                "ecube",
-                "edit",
-                "tables",
-                "getListOfTables",
-                "serverAddress=localhost",
-                "cubeName=" + elastiCube,
-                "isCustom=false"
-        };
+//    public String getTable(String elastiCube){
+//        String[] psmCmd  = {
+//                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
+//                "ecube",
+//                "edit",
+//                "tables",
+//                "getListOfTables",
+//                "serverAddress=localhost",
+//                "cubeName=" + elastiCube,
+//                "isCustom=false"
+//        };
+//
+//        try {
+//            Process readTableProcess = runtime.exec(psmCmd);
+////            logger.write("[getTable] Command sent: " + Arrays.toString(psmCmd));
+//
+//            BufferedReader stdInput = new BufferedReader(new
+//                    InputStreamReader(readTableProcess.getInputStream()));
+//
+//            String s;
+//            String table = null;
+//
+//            while ((s = stdInput.readLine()) != null) {
+//                if (s.contains("Could not find a cube by the name")){
+//                    resultFile.write(false);
+//                }
+//
+//                if (!s.contains("-") && !s.isEmpty()){
+//                    table = s;
+//                    //logger.write("[getTable] Table " + table + " found in " + elastiCube);
+//                    break;
+//                }
+//            }
+//
+//            return table;
+//
+//        } catch (Exception e) {
+//            resultFile.write(false);
+//            logger.write("[getTable] getTable failed: ");
+//            logger.write(e.getMessage());
+//            logger.write(Arrays.toString(e.getStackTrace()));
+//        }
+//
+//        return null;
+//    }
 
-        try {
-            Process readTableProcess = runtime.exec(psmCmd);
-//            logger.write("[getTable] Command sent: " + Arrays.toString(psmCmd));
-
-            BufferedReader stdInput = new BufferedReader(new
-                    InputStreamReader(readTableProcess.getInputStream()));
-
-            String s;
-            String table = null;
-
-            while ((s = stdInput.readLine()) != null) {
-                if (s.contains("Could not find a cube by the name")){
-                    resultFile.write(false);
-                }
-
-                if (!s.contains("-") && !s.isEmpty()){
-                    table = s;
-                    //logger.write("[getTable] Table " + table + " found in " + elastiCube);
-                    break;
-                }
-            }
-
-            return table;
-
-        } catch (Exception e) {
-            resultFile.write(false);
-            logger.write("[getTable] getTable failed: ");
-            logger.write(e.getMessage());
-            logger.write(Arrays.toString(e.getStackTrace()));
-        }
-
-        return null;
-    }
-
-    public String getColumn(String elastiCube, String table){
-
-        String column = "";
-
-        String[] psmCmd  = {
-                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
-                "ecube",
-                "edit",
-                "fields",
-                "getListOfFields",
-                "serverAddress=localhost",
-                "cubeName=" + elastiCube,
-                "tableName=" + table,
-                "isCustom=false"
-        };
-
-        try {
-            Process readColumnProcess = runtime.exec(psmCmd);
-
-            BufferedReader stdInput = new BufferedReader(new
-                    InputStreamReader(readColumnProcess.getInputStream()));
-
-            String s;
-
-            while ((s = stdInput.readLine()) != null) {
-
-                if (!s.contains("-") && !s.isEmpty()){
-                    column = s;
-                    break;
-                }
-            }
-
-            return column;
-
-        } catch (Exception e) {
-            resultFile.write(false);
-            logger.write("[getColumn] getColumn failed: ");
-            logger.write(e.getMessage());
-            logger.write(Arrays.toString(e.getStackTrace()));
-        }
-
-        return null;
-
-    }
+//    public String getColumn(String elastiCube, String table){
+//
+//        String column = "";
+//
+//        String[] psmCmd  = {
+//                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
+//                "ecube",
+//                "edit",
+//                "fields",
+//                "getListOfFields",
+//                "serverAddress=localhost",
+//                "cubeName=" + elastiCube,
+//                "tableName=" + table,
+//                "isCustom=false"
+//        };
+//
+//        try {
+//            Process readColumnProcess = runtime.exec(psmCmd);
+//
+//            BufferedReader stdInput = new BufferedReader(new
+//                    InputStreamReader(readColumnProcess.getInputStream()));
+//
+//            String s;
+//
+//            while ((s = stdInput.readLine()) != null) {
+//
+//                if (!s.contains("-") && !s.isEmpty()){
+//                    column = s;
+//                    break;
+//                }
+//            }
+//
+//            return column;
+//
+//        } catch (Exception e) {
+//            resultFile.write(false);
+//            logger.write("[getColumn] getColumn failed: ");
+//            logger.write(e.getMessage());
+//            logger.write(Arrays.toString(e.getStackTrace()));
+//        }
+//
+//        return null;
+//
+//    }
 
 //    public String getElastiCubeName(){
 //        String ec = "";
@@ -176,7 +172,7 @@ public class CmdOperations {
 //        return ec;
 //    }
 
-    private void setElastiCubeProperties(ElastiCube elastiCube) throws IOException {
+    private void setElastiCubeProperties(ElastiCube elastiCube) throws IOException, InterruptedException {
 
         String[] psmCmd = new String[]{
                 "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
@@ -186,6 +182,7 @@ public class CmdOperations {
                 "serverAddress=localhost"};
 
         Process ecubePortCommand = Runtime.getRuntime().exec(psmCmd);
+        ecubePortCommand.waitFor();
 //        logger.write("[setElastiCubeProperties] Command sent: " + Arrays.toString(psmCmd));
 
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubePortCommand.getInputStream()));
@@ -220,20 +217,21 @@ public class CmdOperations {
 
             Process listCubesCommand = runtime.exec(psmCmd);
 //            logger.write("[getListElastiCubes] Command sent: " + Arrays.toString(psmCmd));
+            listCubesCommand.waitFor();
 
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
+            BufferedReader errorInput = new BufferedReader(new InputStreamReader(listCubesCommand.getErrorStream()));
 
             Pattern listCubesPattern = Pattern.compile("Cube Name \\[(.*?)] ID : \\[(.*?)] FarmPath \\[(.*?)] Status \\[(.*?)]");
             Pattern errorPattern = Pattern.compile("\\((.*?)\\)");
 
             String s;
-
             while ((s = stdInput.readLine()) != null) {
 
                 if (s.startsWith("Cube Name")){
                     Matcher cubeNameMatcher = listCubesPattern.matcher(s);
                     while (cubeNameMatcher.find()){
-                        // TODO parse state
+
                         ElastiCube elastiCube = new ElastiCube(cubeNameMatcher.group(1), cubeNameMatcher.group(4));
                         setElastiCubeProperties(elastiCube);
 
@@ -241,7 +239,9 @@ public class CmdOperations {
 
                         // filter out all non running ElastiCubes
                         if (elastiCube.getState().equals("RUNNING")){
-                            elasticubes.add(elastiCube);
+                            if (elasticubes != null) {
+                                elasticubes.add(elastiCube);
+                            }
                         }
 
                     }
@@ -257,7 +257,12 @@ public class CmdOperations {
                     }
                 }
             }
-        } catch (IOException e) {
+
+            String e;
+            while ((e = errorInput.readLine()) != null){
+                logger.write("[getListElastiCubes] ERROR: " + e);
+            }
+        } catch (IOException | InterruptedException e) {
             logger.write("[getListElastiCubes] ERROR: " + e.getMessage());
             e.printStackTrace();
         }
@@ -265,7 +270,7 @@ public class CmdOperations {
         return elasticubes;
     }
 
-    public boolean isMonetDBQuerySuccessful(ElastiCube elastiCube) throws IOException {
+    public boolean isMonetDBQuerySuccessful(ElastiCube elastiCube) throws IOException, InterruptedException {
 
         boolean success = false;
 
@@ -279,6 +284,7 @@ public class CmdOperations {
                 "\"SELECT 1\""};
 
         Process monetDBQueryCmd = runtime.exec(psmCmd, null, new File(executionPath() + "\\mclient\\"));
+        monetDBQueryCmd.waitFor();
 //        logger.write("[isMonetDBQuerySuccessful] Command sent: " + Arrays.toString(psmCmd));
 
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getInputStream()));
@@ -322,19 +328,29 @@ public class CmdOperations {
             Process process = runtime.
                     exec("reg QUERY HKEY_LOCAL_MACHINE\\SOFTWARE\\Sisense\\ECS /v Version");
 
+            process.waitFor();
             StringWriter stringWriter = new StringWriter();
 
-            InputStream stream = process.getInputStream();
+            try (InputStream inputStream = process.getInputStream()){
 
-            int c;
-            while ((c = stream.read()) != -1){
-                stringWriter.write(c);
+                int c;
+                while ((c = inputStream .read()) != -1){
+                    stringWriter.write(c);
+                }
             }
-            stream.close();
+
+            try (InputStream errorStream = process.getErrorStream()){
+
+                int e;
+                while ((e = errorStream.read()) != -1){
+                    logger.write("[CmdOperations.getSisenseVersion] ERROR " + e);
+                }
+            }
+
 
             return stringWriter.toString().split("   ")[3].trim();
 
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             logger.write("ERROR: retrieving Sisense version - " + e.getMessage());
             return "CANNOT DETECT";
         }
@@ -395,22 +411,21 @@ public class CmdOperations {
         try {
             Process psProcess = runtime.exec(restartCommand);
             psProcess.waitFor();
-            psProcess.getOutputStream().close();
 
             String line;
 
-            logger.write(methodName + "restart command output:");
+//            logger.write(methodName + "restart command output:");
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream()))) {
                 while ((line = reader.readLine()) != null){
-                    logger.write(line);
+                    logger.write("[CmdOperations.restartECS] output: " + line);
                 }
             }
 
             String error;
             try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream()))) {
                 while ((error = errorReader.readLine()) != null){
-                    logger.write(error);
+                    logger.write("[CmdOperations.restartECS] ERROR: " + error);
                 }
             }
 
@@ -428,7 +443,6 @@ public class CmdOperations {
         try {
             Process psProcess = runtime.exec(restartCommand);
             psProcess.waitFor();
-            psProcess.getOutputStream().close();
 
             String line;
 
@@ -436,19 +450,19 @@ public class CmdOperations {
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream()))) {
                 while ((line = reader.readLine()) != null){
-                    logger.write(line);
+                    logger.write("[CmdOperations.restartIIS] output: " + line);
                 }
             }
 
             String error;
             try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream()))) {
                 while ((error = errorReader.readLine()) != null){
-                    logger.write(error);
+                    logger.write("[CmdOperations.restartIIS] ERROR: " + error);
                 }
             }
 
         } catch (IOException | InterruptedException e) {
-            logger.write( methodName + "ERROR: " + e.getMessage());
+            logger.write( "[CmdOperations.restartIIS] ERROR: " + e.getMessage());
         }
 
     }
