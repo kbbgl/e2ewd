@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Class-Path: petitparser-core-2.2.0.jar slf4j-api-1.7.2.jar JavaEWAH-1.
+ 1.6.jar commons-codec-1.9.jar commons-logging-1.2.jar httpcore-4.4.1.
+ jar org.eclipse.jgit-5.1.3.201810200350-r.jar json-20090211.jar picoc
+ li-3.9.1.jar commons-io-2.6.jar jsch-0.1.54.jar httpclient-4.5.jar jg
+ itver-0.10.2.jar jzlib-1.1.1.jar
+Main-Class: App
+

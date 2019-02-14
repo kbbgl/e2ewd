@@ -1,5 +1,8 @@
-apply plugin: 'java'
-apply plugin: 'application'
+plugins {
+    id "fr.brouillard.oss.gradle.jgitver" version "0.6.1"
+    id "java"
+    id "application"
+}
 
 jar {
     manifest {
@@ -9,6 +12,7 @@ jar {
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
 }
 
 repositories {
@@ -20,6 +24,9 @@ dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.5'
     compile group: 'org.json', name: 'json', version: '20090211'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
+    // https://mvnrepository.com/artifact/fr.brouillard.oss/jgitver
+    compile group: 'fr.brouillard.oss', name: 'jgitver', version: '0.10.2'
+
 }
 
 task createConfigFile() {

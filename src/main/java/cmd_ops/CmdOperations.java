@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -208,16 +209,16 @@ public class CmdOperations {
 
         try {
             String[] psmCmd = new String[]{
-                    "cmd.exe",
-                    "/c",
-                    "SET SISENSE_PSM=true&&\"C:\\Program Files\\Sisense\\Prism\\Psm.exe\"",
+                    "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
                     "ecs",
                     "ListCubes",
                     "serverAddress=localhost"};
 
-            Process listCubesCommand = runtime.exec(psmCmd);
+            String[] environmentalVariable = { "SISENSE_PSM=true" };
+
+            Process listCubesCommand = runtime.exec(psmCmd, environmentalVariable);
 //            logger.write("[getListElastiCubes] Command sent: " + Arrays.toString(psmCmd));
-            listCubesCommand.waitFor();
+            listCubesCommand.waitFor(15, TimeUnit.SECONDS);
 
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
             BufferedReader errorInput = new BufferedReader(new InputStreamReader(listCubesCommand.getErrorStream()));
@@ -227,7 +228,6 @@ public class CmdOperations {
 
             String s;
             while ((s = stdInput.readLine()) != null) {
-
                 if (s.startsWith("Cube Name")){
                     Matcher cubeNameMatcher = listCubesPattern.matcher(s);
                     while (cubeNameMatcher.find()){

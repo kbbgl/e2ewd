@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<log4net>
+  <appender name="LogStashForwarder" type="log4net.Appender.ForwardingAppender">
+    <appender-ref ref="LogStashForwarderToFile" />
+  </appender>
+
+  <appender name="LogStashForwarderToTCP" type="Sisense.Infrastructure.Logging.LogStashAppender" />
+  
+  <appender name="LogStashForwarderError"  type="log4net.Appender.ForwardingAppender" >
+    <filter type="log4net.Filter.LevelRangeFilter">
+      <levelMin value="ERROR" />
+      <acceptOnMatch value="true" />
+    </filter>
+    <filter type="log4net.Filter.DenyAllFilter" />
+    <appender-ref ref="LogStashForwarder" />
+  </appender>
+
+  <appender name="LogStashForwarderToFile" type="Sisense.Infrastructure.Logging.LogStashFileAppender">
+    <file type="log4net.Util.PatternString"  value="SiSense\Monitoring\LOGS\PSM-[%processid].log"/>
+    <PreserveLogFileNameExtension value="true" />
+    <datePattern value="-yyyy-MM-dd"/>
+    <maxSizeRollBackups value="20"/>
+    <appendToFile value="true" />
+    <maximumFileSize value="100MB"/>
+    <rollingStyle value="Composite" />
+    <layout type="log4net.Layout.PatternLayout">
+      <param name="ConversionPattern" value="%m%n"/>
+    </layout>
+    <filter type="log4net.Filter.LevelRangeFilter">
+      <levelMin value="INFO" />
+      <acceptOnMatch value="true" />
+    </filter>
+    <filter type="log4net.Filter.DenyAllFilter" />
+  </appender>
+
+
+  <appender name="whiteBoxROLL" type="log4net.Appender.RollingFileAppender">
+    <file value="SiSense\PrismServer\PrismServerLogs\PSMWhiteBox.log"/>
+    <appendToFile value="true" />
+    <rollingStyle value="Size" />
+    <maximumFileSize value="200MB"/>
+    <maxSizeRollBackups value="2"/>
+    <layout type="log4net.Layout.PatternLayout">
+      <param name="ConversionPattern" value="%r [%d{yyyy/MM/dd HH:mm:ss.fff}] [%X{PID}]:[%t],[%p] [%c]: [%m]%n"/>
+    </layout>
+    <filter type="log4net.Filter.LevelRangeFilter">
+      <levelMin value="INFO" />
+      <acceptOnMatch value="true" />
+    </filter>
+    <filter type="log4net.Filter.DenyAllFilter" />
+  </appender>
+
+  <appender name="InfoROLL" type="log4net.Appender.RollingFileAppender">
+    <file value="SiSense\PrismServer\PrismServerLogs\PSM.log"/>
+    <appendToFile value="true" />
+    <maximumFileSize value="200MB"/>
+    <maxSizeRollBackups value="20"/>
+    <rollingStyle value="Size" />
+    <layout type="log4net.Layout.PatternLayout">
+      <param name="ConversionPattern" value="%r [%d{yyyy/MM/dd HH:mm:ss.fff}] [%X{PID}]:[%t],[%p] [%c]: [%m]%n"/>
+    </layout>
+    <filter type="log4net.Filter.LevelRangeFilter">
+      <levelMin value="INFO" />
+      <acceptOnMatch value="true" />
+    </filter>
+    <filter type="log4net.Filter.DenyAllFilter" />
+  </appender>
+
+  <appender name="ErrorROLL" type="log4net.Appender.RollingFileAppender">
+    <file value="SiSense\PrismServer\PrismServerLogs\PSMError.log"/>
+    <appendToFile value="true" />
+    <maximumFileSize value="200MB"/>
+    <maxSizeRollBackups value="2"/>
+    <rollingStyle value="Size" />
+    <layout type="log4net.Layout.PatternLayout">
+      <param name="ConversionPattern" value="%r [%d{yyyy/MM/dd HH:mm:ss.fff}] [%X{PID}]:[%t],[%p] [%c]: [%m]%n"/>
+    </layout>
+    <filter type="log4net.Filter.LevelRangeFilter">
+      <levelMin value="ERROR" />
+      <acceptOnMatch value="true" />
+    </filter>
+    <filter type="log4net.Filter.DenyAllFilter" />
+  </appender>
+
+  <root>
+    <priority value="info" />
+    <appender-ref ref="InfoROLL"/>
+    <appender-ref ref="ErrorROLL"/>
+    <appender-ref ref="LogStashForwarderError" />
+  </root>
+
+  <logger name="WhiteBoxTesting" additivity="true">
+    <level value="debug"/>
+    <appender-ref ref="whiteBoxROLL" />
+    <appender-ref ref="LogStashForwarder" />
+  </logger>
+
+  <logger name="BugsDetection" additivity="true">
+    <level value="info"/>
+    <appender-ref ref="whiteBoxROLL" />
+    <appender-ref ref="LogStashForwarder" />
+  </logger>>
+
+  <logger name="Legacy.Logger">
+    <level value="info"/>
+  </logger>
+
+  <logger name="Monitoring" additivity="false">
+    <appender-ref ref="InfoROLL"/>
+    <appender-ref ref="ErrorROLL"/>
+    <appender-ref ref="LogStashForwarder" />
+    <level value="info"/>
+  </logger>
+</log4net>
+

@@ -1,0 +1,168 @@
+[Wed Feb 13 19:10:17 IST 2019] - [App.main] STARTING...
+[Wed Feb 13 19:10:18 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Wed Feb 13 19:10:18 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Wed Feb 13 19:10:18 IST 2019] - [App.run] Attempt number 1
+[Wed Feb 13 19:10:18 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Wed Feb 13 19:10:30 IST 2019] - [App.run] No ElastiCubes found, no errors from ECS. Exiting...
+[Wed Feb 13 19:10:30 IST 2019] - [ResultFile.write] Test succeeded: true
+[Wed Feb 13 19:22:25 IST 2019] - [App.main] STARTING...
+[Wed Feb 13 19:22:25 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Wed Feb 13 19:22:25 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Wed Feb 13 19:22:25 IST 2019] - [App.run] Attempt number 1
+[Wed Feb 13 19:22:25 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Wed Feb 13 19:22:37 IST 2019] - [App.run] No ElastiCubes found, no errors from ECS. Exiting...
+[Wed Feb 13 19:22:37 IST 2019] - [ResultFile.write] Test succeeded: true
+[Thu Feb 14 10:08:21 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:08:21 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:08:21 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:08:21 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:08:21 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:08:22 IST 2019] - [App.run] No ElastiCubes found, no errors from ECS. Exiting...
+[Thu Feb 14 10:08:22 IST 2019] - [ResultFile.write] Test succeeded: true
+[Thu Feb 14 10:08:49 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:08:50 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:08:50 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:08:50 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:08:50 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:08:51 IST 2019] - [App.run] No ElastiCubes found, no errors from ECS. Exiting...
+[Thu Feb 14 10:08:51 IST 2019] - [ResultFile.write] Test succeeded: true
+[Thu Feb 14 10:09:00 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:09:00 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:09:00 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:09:00 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:09:00 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:09:01 IST 2019] - [App.run] No ElastiCubes found, no errors from ECS. Exiting...
+[Thu Feb 14 10:09:01 IST 2019] - [ResultFile.write] Test succeeded: true
+[Thu Feb 14 10:09:26 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:09:26 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:09:26 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:09:26 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:09:26 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:09:27 IST 2019] - [App.run] No ElastiCubes found, no errors from ECS. Exiting...
+[Thu Feb 14 10:09:27 IST 2019] - [ResultFile.write] Test succeeded: true
+[Thu Feb 14 10:10:19 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:10:19 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:10:19 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:10:19 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:10:19 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:10:29 IST 2019] - [App.run] Found 2 running ElastiCubes: 
+[{"name":"Sample Lead Generation", "state":"RUNNING", "port":50003}, {"name":"78688", "state":"RUNNING", "port":50000}]
+[Thu Feb 14 10:10:29 IST 2019] - [App.run] Running REST API tests... 
+[Thu Feb 14 10:10:31 IST 2019] - [queryTableIsSuccessful] query failed for Sample Lead Generation.
+[Thu Feb 14 10:10:31 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:10:31 IST 2019] - [queryTableIsSuccessful] query failed for 78688.
+[Thu Feb 14 10:10:31 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:10:31 IST 2019] - [App.run] REST API test results:
+[Thu Feb 14 10:10:31 IST 2019] - [App.run] {"78688":false,"Sample Lead Generation":false}
+[Thu Feb 14 10:10:31 IST 2019] - [App.run] Running MonetDB tests... 
+[Thu Feb 14 10:10:31 IST 2019] - [App.run] ERROR - Cannot run program "cmd.exe" (in directory "C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\mclient"): CreateProcess error=267, The directory name is invalid
+[Thu Feb 14 10:10:32 IST 2019] - [SlackClient.sendMessage] Sent message to webhook. Response: no_team
+[Thu Feb 14 10:10:32 IST 2019] - [ResultFile.write] Test succeeded: false
+[Thu Feb 14 10:10:32 IST 2019] - [App.run] EXITING...
+[Thu Feb 14 10:11:05 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:11:05 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:11:05 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:11:05 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:11:05 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:11:13 IST 2019] - [App.run] Found 2 running ElastiCubes: 
+[{"name":"Sample Lead Generation", "state":"RUNNING", "port":50003}, {"name":"78688", "state":"RUNNING", "port":50000}]
+[Thu Feb 14 10:11:13 IST 2019] - [App.run] Running REST API tests... 
+[Thu Feb 14 10:11:15 IST 2019] - [queryTableIsSuccessful] query failed for Sample Lead Generation.
+[Thu Feb 14 10:11:15 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:11:15 IST 2019] - [queryTableIsSuccessful] query failed for 78688.
+[Thu Feb 14 10:11:15 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:11:15 IST 2019] - [App.run] REST API test results:
+[Thu Feb 14 10:11:15 IST 2019] - [App.run] {"78688":false,"Sample Lead Generation":false}
+[Thu Feb 14 10:11:15 IST 2019] - [App.run] Running MonetDB tests... 
+[Thu Feb 14 10:11:15 IST 2019] - [App.run] ERROR - Cannot run program "cmd.exe" (in directory "C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\mclient"): CreateProcess error=267, The directory name is invalid
+[Thu Feb 14 10:11:16 IST 2019] - [SlackClient.sendMessage] Sent message to webhook. Response: no_team
+[Thu Feb 14 10:11:16 IST 2019] - [ResultFile.write] Test succeeded: false
+[Thu Feb 14 10:11:16 IST 2019] - [App.run] EXITING...
