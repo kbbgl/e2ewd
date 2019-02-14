@@ -49,16 +49,12 @@ public class SisenseRESTAPI {
                 try(InputStream inputStream = entity.getContent()) {
 
                     String result = new BufferedReader(new InputStreamReader(inputStream)).lines().collect(Collectors.joining("\n"));
-//                    logger.write("[queryTableIsSuccessful] Sending POST " + post.getURI().toString() + ", JAQL: " + jaql.toString());
-//                    System.out.println("Response code: " + responseCode);
-//                    System.out.println("Result " + result);
 
                     if (responseCode == 200){
 
                         JSONObject responseObject = new JSONObject(result);
                         JSONObject valuesArray = (JSONObject) responseObject.getJSONArray("values").get(0);
                         int count = valuesArray.getInt("data");
-//                        System.out.println("[queryTableIsSuccessful] Count: " + count);
 
                         if (count > 0){
                             return true;
