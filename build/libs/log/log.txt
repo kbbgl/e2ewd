@@ -166,3 +166,249 @@
 [Thu Feb 14 10:11:16 IST 2019] - [SlackClient.sendMessage] Sent message to webhook. Response: no_team
 [Thu Feb 14 10:11:16 IST 2019] - [ResultFile.write] Test succeeded: false
 [Thu Feb 14 10:11:16 IST 2019] - [App.run] EXITING...
+[Thu Feb 14 10:19:46 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:19:46 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:19:46 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:19:46 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:19:46 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:19:54 IST 2019] - [App.run] Found 2 running ElastiCubes: 
+[{"name":"Sample Lead Generation", "state":"RUNNING", "port":50003}, {"name":"78688", "state":"RUNNING", "port":50000}]
+[Thu Feb 14 10:19:54 IST 2019] - [App.run] Running REST API tests... 
+[Thu Feb 14 10:19:56 IST 2019] - [queryTableIsSuccessful] query failed for Sample Lead Generation.
+[Thu Feb 14 10:19:56 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:19:56 IST 2019] - [queryTableIsSuccessful] query failed for 78688.
+[Thu Feb 14 10:19:56 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:19:56 IST 2019] - [App.run] REST API test results:
+[Thu Feb 14 10:19:56 IST 2019] - [App.run] {"78688":false,"Sample Lead Generation":false}
+[Thu Feb 14 10:19:56 IST 2019] - [App.run] Running MonetDB tests... 
+[Thu Feb 14 10:19:56 IST 2019] - [App.run] ERROR - Cannot run program "cmd.exe" (in directory "C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\mclient"): CreateProcess error=267, The directory name is invalid
+[Thu Feb 14 10:19:57 IST 2019] - [SlackClient.sendMessage] Sent message to webhook. Response: no_team
+[Thu Feb 14 10:19:57 IST 2019] - [ResultFile.write] Test succeeded: false
+[Thu Feb 14 10:19:57 IST 2019] - [App.run] EXITING...
+[Thu Feb 14 10:20:57 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:20:57 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:20:57 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:20:57 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:20:57 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:21:05 IST 2019] - [App.run] Found 2 running ElastiCubes: 
+[{"name":"Sample Lead Generation", "state":"RUNNING", "port":50003}, {"name":"78688", "state":"RUNNING", "port":50000}]
+[Thu Feb 14 10:21:05 IST 2019] - [App.run] Running REST API tests... 
+[Thu Feb 14 10:21:07 IST 2019] - [queryTableIsSuccessful] query failed for Sample Lead Generation.
+[Thu Feb 14 10:21:07 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:21:07 IST 2019] - [queryTableIsSuccessful] query failed for 78688.
+[Thu Feb 14 10:21:07 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:21:07 IST 2019] - [App.run] REST API test results:
+[Thu Feb 14 10:21:07 IST 2019] - [App.run] {"78688":false,"Sample Lead Generation":false}
+[Thu Feb 14 10:21:07 IST 2019] - [App.run] Running MonetDB tests... 
+[Thu Feb 14 10:21:07 IST 2019] - [App.run] ERROR - Cannot run program "cmd.exe" (in directory "C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\mclient"): CreateProcess error=267, The directory name is invalid
+[Thu Feb 14 10:21:08 IST 2019] - [SlackClient.sendMessage] Sent message to webhook. Response: no_team
+[Thu Feb 14 10:21:08 IST 2019] - [ResultFile.write] Test succeeded: false
+[Thu Feb 14 10:21:08 IST 2019] - [App.run] EXITING...
+[Thu Feb 14 10:23:28 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:23:29 IST 2019] - [App.main] e2ewd version: 0.0.0-77
+[Thu Feb 14 10:23:29 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:23:29 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:23:29 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:23:29 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:23:40 IST 2019] - [App.run] Found 2 running ElastiCubes: 
+[{"name":"Sample Lead Generation", "state":"RUNNING", "port":50003}, {"name":"78688", "state":"RUNNING", "port":50000}]
+[Thu Feb 14 10:23:40 IST 2019] - [App.run] Running REST API tests... 
+[Thu Feb 14 10:23:41 IST 2019] - [queryTableIsSuccessful] query failed for Sample Lead Generation.
+[Thu Feb 14 10:23:41 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:23:41 IST 2019] - [queryTableIsSuccessful] query failed for 78688.
+[Thu Feb 14 10:23:41 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:23:41 IST 2019] - [App.run] REST API test results:
+[Thu Feb 14 10:23:41 IST 2019] - [App.run] {"78688":false,"Sample Lead Generation":false}
+[Thu Feb 14 10:23:41 IST 2019] - [App.run] Running MonetDB tests... 
+[Thu Feb 14 10:23:41 IST 2019] - [App.run] ERROR - Cannot run program "cmd.exe" (in directory "C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\mclient"): CreateProcess error=267, The directory name is invalid
+[Thu Feb 14 10:23:42 IST 2019] - [SlackClient.sendMessage] Sent message to webhook. Response: no_team
+[Thu Feb 14 10:23:42 IST 2019] - [ResultFile.write] Test succeeded: false
+[Thu Feb 14 10:23:42 IST 2019] - [App.run] EXITING...
+[Thu Feb 14 10:26:58 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:26:59 IST 2019] - [App.main] e2ewd version: 0.0.0-77
+[Thu Feb 14 10:26:59 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:26:59 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:26:59 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:26:59 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:27:08 IST 2019] - [App.run] Found 2 running ElastiCubes: 
+[{"name":"Sample Lead Generation", "state":"RUNNING", "port":50003}, {"name":"78688", "state":"RUNNING", "port":50000}]
+[Thu Feb 14 10:27:08 IST 2019] - [App.run] Running REST API tests... 
+[Thu Feb 14 10:27:10 IST 2019] - [queryTableIsSuccessful] query failed for Sample Lead Generation.
+[Thu Feb 14 10:27:10 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:27:10 IST 2019] - [queryTableIsSuccessful] query failed for 78688.
+[Thu Feb 14 10:27:10 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:27:10 IST 2019] - [App.run] REST API test results:
+[Thu Feb 14 10:27:10 IST 2019] - [App.run] {"78688":false,"Sample Lead Generation":false}
+[Thu Feb 14 10:27:10 IST 2019] - [App.run] Running MonetDB tests... 
+[Thu Feb 14 10:27:10 IST 2019] - [App.run] ERROR - Cannot run program "cmd.exe" (in directory "C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\mclient"): CreateProcess error=267, The directory name is invalid
+[Thu Feb 14 10:27:10 IST 2019] - [SlackClient.sendMessage] Sent message to webhook. Response: no_team
+[Thu Feb 14 10:27:10 IST 2019] - [ResultFile.write] Test succeeded: false
+[Thu Feb 14 10:27:10 IST 2019] - [App.run] EXITING...
+[Thu Feb 14 10:27:37 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:27:38 IST 2019] - [App.main] e2ewd version: 0.0.0-77
+[Thu Feb 14 10:27:38 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:27:38 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:27:38 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:27:38 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:27:47 IST 2019] - [App.run] Found 2 running ElastiCubes: 
+[{"name":"Sample Lead Generation", "state":"RUNNING", "port":50003}, {"name":"78688", "state":"RUNNING", "port":50000}]
+[Thu Feb 14 10:27:47 IST 2019] - [App.run] Running REST API tests... 
+[Thu Feb 14 10:27:49 IST 2019] - [queryTableIsSuccessful] query failed for Sample Lead Generation.
+[Thu Feb 14 10:27:49 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:27:49 IST 2019] - [queryTableIsSuccessful] query failed for 78688.
+[Thu Feb 14 10:27:49 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:27:49 IST 2019] - [App.run] REST API test results:
+[Thu Feb 14 10:27:49 IST 2019] - [App.run] {"78688":false,"Sample Lead Generation":false}
+[Thu Feb 14 10:27:49 IST 2019] - [App.run] Running MonetDB tests... 
+[Thu Feb 14 10:27:49 IST 2019] - [App.run] ERROR - Cannot run program "cmd.exe" (in directory "C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\mclient"): CreateProcess error=267, The directory name is invalid
+[Thu Feb 14 10:27:49 IST 2019] - [SlackClient.sendMessage] Sent message to webhook. Response: no_team
+[Thu Feb 14 10:27:49 IST 2019] - [ResultFile.write] Test succeeded: false
+[Thu Feb 14 10:27:49 IST 2019] - [App.run] EXITING...
+[Thu Feb 14 10:30:21 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:30:22 IST 2019] - [App.main] e2ewd version: 0.0.0-77
+[Thu Feb 14 10:30:22 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:30:22 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:30:22 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:30:22 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:30:31 IST 2019] - [App.run] Found 2 running ElastiCubes: 
+[{"name":"Sample Lead Generation", "state":"RUNNING", "port":50003}, {"name":"78688", "state":"RUNNING", "port":50000}]
+[Thu Feb 14 10:30:31 IST 2019] - [App.run] Running REST API tests... 
+[Thu Feb 14 10:30:32 IST 2019] - [queryTableIsSuccessful] query failed for Sample Lead Generation.
+[Thu Feb 14 10:30:32 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:30:32 IST 2019] - [queryTableIsSuccessful] query failed for 78688.
+[Thu Feb 14 10:30:32 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:30:32 IST 2019] - [App.run] REST API test results:
+[Thu Feb 14 10:30:32 IST 2019] - [App.run] {"78688":false,"Sample Lead Generation":false}
+[Thu Feb 14 10:30:32 IST 2019] - [App.run] Running MonetDB tests... 
+[Thu Feb 14 10:30:32 IST 2019] - [App.run] ERROR - Cannot run program "cmd.exe" (in directory "C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\mclient"): CreateProcess error=267, The directory name is invalid
+[Thu Feb 14 10:30:33 IST 2019] - [SlackClient.sendMessage] Sent message to webhook. Response: no_team
+[Thu Feb 14 10:30:33 IST 2019] - [ResultFile.write] Test succeeded: false
+[Thu Feb 14 10:30:33 IST 2019] - [App.run] EXITING...
+[Thu Feb 14 10:31:28 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:31:29 IST 2019] - [App.main] e2ewd version: 0.0.0-77
+[Thu Feb 14 10:31:29 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:31:29 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:31:29 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:31:29 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:31:39 IST 2019] - [App.run] Found 2 running ElastiCubes: 
+[{"name":"Sample Lead Generation", "state":"RUNNING", "port":50003}, {"name":"78688", "state":"RUNNING", "port":50000}]
+[Thu Feb 14 10:31:39 IST 2019] - [App.run] Running REST API tests... 
+[Thu Feb 14 10:31:40 IST 2019] - [queryTableIsSuccessful] query failed for Sample Lead Generation.
+[Thu Feb 14 10:31:40 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:31:40 IST 2019] - [queryTableIsSuccessful] query failed for 78688.
+[Thu Feb 14 10:31:40 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:31:40 IST 2019] - [App.run] REST API test results:
+[Thu Feb 14 10:31:40 IST 2019] - [App.run] {"78688":false,"Sample Lead Generation":false}
+[Thu Feb 14 10:31:40 IST 2019] - [App.run] Running MonetDB tests... 
+[Thu Feb 14 10:31:40 IST 2019] - [App.run] ERROR - Cannot run program "cmd.exe" (in directory "C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\mclient"): CreateProcess error=267, The directory name is invalid
+[Thu Feb 14 10:31:41 IST 2019] - [SlackClient.sendMessage] Sent message to webhook. Response: no_team
+[Thu Feb 14 10:31:41 IST 2019] - [ResultFile.write] Test succeeded: false
+[Thu Feb 14 10:31:41 IST 2019] - [App.run] EXITING...
+[Thu Feb 14 10:32:49 IST 2019] - [App.main] STARTING...
+[Thu Feb 14 10:32:50 IST 2019] - [App.main] e2ewd version: 0.0.0-77
+[Thu Feb 14 10:32:50 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Thu Feb 14 10:32:50 IST 2019] - ConfigFile{
+	token:<SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Thu Feb 14 10:32:50 IST 2019] - [App.run] Attempt number 1
+[Thu Feb 14 10:32:50 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Thu Feb 14 10:32:59 IST 2019] - [App.run] Found 2 running ElastiCubes: 
+[{"name":"Sample Lead Generation", "state":"RUNNING", "port":50003}, {"name":"78688", "state":"RUNNING", "port":50000}]
+[Thu Feb 14 10:32:59 IST 2019] - [App.run] Running REST API tests... 
+[Thu Feb 14 10:33:01 IST 2019] - [queryTableIsSuccessful] query failed for Sample Lead Generation.
+[Thu Feb 14 10:33:01 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:33:01 IST 2019] - [queryTableIsSuccessful] query failed for 78688.
+[Thu Feb 14 10:33:01 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Thu Feb 14 10:33:01 IST 2019] - [App.run] REST API test results:
+[Thu Feb 14 10:33:01 IST 2019] - [App.run] {"78688":false,"Sample Lead Generation":false}
+[Thu Feb 14 10:33:01 IST 2019] - [App.run] Running MonetDB tests... 
+[Thu Feb 14 10:33:01 IST 2019] - [App.run] ERROR - Cannot run program "cmd.exe" (in directory "C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\mclient"): CreateProcess error=267, The directory name is invalid
+[Thu Feb 14 10:33:02 IST 2019] - [SlackClient.sendMessage] Sent message to webhook. Response: no_team
+[Thu Feb 14 10:33:02 IST 2019] - [ResultFile.write] Test succeeded: false
+[Thu Feb 14 10:33:02 IST 2019] - [App.run] EXITING...

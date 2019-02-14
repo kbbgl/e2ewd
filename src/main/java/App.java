@@ -1,6 +1,7 @@
 import cmd_ops.CmdOperations;
 import file_ops.ConfigFile;
 import file_ops.ResultFile;
+import fr.brouillard.oss.jgitver.GitVersionCalculator;
 import integrations.SlackClient;
 import logging.Logger;
 import logging.TestResultToJSONConverter;
@@ -11,6 +12,7 @@ import tests.MonetDBTest;
 import tests.SisenseRESTAPI;
 import tests.TelnetTest;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -24,8 +26,12 @@ public class App {
 
     public static void main(String[] args) throws JSONException {
 
-
         logger.write("[App.main] STARTING...");
+        File workDir = new File(System.getProperty("user.dir"));
+        try (GitVersionCalculator jgitver = GitVersionCalculator.location(workDir)){
+            logger.write("[App.main] e2ewd version: " + jgitver.getVersion());
+        } catch (Exception ignored) {
+        }
         if (!operations.getSisenseVersion().equals("CANNOT DETECT")) {
             logger.write("[App.main] Sisense version: " + operations.getSisenseVersion());
         }

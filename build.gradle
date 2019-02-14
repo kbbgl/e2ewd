@@ -26,7 +26,8 @@ dependencies {
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
     // https://mvnrepository.com/artifact/fr.brouillard.oss/jgitver
     compile group: 'fr.brouillard.oss', name: 'jgitver', version: '0.10.2'
-
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-beta2'
 }
 
 task createConfigFile() {
