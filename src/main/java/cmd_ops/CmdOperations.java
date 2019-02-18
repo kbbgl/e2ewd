@@ -173,42 +173,13 @@ public class CmdOperations {
 //        return ec;
 //    }
 
-    private void setElastiCubeProperties(ElastiCube elastiCube) throws IOException, InterruptedException {
-
-        String[] psmCmd = new String[]{
-                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
-                "ecube",
-                "info",
-                "name=" + elastiCube.getName(),
-                "serverAddress=localhost"};
-
-        Process ecubePortCommand = Runtime.getRuntime().exec(psmCmd);
-        ecubePortCommand.waitFor();
-//        logger.write("[setElastiCubeProperties] Command sent: " + Arrays.toString(psmCmd));
-
-        BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubePortCommand.getInputStream()));
-        BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubePortCommand.getErrorStream()));
-
-        String s;
-        while ((s = stdInput.readLine()) != null){
-            if (s.startsWith("Port")){
-                int port = Integer.parseInt(s.split("Port: ")[1]);
-                elastiCube.setPort(port);
-            }
-        }
-
-        String e;
-        while ((e = errorStream.readLine()) != null){
-            logger.write("[setElastiCubeProperties] ERROR " + e);
-        }
-
-    }
-
     public List<ElastiCube> getListElastiCubes(){
         List<ElastiCube> elasticubes = new ArrayList<>();
 
         try {
             String[] psmCmd = new String[]{
+                    "cmd.exe",
+                    "/c",
                     "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
                     "ecs",
                     "ListCubes",
@@ -268,6 +239,37 @@ public class CmdOperations {
         }
 
         return elasticubes;
+    }
+
+    private void setElastiCubeProperties(ElastiCube elastiCube) throws IOException, InterruptedException {
+
+        String[] psmCmd = new String[]{
+                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
+                "ecube",
+                "info",
+                "name=" + elastiCube.getName(),
+                "serverAddress=localhost"};
+
+        Process ecubePortCommand = Runtime.getRuntime().exec(psmCmd);
+        ecubePortCommand.waitFor();
+//        logger.write("[setElastiCubeProperties] Command sent: " + Arrays.toString(psmCmd));
+
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubePortCommand.getInputStream()));
+        BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubePortCommand.getErrorStream()));
+
+        String s;
+        while ((s = stdInput.readLine()) != null){
+            if (s.startsWith("Port")){
+                int port = Integer.parseInt(s.split("Port: ")[1]);
+                elastiCube.setPort(port);
+            }
+        }
+
+        String e;
+        while ((e = errorStream.readLine()) != null){
+            logger.write("[setElastiCubeProperties] ERROR " + e);
+        }
+
     }
 
     public boolean isMonetDBQuerySuccessful(ElastiCube elastiCube) throws IOException, InterruptedException {
