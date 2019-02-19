@@ -1,6 +1,7 @@
 import cmd_ops.CmdOperations;
 import file_ops.ConfigFile;
 import file_ops.ResultFile;
+import file_ops.VersionFile;
 import integrations.SlackClient;
 import integrations.WebAppDBConnection;
 import logging.Logger;
@@ -15,11 +16,16 @@ import tests.TelnetTest;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.*;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 public class App {
 
+    private static String runningLocation;
     private static final ConfigFile configFile = ConfigFile.getInstance();
     private static ResultFile resultFile = ResultFile.getInstance();
     private static final CmdOperations operations = CmdOperations.getInstance();
@@ -30,14 +36,15 @@ public class App {
 
     public static void main(String[] args) throws JSONException {
 
+        setRunningLocation();
         testLog.setHost(host);
         testLog.setTestStartTime(new Date());
         logger.write("[App.main] STARTING...");
-        try {
-            logger.write("[App.main] Application version: " + getVersion());
-        } catch (URISyntaxException | IOException e) {
-            logger.write("[App.main] ERROR retrieving application version: " + e.getMessage());
-        }
+
+        VersionFile versionFile = new VersionFile(runningLocation);
+        logger.write("[App.main] Application version: " + versionFile.getVersion());
+
+
         if (!operations.getSisenseVersion().equals("CANNOT DETECT")) {
             logger.write("[App.main] Sisense version: " + operations.getSisenseVersion());
         }
@@ -201,13 +208,49 @@ public class App {
         strategyContext.runStrategy();
     }
 
-    private static String getVersion() throws URISyntaxException, IOException {
+//    private static String getVersion() throws URISyntaxException, IOException {
+//
+//        Properties properties = new Properties();
+//        String versionFile = new File(App.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent() + File.separator + "version.properties";
+//        try (InputStream inputStream = new FileInputStream(versionFile )){
+//            properties.load(inputStream);
+//            return properties.getProperty("version");
+//        }
+//    }
 
-        Properties properties = new Properties();
-        String versionFile = new File(App.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent() + File.separator + "version.properties";
-        try (InputStream inputStream = new FileInputStream(versionFile )){
-            properties.load(inputStream);
-            return properties.getProperty("version");
+//    private static String getVersion() {
+//
+//        Enumeration enumeration;
+//        try {
+//            enumeration = Thread.currentThread().getContextClassLoader().getResources(JarFile.MANIFEST_NAME);
+//            while (enumeration.hasMoreElements()){
+//                try {
+//                    URL url = (URL) enumeration.nextElement();
+//                    try (InputStream inputStream = url.openStream()){
+//                        Manifest manifest = new Manifest(inputStream);
+//                        Attributes attributes = manifest.getMainAttributes();
+//                        String version = attributes.getValue("Implementation-Version");
+//                        if (version != null){
+//                            return version;
+//                        }
+//                    }
+//                } catch (Exception ignored){
+//
+//                }
+//            }
+//        } catch (IOException ignored){
+//
+//        }
+//        return null;
+//    }
+
+    private static void setRunningLocation(){
+        try {
+            runningLocation = new File(App.class.getProtectionDomain().getCodeSource().getLocation()
+                    .toURI()).getParent();
+        } catch (URISyntaxException e) {
+            logger.write("[App.runningLocation] ERROR : " + e.getMessage());
         }
     }
+
 }
