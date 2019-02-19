@@ -13,7 +13,8 @@ import tests.MonetDBTest;
 import tests.SisenseRESTAPI;
 import tests.TelnetTest;
 
-import java.io.IOException;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.util.*;
 
@@ -32,6 +33,11 @@ public class App {
         testLog.setHost(host);
         testLog.setTestStartTime(new Date());
         logger.write("[App.main] STARTING...");
+        try {
+            logger.write("[App.main] Application version: " + getVersion());
+        } catch (URISyntaxException | IOException e) {
+            logger.write("[App.main] ERROR retrieving application version: " + e.getMessage());
+        }
         if (!operations.getSisenseVersion().equals("CANNOT DETECT")) {
             logger.write("[App.main] Sisense version: " + operations.getSisenseVersion());
         }
@@ -193,5 +199,15 @@ public class App {
             strategyContext.setStrategy(new NoResetNoDumpStrategy());
 
         strategyContext.runStrategy();
+    }
+
+    private static String getVersion() throws URISyntaxException, IOException {
+
+        Properties properties = new Properties();
+        String versionFile = new File(App.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent() + File.separator + "version.properties";
+        try (InputStream inputStream = new FileInputStream(versionFile )){
+            properties.load(inputStream);
+            return properties.getProperty("version");
+        }
     }
 }
