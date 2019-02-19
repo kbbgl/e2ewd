@@ -1,18 +1,28 @@
 plugins {
-    id "fr.brouillard.oss.gradle.jgitver" version "0.6.1"
     id "java"
     id "application"
 }
 
+version = "1.0.0.12345"
+
 jar {
     manifest {
-        attributes "Main-Class": "App"
+        attributes (
+                "Main-Class": "App",
+                "Specification-Title": "e2ewd",
+                "Specification-Version" : getVersion().toString(),
+                "Specification-Vendor" : "Kobbi Gal",
+                "Implementation-Title"   : "e2ewd",
+                "Implementation-Version"  : getVersion().toString(),
+                "Implementation-Vendor" : "Kobbi Gal"
+        )
     }
+
+    archiveName = "e2ewd.jar"
 
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
 }
 
 repositories {
@@ -24,35 +34,11 @@ dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.5'
     compile group: 'org.json', name: 'json', version: '20090211'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-    // https://mvnrepository.com/artifact/fr.brouillard.oss/jgitver
-    compile group: 'fr.brouillard.oss', name: 'jgitver', version: '0.10.2'
-    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
-    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-beta2'
 }
 
-task createConfigFile() {
+task preBuild(){
     doLast {
-        new File("$projectDir/build/libs/config.properties").text = """token: yourtoken
-host: example.com
-port: 8081"""
-    }
-}
-
-task createLogFile(){
-    doLast {
-        def file = new File("$projectDir/build/libs/log/log.txt")
-        file.mkdirs();
-        file.createNewFile()
-    }
-}
-
-task createResultFile(){
-    def path = new File("$projectDir/build/libs/run")
-    path.mkdirs()
-}
-
-task deleteLogAndResultContent(){
-    doLast {
+        new File("$projectDir/build/libs/version.md").text = getVersion().toString()
         new File("$projectDir/build/libs/run/result.txt").text = ""
         new File("$projectDir/build/libs/log/log.txt").text = ""
     }
@@ -61,3 +47,4 @@ task deleteLogAndResultContent(){
 // Define the main class for the application
 mainClassName = 'App'
 
+build.dependsOn preBuild

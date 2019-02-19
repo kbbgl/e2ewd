@@ -1,0 +1,33 @@
+[Tue Feb 19 11:31:56 IST 2019] - [App.main] STARTING...
+[Tue Feb 19 11:31:56 IST 2019] - [App.main] Sisense version: 7.2.1.10084
+[Tue Feb 19 11:31:56 IST 2019] - ConfigFile{
+	token:<YOUR_SISENSE_TOKEN>,
+	host:localhost,
+	port:8081,
+	protocol:http,
+	requestTimeoutInSeconds:300,
+	restartECS:false,
+	restartIIS:false,
+	iisDump:false,
+	ecsDump:false
+	slackWebhookURL:https://hooks.slack.com/services/ZZZZZZZZZ/YYYYYYYY/XXXXXXXXXXXXXXXXX
+	}
+[Tue Feb 19 11:31:56 IST 2019] - [App.run] Attempt number 1
+[Tue Feb 19 11:31:56 IST 2019] - [App.run] Retrieving list of ElastiCubes...
+[Tue Feb 19 11:32:01 IST 2019] - [App.run] Found 3 running ElastiCubes: 
+[{"name":"Sample Lead Generation", "state":"RUNNING", "port":50008}, {"name":"test_build_alert", "state":"RUNNING", "port":50005}, {"name":"e2ewd_ecube", "state":"RUNNING", "port":50009}]
+[Tue Feb 19 11:32:01 IST 2019] - [App.run] Running REST API tests... 
+[Tue Feb 19 11:32:03 IST 2019] - [queryTableIsSuccessful] query failed for Sample Lead Generation.
+[Tue Feb 19 11:32:03 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Tue Feb 19 11:32:03 IST 2019] - [queryTableIsSuccessful] query failed for test_build_alert.
+[Tue Feb 19 11:32:03 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Tue Feb 19 11:32:03 IST 2019] - [queryTableIsSuccessful] query failed for e2ewd_ecube.
+[Tue Feb 19 11:32:03 IST 2019] - [queryTableIsSuccessful] call response code 401
+[Tue Feb 19 11:32:03 IST 2019] - [App.run] REST API test results:
+[Tue Feb 19 11:32:03 IST 2019] - [App.run] {"test_build_alert":false,"e2ewd_ecube":false,"Sample Lead Generation":false}
+[Tue Feb 19 11:32:03 IST 2019] - [App.run] Running MonetDB tests... 
+[Tue Feb 19 11:32:03 IST 2019] - [App.run] ERROR - Cannot run program "cmd.exe" (in directory "C:\Users\kobbi.gal.CORP\IdeaProjects\e2ewd\build\libs\mclient"): CreateProcess error=267, The directory name is invalid
+[Tue Feb 19 11:32:04 IST 2019] - [SlackClient.sendMessage] Sent message to webhook. Response: no_team
+[Tue Feb 19 11:32:04 IST 2019] - [ResultFile.write] Test succeeded: false
+[Tue Feb 19 11:32:05 IST 2019] - [WebAppDBConnection.sendOperation] Sent successfully
+[Tue Feb 19 11:32:05 IST 2019] - [App.run] EXITING...
