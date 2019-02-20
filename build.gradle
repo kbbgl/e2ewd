@@ -3,7 +3,7 @@ plugins {
     id "application"
 }
 
-version = "1.0.0.12362"
+version = "1.0.0.12370"
 
 jar {
     manifest {
@@ -40,6 +40,8 @@ task preBuild(){
     doLast {
         new File("$projectDir/build/libs/run/result.txt").text = ""
         new File("$projectDir/build/libs/log/log.txt").text = ""
+        new File("$projectDir/build/libs/version").text = getVersion().toString()
+        new File("$projectDir/build/libs/SiSense").deleteDir()
     }
 }
 
