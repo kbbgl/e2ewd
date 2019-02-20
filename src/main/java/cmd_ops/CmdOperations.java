@@ -400,11 +400,11 @@ public class CmdOperations {
     public void restartECS(){
 
         String serviceName;
-        if (getSisenseVersion().startsWith("7.2")){
-            serviceName = "Sisense.ECMS";
+        if (getSisenseVersion().startsWith("6") || getSisenseVersion().startsWith("7.1") || getSisenseVersion().startsWith("7.0")){
+            serviceName = "ElastiCubeManagmentService";
         }
         else {
-            serviceName = "ElastiCubeManagmentService";
+            serviceName = "Sisense.ECMS";
         }
 
         String methodName = "[restartService] ";

@@ -3,7 +3,7 @@ plugins {
     id "application"
 }
 
-version = "1.0.0.12345"
+version = "1.0.0.12362"
 
 jar {
     manifest {
