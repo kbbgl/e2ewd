@@ -3,11 +3,12 @@ package logging;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class TestLog {
@@ -20,8 +21,12 @@ public class TestLog {
     private int numberOfElastiCubes;
     private String reasonForFailure;
     private String version;
+    private Map<String, Boolean> failedElasitCubes;
 
     private TestLog() {
+
+        failedElasitCubes = new HashMap<>();
+
     }
 
     public static TestLog getInstance() {
@@ -63,7 +68,7 @@ public class TestLog {
         this.healthy = healthy;
     }
 
-    public int getNumberOfElastiCubes() {
+    private int getNumberOfElastiCubes() {
         return numberOfElastiCubes;
     }
 
@@ -71,7 +76,7 @@ public class TestLog {
         this.numberOfElastiCubes = numberOfElastiCubes;
     }
 
-    public String getReasonForFailure() {
+    private String getReasonForFailure() {
         return reasonForFailure;
     }
 
@@ -79,11 +84,7 @@ public class TestLog {
         this.reasonForFailure = reasonForFailure;
     }
 
-    public void appendReasonForFailure(String reasonForFailure){
-        this.reasonForFailure += ", " + reasonForFailure;
-    }
-
-    public String getVersion() {
+    private String getVersion() {
         return version;
     }
 
@@ -98,6 +99,14 @@ public class TestLog {
         df.setTimeZone(timeZone);
         return df.format(date);
 
+    }
+
+    public void addElastiCubeToFailedElasitCubes(String elasticube, boolean monetDBQuerySuccess){
+        failedElasitCubes.put(elasticube, monetDBQuerySuccess);
+    }
+
+    private Map<String, Boolean> getFailedElasitCubes() {
+        return failedElasitCubes;
     }
 
     public JSONObject toJSON() throws JSONException, ParseException {
@@ -115,6 +124,10 @@ public class TestLog {
         root.put("end", endDateObject);
         root.put("duration", getDuration());
         root.put("healthy", isHealthy());
+        root.put("monetDBQueryResults", getFailedElasitCubes());
+        root.put("numElasticubes", getNumberOfElastiCubes());
+        root.put("version", getVersion());
+        root.put("reasonForFailure", getReasonForFailure());
 
         return root;
     }

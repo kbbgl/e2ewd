@@ -59,21 +59,21 @@ public class SisenseRESTAPI {
                         if (count > 0){
                             return true;
                         } else {
-                            logger.write("[queryTableIsSuccessful] WARNING: JAQLRunner returned unexpected result " + result);
+                            logger.write("[SisenseRESTAPI.queryTableIsSuccessful] WARNING: JAQLRunner returned unexpected result " + result);
                         }
 
                     } else {
-                        logger.write("[queryTableIsSuccessful] query failed for " + elastiCubeName + ".");
-                        logger.write("[queryTableIsSuccessful] call response code " + responseCode);
+                        logger.write("[SisenseRESTAPI.queryTableIsSuccessful] query failed for " + elastiCubeName + ".");
+                        logger.write("[SisenseRESTAPI.queryTableIsSuccessful] call response code " + responseCode);
                         if (!result.isEmpty()){
-                            logger.write("[queryTableIsSuccessful] response: " + result);
+                            logger.write("[SisenseRESTAPI.queryTableIsSuccessful] response: " + result);
                         }
                         return false;
                     }
                 }
             }
         }catch (Exception e){
-            logger.write("[queryTableIsSuccessful] query failed for " + elastiCubeName + ".");
+            logger.write("[SisenseRESTAPI.queryTableIsSuccessful] query failed for " + elastiCubeName + ".");
             logger.write(e.getMessage());
             return false;
         }

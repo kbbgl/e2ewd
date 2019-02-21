@@ -14,14 +14,11 @@ import tests.MonetDBTest;
 import tests.SisenseRESTAPI;
 import tests.TelnetTest;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.*;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 
 public class App {
 
@@ -43,7 +40,7 @@ public class App {
 
         VersionFile versionFile = new VersionFile(runningLocation);
         logger.write("[App.main] Application version: " + versionFile.getVersion());
-
+        testLog.setVersion(versionFile.getVersion());
 
         if (!operations.getSisenseVersion().equals("CANNOT DETECT")) {
             logger.write("[App.main] Sisense version: " + operations.getSisenseVersion());
@@ -133,8 +130,7 @@ public class App {
                 for (Map.Entry<String, Boolean> entry : tests.entrySet()){
                     if (!entry.getValue()){
                         testResult = false;
-                        testLog.setHealthy(false);
-                        testLog.setReasonForFailure(entry.getKey() + " REST API query failed");
+                        testLog.setHealthy(testResult);
                     }
                     // Remove ElastiCubes which API query was successful for
                     else {
@@ -153,7 +149,9 @@ public class App {
                         logger.write("[App.run] " + TestResultToJSONConverter.toJSON(monetDBTestSet));
                         for (Map.Entry<String, Boolean> entry : monetDBTestSet.entrySet()){
                             if (!entry.getValue()){
-                                testLog.appendReasonForFailure(entry.getKey() + " MonetDB query failed.");
+                                testLog.addElastiCubeToFailedElasitCubes(entry.getKey(), false);
+                            } else {
+                                testLog.addElastiCubeToFailedElasitCubes(entry.getKey(), true);
                             }
                         }
 
@@ -207,42 +205,6 @@ public class App {
 
         strategyContext.runStrategy();
     }
-
-//    private static String getVersion() throws URISyntaxException, IOException {
-//
-//        Properties properties = new Properties();
-//        String versionFile = new File(App.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParent() + File.separator + "version.properties";
-//        try (InputStream inputStream = new FileInputStream(versionFile )){
-//            properties.load(inputStream);
-//            return properties.getProperty("version");
-//        }
-//    }
-
-//    private static String getVersion() {
-//
-//        Enumeration enumeration;
-//        try {
-//            enumeration = Thread.currentThread().getContextClassLoader().getResources(JarFile.MANIFEST_NAME);
-//            while (enumeration.hasMoreElements()){
-//                try {
-//                    URL url = (URL) enumeration.nextElement();
-//                    try (InputStream inputStream = url.openStream()){
-//                        Manifest manifest = new Manifest(inputStream);
-//                        Attributes attributes = manifest.getMainAttributes();
-//                        String version = attributes.getValue("Implementation-Version");
-//                        if (version != null){
-//                            return version;
-//                        }
-//                    }
-//                } catch (Exception ignored){
-//
-//                }
-//            }
-//        } catch (IOException ignored){
-//
-//        }
-//        return null;
-//    }
 
     private static void setRunningLocation(){
         try {
