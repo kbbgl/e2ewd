@@ -209,7 +209,7 @@ public class CmdOperations {
 //                        logger.write("[getListElastiCubes] found " + elastiCube);
 
                         // filter out all non running ElastiCubes
-                        if (elastiCube.getState().equals("RUNNING")){
+                        if (elastiCube.getState().equals("RUNNING") && !elastiCube.isLocked()){
                             if (elasticubes != null) {
                                 elasticubes.add(elastiCube);
                             }
@@ -262,6 +262,9 @@ public class CmdOperations {
             if (s.startsWith("Port")){
                 int port = Integer.parseInt(s.split("Port: ")[1]);
                 elastiCube.setPort(port);
+            } else if (s.startsWith("IsLocked")){
+                boolean locked = Boolean.valueOf(s.split("IsLocked: ")[1]);
+                elastiCube.setLocked(locked);
             }
         }
 

@@ -5,6 +5,7 @@ public class ElastiCube {
     private String name;
     private String state;
     private int port;
+    private boolean isLocked;
 
     public ElastiCube(String name, String state){
         this.name = name;
@@ -25,6 +26,14 @@ public class ElastiCube {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public boolean isLocked() {
+        return isLocked;
+    }
+
+    public void setLocked(boolean locked) {
+        isLocked = locked;
     }
 
     @Override
