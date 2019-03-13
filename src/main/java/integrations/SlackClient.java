@@ -44,10 +44,10 @@ public class SlackClient {
 
     }
 
-    public void sendMessage(){
+    public void sendMessage(String message){
 
         try {
-            post.setEntity(requestBody());
+            post.setEntity(requestBody(message));
             HttpResponse response = httpClient.execute(post);
             HttpEntity responseData = response.getEntity();
 
@@ -65,10 +65,12 @@ public class SlackClient {
         }
     }
 
-    private StringEntity requestBody() throws UnsupportedEncodingException {
+    private StringEntity requestBody(String message) throws UnsupportedEncodingException {
+
+        char boldChar = '*';
 
         Map<String, String> map = new HashMap<>();
-        map.put("text", ":rotating_light: CRITICAL! Watchdog test failed for *" + hostname + "*");
+        map.put("text", message + boldChar + hostname + boldChar);
         JSONObject jsonObject = new JSONObject(map);
 
         return new StringEntity(jsonObject.toString());
