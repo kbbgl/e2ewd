@@ -93,11 +93,6 @@ public class CmdOperations {
                 while ((e = errorInput.readLine()) != null){
                     logger.write("[getListElastiCubes] ERROR: " + e);
                 }
-//            }
-            // process timed out
-//            else {
-//                logger.write("[CmdOperations.getListElastiCubes] Operation timed out");
-//            }
 
             listCubesCommand.destroyForcibly();
         } catch (IOException | InterruptedException e) {
@@ -388,7 +383,6 @@ public class CmdOperations {
                 String s;
                 while ((s = reader.readLine()) != null){
                     hostname = s;
-//                logger.write("[getHostname] hostname: '" + hostname + "'");
                 }
 
                 return hostname;

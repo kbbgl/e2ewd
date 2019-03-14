@@ -9,7 +9,6 @@ import logging.TestLog;
 import logging.TestResultToJSONConverter;
 import models.ElastiCube;
 import org.json.JSONException;
-import org.json.JSONObject;
 import run_strategy.*;
 
 import java.io.IOException;
@@ -87,17 +86,7 @@ public class MainTest {
                 try {
                     executeRESTAPITests();
 
-                    // if any elasticubes failed, execute MonetDB test
-                    if (elastiCubes.size() > 0){
-                        testLog.setHealthy(false);
-                        executeMonetDBTests();
-                    }
-                    // no tests failed
-                    else {
-                        quitWithSuccess(elastiCubes.size());
-                    }
-
-                } catch (IOException | InterruptedException e) {
+                } catch (IOException e) {
                     logger.write(methodName + "failed to execute test, error: " + e.getMessage());
                 }
             }
@@ -126,6 +115,23 @@ public class MainTest {
         logger.write("[MainTest.quitWithSuccess] EXITING...");
         System.exit(0);
 
+    }
+
+    private void quitWithElastiCubeFailures(int numberOfElastiCubesTested){
+        String methodName = "[MainTest.quitWithElastiCubeFailures] ";
+        testLog.setNumberOfElastiCubes(numberOfElastiCubesTested);
+        testLog.setHealthy(false);
+        testLog.setTestEndTime(new Date());
+
+        try {
+            WebAppDBConnection.sendOperation(testLog.toJSON());
+            SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed");
+        } catch (ParseException | IOException | JSONException e) {
+            logger.write(methodName + "WARNING - Error sending test log:" + e.getMessage());
+        }
+        resultFile.write(true);
+        logger.write("[MainTest.quitWithElastiCubeFailures] EXITING...");
+        System.exit(0);
     }
 
     private void quitWithSuccessNoRunningCubes(){
@@ -208,45 +214,44 @@ public class MainTest {
             client.exeecuteQuery();
             restAPITests.put(elastiCube.getName(), client.isCallSuccessful());
 
-            // check if test failed and send warning and add cube to MonetDB tests
+            // check if test failed and send warning and execute MonetDB query
             if (!client.isCallSuccessful()){
                 SlackClient.getInstance()
-                        .sendMessage(":warning WARNING! REST API test failed for ElastiCube " +
-                                elastiCube.getName());
-            }
-        }
-
-        // remove ElastiCubes that their REST API test succeeded
-        for (Map.Entry<String, Boolean> entry : restAPITests.entrySet()){
-            if (entry.getValue()){
-                elastiCubes.removeIf(elastiCube -> elastiCube.getName().equals(entry.getKey()));
+                        .sendMessage(":warning: WARNING! REST API test failed for ElastiCube " +
+                                elastiCube.getName() + " ");
+                try {
+                    executeMonetDBTest(elastiCube);
+                } catch (InterruptedException e) {
+                    logger.write(methodName + "ERROR running MonetDB test: " + e.getMessage());
+                }
             }
         }
 
         logger.write(methodName + "REST API test results:");
         logger.write(TestResultToJSONConverter.toJSON(restAPITests).toString(3));
 
-    }
+        for (Map.Entry<String, Boolean> entry : restAPITests.entrySet()){
 
-    private void executeMonetDBTests() throws IOException, InterruptedException, JSONException {
-
-        logger.write("[MainTest.executeMonetDBTests] Running MonetDB tests... ");
-
-        MonetDBTest monetDBTest = new MonetDBTest(elastiCubes);
-
-        logger.write("[MainTest.executeMonetDBTests] MonetDB test results: ");
-        logger.write(TestResultToJSONConverter.toJSON(monetDBTest.resultSet()).toString(3));
-
-        for (Map.Entry<String, Boolean> entry : monetDBTest.resultSet().entrySet()){
-
-            // test failed
+            // exit with success if REST API tests failed
             if (!entry.getValue()){
-                testLog.addElastiCubeToFailedElasitCubes(entry.getKey(), false);
+                quitWithElastiCubeFailures(elastiCubes.size());
             }
+            // exit with success if REST API tests succeeded
             else {
-                testLog.addElastiCubeToFailedElasitCubes(entry.getKey(), true);
+                quitWithSuccess(elastiCubes.size());
             }
         }
+    }
+
+    private void executeMonetDBTest(ElastiCube elastiCube) throws IOException, InterruptedException {
+
+        logger.write("[MainTest.executeMonetDBTests] Running MonetDB test... ");
+
+        MonetDBTest monetDBTest = new MonetDBTest(elastiCube);
+        monetDBTest.executeQuery();
+
+        logger.write("[MainTest.executeMonetDBTests] MonetDB query result for ElastiCube " + elastiCube.getName() + ":" + monetDBTest.isQuerySuccessful());
+        testLog.addElastiCubeToFailedElastiCubes(elastiCube.getName(), monetDBTest.isQuerySuccessful());
 
     }
 

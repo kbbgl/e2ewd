@@ -101,7 +101,7 @@ public class TestLog {
 
     }
 
-    public void addElastiCubeToFailedElasitCubes(String elasticube, boolean monetDBQuerySuccess){
+    public void addElastiCubeToFailedElastiCubes(String elasticube, boolean monetDBQuerySuccess){
         failedElasitCubes.put(elasticube, monetDBQuerySuccess);
     }
 

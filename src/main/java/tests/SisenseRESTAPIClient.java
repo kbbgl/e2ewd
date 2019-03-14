@@ -4,11 +4,9 @@ import file_ops.ConfigFile;
 import logging.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -22,7 +20,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
-public class SisenseRESTAPIClient{
+class SisenseRESTAPIClient{
 
     private static final Logger logger = Logger.getInstance();
     private static final ConfigFile configFile = ConfigFile.getInstance();
@@ -32,7 +30,7 @@ public class SisenseRESTAPIClient{
     private boolean isCallSuccessful;
     private String elastiCubeName;
 
-    public SisenseRESTAPIClient(String elastiCubeName) throws JSONException {
+    SisenseRESTAPIClient(String elastiCubeName) throws JSONException {
 
         this.elastiCubeName = elastiCubeName;
 
@@ -55,7 +53,7 @@ public class SisenseRESTAPIClient{
 
     }
 
-    public void exeecuteQuery() throws IOException {
+    void exeecuteQuery() throws IOException {
 
         HttpResponse response = client.execute(post);
         parseResponse(response);
@@ -108,7 +106,7 @@ public class SisenseRESTAPIClient{
         isCallSuccessful = callSuccessful;
     }
 
-    public boolean isCallSuccessful() {
+    boolean isCallSuccessful() {
         return isCallSuccessful;
     }
 

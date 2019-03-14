@@ -4,27 +4,25 @@ import cmd_ops.CmdOperations;
 import models.ElastiCube;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-public class MonetDBTest {
+class MonetDBTest {
 
-    private List<ElastiCube> elastiCubes;
+    private ElastiCube elastiCube;
+    private boolean isQuerySuccessful;
 
-    public MonetDBTest(List<ElastiCube> elastiCubes) {
-        this.elastiCubes = elastiCubes;
+    MonetDBTest(ElastiCube elastiCube) {
+        this.elastiCube = elastiCube;
     }
 
+    void executeQuery() throws IOException, InterruptedException {
+        setQuerySuccessful(CmdOperations.getInstance().isMonetDBQuerySuccessful(elastiCube));
+    }
 
-    public Map<String, Boolean> resultSet() throws IOException, InterruptedException {
+    private void setQuerySuccessful(boolean querySuccessful) {
+        isQuerySuccessful = querySuccessful;
+    }
 
-        Map<String, Boolean> map = new HashMap<>(elastiCubes.size());
-        for (ElastiCube elastiCube : elastiCubes){
-            map.put(elastiCube.getName(), CmdOperations.getInstance().isMonetDBQuerySuccessful(elastiCube));
-        }
-
-        return map;
-
+    boolean isQuerySuccessful() {
+        return isQuerySuccessful;
     }
 }
