@@ -129,7 +129,7 @@ public class MainTest {
         } catch (ParseException | IOException | JSONException e) {
             logger.write(methodName + "WARNING - Error sending test log:" + e.getMessage());
         }
-        resultFile.write(true);
+        resultFile.write(false);
         logger.write("[MainTest.quitWithElastiCubeFailures] EXITING...");
         System.exit(0);
     }
