@@ -28,6 +28,8 @@ class SisenseRESTAPIClient{
     private HttpPost post;
     private String uri;
     private boolean isCallSuccessful;
+    private String callResponse;
+    private int responseCode;
     private String elastiCubeName;
 
     SisenseRESTAPIClient(String elastiCubeName) throws JSONException {
@@ -53,7 +55,7 @@ class SisenseRESTAPIClient{
 
     }
 
-    void exeecuteQuery() throws IOException {
+    void executeQuery() throws IOException {
 
         HttpResponse response = client.execute(post);
         parseResponse(response);
@@ -64,6 +66,7 @@ class SisenseRESTAPIClient{
 
         HttpEntity entity = response.getEntity();
         int responseCode = response.getStatusLine().getStatusCode();
+        setResponseCode(responseCode);
 
         if (entity != null){
 
@@ -72,6 +75,8 @@ class SisenseRESTAPIClient{
                 String res = new BufferedReader(new InputStreamReader(inputStream))
                         .lines()
                         .collect(Collectors.joining("\n"));
+
+                setCallResponse(res);
 
                 if (responseCode == 200){
 
@@ -123,6 +128,7 @@ class SisenseRESTAPIClient{
         }
 
     }
+
     private static JSONObject createJAQL(String elastiCube) throws JSONException {
 
         JSONObject rootObject = new JSONObject();
@@ -138,4 +144,19 @@ class SisenseRESTAPIClient{
         return rootObject;
     }
 
+    public void setCallResponse(String callResponse) {
+        this.callResponse = callResponse;
+    }
+
+    public void setResponseCode(int responseCode) {
+        this.responseCode = responseCode;
+    }
+
+    public int getResponseCode() {
+        return responseCode;
+    }
+
+    public String getCallResponse() {
+        return callResponse;
+    }
 }

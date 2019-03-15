@@ -211,14 +211,14 @@ public class MainTest {
         for (ElastiCube elastiCube : elastiCubes){
 
             SisenseRESTAPIClient client = new SisenseRESTAPIClient(elastiCube.getName());
-            client.exeecuteQuery();
+            client.executeQuery();
             restAPITests.put(elastiCube.getName(), client.isCallSuccessful());
 
             // check if test failed and send warning and execute MonetDB query
             if (!client.isCallSuccessful()){
                 SlackClient.getInstance()
                         .sendMessage(":warning: WARNING! REST API test failed for ElastiCube " +
-                                elastiCube.getName() + " ");
+                                elastiCube.getName() + " with response code " + client.getResponseCode() + ", response body: " + client.getCallResponse());
                 try {
                     executeMonetDBTest(elastiCube);
                 } catch (InterruptedException e) {
