@@ -1,5 +1,6 @@
 package cmd_ops;
 
+import integrations.SlackClient;
 import logging.Logger;
 import models.ElastiCube;
 
@@ -306,6 +307,7 @@ public class CmdOperations {
             // check that process hasn't timed out
             if (psProcess.waitFor(30, TimeUnit.SECONDS)){
                 logger.write("[CmdOperations.restartECS] Operation successful");
+                SlackClient.getInstance().sendMessage("ECS restarted ");
 
                 String line;
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream()))) {
@@ -344,6 +346,7 @@ public class CmdOperations {
             // check that operation hasn't timed out
             if (psProcess.waitFor(30, TimeUnit.SECONDS)){
                 String line;
+                SlackClient.getInstance().sendMessage("IIS restarted ");
 
                 logger.write(methodName + "restart command output:");
 
