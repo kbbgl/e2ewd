@@ -17,8 +17,10 @@ import java.util.*;
 
 public class MainTest {
 
+    private boolean testSuccess;
     private int attamptNumber;
     private final int maxNumberAttempts = 5;
+    private int numberOfElastiCubes;
     private List<ElastiCube> elastiCubes;
     private Logger logger = Logger.getInstance();
     private ResultFile resultFile = ResultFile.getInstance();
@@ -42,7 +44,7 @@ public class MainTest {
 
         resultFile.delete();
         if (!configFile.isConfigFileValid()){
-            quitWithPreRunFailure("Invalid config.properties file");
+            terminate("Invalid config.properties file");
         } else {
             logger.write(configFile.toString());
             resultFile.create();
@@ -53,12 +55,16 @@ public class MainTest {
 
         String methodName = "[MainTest.Run] ";
 
+        // Set test success initially
+        setTestSuccess(true);
+
         // Check number of attempts
         if (attempt > maxNumberAttempts){
             String message = "Max number of attempts " + maxNumberAttempts + " exceeded.";
             logger.write(methodName + message);
-            testLog.setReasonForFailure(message);
-            quitWithRunFailure();
+            setTestSuccess(false);
+            setNumberOfElastiCubes(0);
+            terminate(message);
         }
 
         logger.write(methodName + "Attempt number " + attempt);
@@ -72,15 +78,16 @@ public class MainTest {
         // if no ECS error
         else {
 
+            setNumberOfElastiCubes(elastiCubes.size());
+
             // end test if 0 running cubes
             if (elastiCubes.size() == 0){
-
-                quitWithSuccessNoRunningCubes();
+                setTestSuccess(true);
+                terminate();
             }
             // if more than 0 running cubes
             else {
                 logger.write(methodName + "Found " +elastiCubes.size() + " running ElastiCubes: \n" + Arrays.toString(elastiCubes.toArray()));
-                testLog.setNumberOfElastiCubes(elastiCubes.size());
 
                 // execute REST API tests and remove ElastiCubes that their REST API tests succeeded
                 try {
@@ -97,84 +104,6 @@ public class MainTest {
 
         run(++attamptNumber);
 
-    }
-
-    private void quitWithSuccess(int numberOfElastiCubesTested){
-
-        String methodName = "[MainTest.quitWithSuccess] ";
-        testLog.setNumberOfElastiCubes(numberOfElastiCubesTested);
-        testLog.setHealthy(true);
-        testLog.setTestEndTime(new Date());
-
-        try {
-            WebAppDBConnection.sendOperation(testLog.toJSON());
-        } catch (ParseException | IOException | JSONException e) {
-            logger.write(methodName + "WARNING - Error sending test log:" + e.getMessage());
-        }
-        resultFile.write(true);
-        logger.write("[MainTest.quitWithSuccess] EXITING...");
-        System.exit(0);
-
-    }
-
-    private void quitWithElastiCubeFailures(int numberOfElastiCubesTested){
-        String methodName = "[MainTest.quitWithElastiCubeFailures] ";
-        testLog.setNumberOfElastiCubes(numberOfElastiCubesTested);
-        testLog.setHealthy(false);
-        testLog.setTestEndTime(new Date());
-
-        try {
-            WebAppDBConnection.sendOperation(testLog.toJSON());
-            SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed");
-        } catch (ParseException | IOException | JSONException e) {
-            logger.write(methodName + "WARNING - Error sending test log:" + e.getMessage());
-        }
-        resultFile.write(false);
-        logger.write("[MainTest.quitWithElastiCubeFailures] EXITING...");
-        System.exit(0);
-    }
-
-    private void quitWithSuccessNoRunningCubes(){
-        String methodName = "[MainTest.quitWithSuccessNoRunningCubes] ";
-        testLog.setNumberOfElastiCubes(0);
-        testLog.setHealthy(true);
-        testLog.setTestEndTime(new Date());
-        logger.write(methodName + "No ElastiCubes found, no errors from ECS.");
-        resultFile.write(true);
-        logger.write(methodName + " EXITING...");
-        System.exit(0);
-    }
-
-    private void quitWithRunFailure(){
-
-        // set test log
-        testLog.setNumberOfElastiCubes(0);
-        testLog.setHealthy(false);
-        testLog.setTestEndTime(new Date());
-        resultFile.write(false);
-        logger.write("[MainTest.quitWithRunFailure] EXITING...");
-
-        // notify slack
-        if (isSlackEnabled){
-            SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog tests exceeded" + maxNumberAttempts + " - test failed");
-        }
-
-        // notify webdb
-        try {
-            WebAppDBConnection.sendOperation(testLog.toJSON());
-        } catch (ParseException | IOException | JSONException e) {
-            logger.write("[App.run] WARNING - Error sending test log:" + e.getMessage());
-        }
-
-        // exit
-        System.exit(1);
-    }
-
-    private void quitWithPreRunFailure(String reasonForQuit){
-
-        logger.write("[MainTest.quitWithPreRunFailure] " + reasonForQuit);
-        logger.write("[MainTest.quitWithPreRunFailure] EXITING...");
-        System.exit(1);
     }
 
     private void setAndExecuteStrategy(){
@@ -219,6 +148,9 @@ public class MainTest {
                 SlackClient.getInstance()
                         .sendMessage(":warning: WARNING! REST API test failed for ElastiCube " +
                                 elastiCube.getName() + " with response code " + client.getResponseCode() + ", response body: " + client.getCallResponse() + " ");
+
+                setTestSuccess(false);
+
                 try {
                     executeMonetDBTest(elastiCube);
                 } catch (InterruptedException e) {
@@ -230,17 +162,50 @@ public class MainTest {
         logger.write(methodName + "REST API test results:");
         logger.write(TestResultToJSONConverter.toJSON(restAPITests).toString(3));
 
-        for (Map.Entry<String, Boolean> entry : restAPITests.entrySet()){
+        terminate();
 
-            // exit with success if REST API tests failed
-            if (!entry.getValue()){
-                quitWithElastiCubeFailures(elastiCubes.size());
-            }
-            // exit with success if REST API tests succeeded
-            else {
-                quitWithSuccess(elastiCubes.size());
-            }
+    }
+
+    private void terminate(){
+
+        testLog.setTestEndTime(new Date());
+
+        // send Slack notification if enabled and test failed
+        if (!isTestSuccess() && isSlackEnabled){
+            SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed for ");
         }
+
+        // send test to web app db
+        try {
+            WebAppDBConnection.sendOperation(testLog.toJSON());
+        } catch (IOException | ParseException | JSONException e) {
+            logger.write("[App.run] WARNING - Error sending test log:" + e.getMessage());
+        }
+        logger.write("EXITING...");
+        System.exit(0);
+
+    }
+
+    private void terminate(String reasonForFailure){
+
+        testLog.setTestEndTime(new Date());
+        testLog.setReasonForFailure(reasonForFailure);
+
+        // send Slack notification if enabled and test failed
+        if (!isTestSuccess() && isSlackEnabled){
+            SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed for ");
+        }
+
+        // send test to web app db
+        try {
+            WebAppDBConnection.sendOperation(testLog.toJSON());
+        } catch (IOException | ParseException | JSONException e) {
+            logger.write("[App.run] WARNING - Error sending test log:" + e.getMessage());
+        }
+
+        logger.write("EXITING...");
+        System.exit(0);
+
     }
 
     private void executeMonetDBTest(ElastiCube elastiCube) throws IOException, InterruptedException {
@@ -253,6 +218,20 @@ public class MainTest {
         logger.write("[MainTest.executeMonetDBTests] MonetDB query result for ElastiCube " + elastiCube.getName() + ":" + monetDBTest.isQuerySuccessful());
         testLog.addElastiCubeToFailedElastiCubes(elastiCube.getName(), monetDBTest.isQuerySuccessful());
 
+    }
+
+    private boolean isTestSuccess() {
+        return testSuccess;
+    }
+
+    private void setTestSuccess(boolean testSuccess) {
+        this.testSuccess = testSuccess;
+        testLog.setHealthy(testSuccess);
+    }
+
+    private void setNumberOfElastiCubes(int numberOfElastiCubes){
+        this.numberOfElastiCubes = numberOfElastiCubes;
+        testLog.setNumberOfElastiCubes(numberOfElastiCubes);
     }
 
 }

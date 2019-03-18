@@ -1,5 +1,4 @@
 import cmd_ops.CmdOperations;
-import file_ops.ConfigFile;
 import file_ops.VersionFile;
 import logging.Logger;
 import logging.TestLog;
@@ -15,7 +14,6 @@ import java.util.List;
 public class App {
 
     private static String runningLocation;
-    private static final ConfigFile configFile = ConfigFile.getInstance();
     private static final CmdOperations operations = CmdOperations.getInstance();
     private static Logger logger = Logger.getInstance();
     private static TestLog testLog = TestLog.getInstance();
