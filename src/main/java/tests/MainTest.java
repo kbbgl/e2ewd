@@ -181,7 +181,7 @@ public class MainTest {
         } catch (IOException | ParseException | JSONException e) {
             logger.write("[App.run] WARNING - Error sending test log:" + e.getMessage());
         }
-        logger.write("EXITING...");
+        logger.write("[MainTest.terminate] EXITING...");
         System.exit(0);
 
     }
@@ -203,7 +203,7 @@ public class MainTest {
             logger.write("[App.run] WARNING - Error sending test log:" + e.getMessage());
         }
 
-        logger.write("EXITING...");
+        logger.write("[MainTest.terminate] EXITING...");
         System.exit(0);
 
     }
