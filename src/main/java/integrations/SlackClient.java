@@ -26,12 +26,21 @@ public class SlackClient {
     private Logger logger = Logger.getInstance();
     private HttpClient httpClient = HttpClientBuilder.create().build();
     private HttpPost post;
-    private String hostname = CmdOperations.getInstance().getHostname();
+    private static String hostname;
 
     public static SlackClient getInstance() {
 
         if (instance == null){
             instance = new SlackClient();
+        }
+
+        // check if friendlyHostName was set in config file
+        if (!ConfigFile.getInstance().getFriendlyHostName().isEmpty() ||
+                !ConfigFile.getInstance().getFriendlyHostName().equals("")){
+            hostname = ConfigFile.getInstance().getFriendlyHostName();
+        }
+        else {
+            hostname = CmdOperations.getInstance().getHostname();
         }
         return instance;
     }

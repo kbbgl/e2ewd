@@ -23,6 +23,7 @@ public class ConfigFile {
     private boolean iisDump;
     private int port;
     private String slackWebhookURL;
+    private String friendlyHostName;
 
     private ConfigFile(){
         Properties properties = new Properties();
@@ -42,6 +43,7 @@ public class ConfigFile {
             setRequestTimeoutInSeconds(Integer.parseInt(properties.getProperty("requestTimeoutInSeconds")));
             setPort(Integer.parseInt(properties.getProperty("port")));
             setSlackWebhookURL(properties.getProperty("slackWebhookURL"));
+            setFriendlyHostName(properties.getProperty("friendlyHostName"));
 
         } catch (IOException e) {
             logger.write("[ConfigFile.instance] ERROR: reading configuration file - " + e.getMessage());
@@ -161,6 +163,7 @@ public class ConfigFile {
         configMap.put("ecsDump", String.valueOf(ecsDump));
         configMap.put("requestTimeoutInSeconds", String.valueOf(requestTimeoutInSeconds));
         configMap.put("slackWebhookURL", slackWebhookURL);
+        configMap.put("friendlyHostName", friendlyHostName);
 
         Set set = configMap.entrySet();
 
@@ -175,6 +178,14 @@ public class ConfigFile {
             }
         }
         return true;
+    }
+
+    private void setFriendlyHostName(String friendlyHostName) {
+        this.friendlyHostName = friendlyHostName;
+    }
+
+    public String getFriendlyHostName() {
+        return friendlyHostName;
     }
 
     @Override
