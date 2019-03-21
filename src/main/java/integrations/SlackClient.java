@@ -36,7 +36,8 @@ public class SlackClient {
 
         // check if friendlyHostName was set in config file
         if (!ConfigFile.getInstance().getFriendlyHostName().isEmpty() ||
-                !ConfigFile.getInstance().getFriendlyHostName().equals("")){
+                !ConfigFile.getInstance().getFriendlyHostName().equals("") ||
+                ConfigFile.getInstance().getFriendlyHostName() != null){
             hostname = ConfigFile.getInstance().getFriendlyHostName();
         }
         else {

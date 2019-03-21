@@ -1,12 +1,12 @@
 package testing;
 
-import cmd_ops.CmdOperations;
+import file_ops.ConfigFile;
 
 public class MainTest {
 
     public static void main(String[] args) {
 
-        System.out.println(CmdOperations.getInstance().getSisenseVersion());
+        System.out.println(ConfigFile.getInstance().getFriendlyHostName());
 
     }
 }
