@@ -20,6 +20,7 @@ public class CmdOperations {
     private final Runtime runtime = Runtime.getRuntime();
     private final Logger logger = Logger.getInstance();
     private final String procdumpPath = executionPath() + "\\procdump\\procdump.exe";
+    private final int PROCESS_TIMEOUT = 15;
 
     private CmdOperations(){
 
@@ -50,52 +51,57 @@ public class CmdOperations {
 
             Process listCubesCommand = runtime.exec(psmCmd, environmentalVariable);
             listCubesCommand.waitFor(15, TimeUnit.SECONDS);
-            // check that process hasn't timed out
-//            if (listCubesCommand.waitFor(15, TimeUnit.SECONDS)){
-                BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
-                BufferedReader errorInput = new BufferedReader(new InputStreamReader(listCubesCommand.getErrorStream()));
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
+            BufferedReader errorInput = new BufferedReader(new InputStreamReader(listCubesCommand.getErrorStream()));
 
-                Pattern listCubesPattern = Pattern.compile("Cube Name \\[(.*?)] ID : \\[(.*?)] FarmPath \\[(.*?)] Status \\[(.*?)]");
-                Pattern errorPattern = Pattern.compile("\\((.*?)\\)");
+            Pattern listCubesPattern = Pattern.compile("Cube Name \\[(.*?)] ID : \\[(.*?)] FarmPath \\[(.*?)] Status \\[(.*?)]");
+            Pattern errorPattern = Pattern.compile("\\((.*?)\\)");
 
-                String s;
-                while ((s = stdInput.readLine()) != null) {
-                    if (s.startsWith("Cube Name")){
-                        Matcher cubeNameMatcher = listCubesPattern.matcher(s);
-                        while (cubeNameMatcher.find()){
+            // Read stdout
+            String s;
+            while ((s = stdInput.readLine()) != null) {
+                if (s.startsWith("Cube Name")){
+                    Matcher cubeNameMatcher = listCubesPattern.matcher(s);
+                    while (cubeNameMatcher.find()){
 
-                            ElastiCube elastiCube = new ElastiCube(cubeNameMatcher.group(1), cubeNameMatcher.group(4));
-                            setElastiCubeProperties(elastiCube);
-
+                        ElastiCube elastiCube = new ElastiCube(cubeNameMatcher.group(1), cubeNameMatcher.group(4));
+                        setElastiCubeProperties(elastiCube);
 //                        logger.write("[getListElastiCubes] found " + elastiCube);
 
-                            // filter out all non running ElastiCubes
-                            if (elastiCube.getState().equals("RUNNING") && !elastiCube.isLocked()){
-                                if (elasticubes != null) {
-                                    elasticubes.add(elastiCube);
-                                }
+                        // filter out all non running ElastiCubes
+                        if (elastiCube.getState().equals("RUNNING") && !elastiCube.isLocked()){
+                            if (elasticubes != null) {
+                                elasticubes.add(elastiCube);
                             }
-
                         }
-                    } else {
-                        Matcher m = errorPattern.matcher(s);
-                        while (m.find()){
-                            logger.write("[getListElastiCubes] ERROR: " + m.group(1));
 
-                            if (m.group(1).equals("the server, 'localhost', is not responding.")){
-                                elasticubes = null;
-                            }
+                    }
+                } else {
+                    Matcher m = errorPattern.matcher(s);
+                    while (m.find()){
+                        logger.write("[getListElastiCubes] ERROR: " + m.group(1));
 
+                        if (m.group(1).equals("the server, 'localhost', is not responding.")){
+                            elasticubes = null;
                         }
+
                     }
                 }
+            }
 
-                String e;
-                while ((e = errorInput.readLine()) != null){
+            // Read stderr
+            String e;
+            while ((e = errorInput.readLine()) != null){
                     logger.write("[getListElastiCubes] ERROR: " + e);
                 }
 
-            listCubesCommand.destroyForcibly();
+            // Check for timeout
+            if (!listCubesCommand.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+
+                logger.write("[CmdOperations.getListElastiCubes] Operation timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
+                listCubesCommand.destroy();
+            }
+
         } catch (IOException | InterruptedException e) {
             logger.write("[CmdOperations.getListElastiCubes] ERROR: " + e.getMessage());
             e.printStackTrace();
@@ -115,30 +121,31 @@ public class CmdOperations {
 
         Process ecubePortCommand = Runtime.getRuntime().exec(psmCmd);
 
-        // Check that process hasn't timed out
-        if (ecubePortCommand.waitFor(30, TimeUnit.SECONDS)){
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubePortCommand.getInputStream()));
-            BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubePortCommand.getErrorStream()));
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubePortCommand.getInputStream()));
+        BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubePortCommand.getErrorStream()));
 
-            String s;
-            while ((s = stdInput.readLine()) != null){
-                if (s.startsWith("Port")){
-                    int port = Integer.parseInt(s.split("Port: ")[1]);
-                    elastiCube.setPort(port);
-                } else if (s.startsWith("IsLocked")){
-                    boolean locked = Boolean.valueOf(s.split("IsLocked: ")[1]);
-                    elastiCube.setLocked(locked);
-                }
-            }
-
-            String e;
-            while ((e = errorStream.readLine()) != null){
-                logger.write("[setElastiCubeProperties] ERROR " + e);
+        // read stdin
+        String s;
+        while ((s = stdInput.readLine()) != null){
+            if (s.startsWith("Port")){
+                int port = Integer.parseInt(s.split("Port: ")[1]);
+                elastiCube.setPort(port);
+            } else if (s.startsWith("IsLocked")){
+                boolean locked = Boolean.valueOf(s.split("IsLocked: ")[1]);
+                elastiCube.setLocked(locked);
             }
         }
-        // process timed out
-        else {
-            logger.write("[CmdOperations.setElastiCubeProperties] Operation timed out");
+
+        // Read stderr
+        String e;
+        while ((e = errorStream.readLine()) != null){
+            logger.write("[setElastiCubeProperties] ERROR " + e);
+        }
+
+        // Check that process hasn't timed out
+        if (!ecubePortCommand.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+            logger.write("[CmdOperations.setElastiCubeProperties] Operation timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
+            ecubePortCommand.destroy();
         }
     }
 
@@ -157,41 +164,39 @@ public class CmdOperations {
 
         Process monetDBQueryCmd = runtime.exec(psmCmd, null, new File(executionPath() + "\\mclient\\"));
 
-        // check that process hasn't timed out
-        if (monetDBQueryCmd.waitFor(30, TimeUnit.SECONDS)){
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getInputStream()));
+        BufferedReader errorStream = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getErrorStream()));
 
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getInputStream()));
-            BufferedReader errorStream = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getErrorStream()));
-
-            String s;
-            while ((s = stdInput.readLine()) != null) {
-                try {
-                    if (Integer.parseInt(s) == 1){
-                        success = true;
-
-                    }
-
-                } catch (NumberFormatException e){
-
-                    logger.write("[isMonetDBQuerySuccessful] ERROR - " + e.getMessage());
-                    return success;
+        // Read stdin
+        String s;
+        while ((s = stdInput.readLine()) != null) {
+            try {
+                if (Integer.parseInt(s) == 1){
+                    success = true;
 
                 }
 
-//            logger.write("[isMonetDBQuerySuccessful] result for " + elastiCube.getName() + ": " + s);
-//            if (Integer.parseInt(s) == 1) {
-//                return true;
-//            }
+            } catch (NumberFormatException e){
+
+                logger.write("[isMonetDBQuerySuccessful] ERROR - " + e.getMessage());
+                return success;
+
             }
 
-            String e;
-            while ((e = errorStream.readLine()) != null){
-                logger.write("[isMonetDBQuerySuccessful] ERROR " + e);
-            }
         }
-        // process timed out
-        else {
-            logger.write("[CmdOperations.isMonetDBQuerySuccessful] Operation timed out");
+
+
+        // Read stderr
+        String e;
+        while ((e = errorStream.readLine()) != null){
+            logger.write("[isMonetDBQuerySuccessful] ERROR " + e);
+        }
+
+        // Check for process timeout
+        if(!monetDBQueryCmd.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+            logger.write("[CmdOperations.isMonetDBQuerySuccessful] Operation timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
+            monetDBQueryCmd.destroy();
+            return false;
         }
 
         return success;
@@ -203,35 +208,31 @@ public class CmdOperations {
             Process process = runtime.
                     exec("reg QUERY HKEY_LOCAL_MACHINE\\SOFTWARE\\Sisense\\ECS /v Version");
 
-            // check that process hasn't timed out
-            if (process.waitFor(30, TimeUnit.SECONDS)){
+            StringWriter stringWriter = new StringWriter();
 
-                StringWriter stringWriter = new StringWriter();
+            try (InputStream inputStream = process.getInputStream()){
 
-                try (InputStream inputStream = process.getInputStream()){
-
-                    int c;
-                    while ((c = inputStream .read()) != -1){
-                        stringWriter.write(c);
-                    }
+                int c;
+                while ((c = inputStream .read()) != -1){
+                    stringWriter.write(c);
                 }
-
-                try (InputStream errorStream = process.getErrorStream()){
-
-                    int e;
-                    while ((e = errorStream.read()) != -1){
-                        logger.write("[CmdOperations.getSisenseVersion] ERROR " + e);
-                    }
-                }
-
-                process.destroy();
-                return stringWriter.toString().split("   ")[3].trim();
             }
-            // operation timed out
-            else {
-                logger.write("[CmdOperations.getSisenseVersion] Operation timed out");
+
+            try (InputStream errorStream = process.getErrorStream()){
+
+                int e;
+                while ((e = errorStream.read()) != -1){
+                    logger.write("[CmdOperations.getSisenseVersion] ERROR " + e);
+                }
+            }
+
+            // Check if operation timed out
+            if (!process.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+                logger.write("[CmdOperations.getSisenseVersion] Operation timed out (" + PROCESS_TIMEOUT + "s.)");
+                process.destroy();
                 return "CANNOT DETECT";
             }
+            return stringWriter.toString().split("   ")[3].trim();
 
         } catch (IOException | InterruptedException e) {
             logger.write("ERROR: retrieving Sisense version - " + e.getMessage());
@@ -239,6 +240,7 @@ public class CmdOperations {
         }
     }
 
+    // TODO add indication to mongo and Slack about dump occurrance
     public void w3wpDump(){
 
         String command = procdumpPath + " -accepteula -o -ma w3wp iis_dump.dmp";
@@ -249,14 +251,12 @@ public class CmdOperations {
             Process process = runtime.exec(command);
 
             // check that process hasn't timed out
-            if (process.waitFor(30, TimeUnit.SECONDS)){
+            if (!process.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+                logger.write("[CmdOperations.w3wpDump] Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
+                process.destroy();
+            } else {
                 logger.write("[CmdOperations.w3wpDump] Operation successful");
             }
-            // operation timed out
-            else {
-                logger.write("[CmdOperations.w3wpDump] Operation timed out");
-            }
-
 
         } catch (IOException | InterruptedException e) {
             logger.write("ERROR: running command" + command + " - " + e.getMessage());
@@ -264,6 +264,7 @@ public class CmdOperations {
 
     }
 
+    // TODO add indication to mongo and Slack about dump occurrance
     public void ecsDump(){
 
         String command = procdumpPath + " -accepteula -o -ma ElastiCube.ManagementService ecs_dump.dmp";
@@ -274,12 +275,12 @@ public class CmdOperations {
             Process process = runtime.exec(command);
 
             // check that process hasn't timed out
-            if (process.waitFor(30, TimeUnit.SECONDS)) {
-                logger.write("[CmdOperations.ecsDump] Operation successful");
+            if (!process.waitFor(30, TimeUnit.SECONDS)) {
+                logger.write("[CmdOperations.ecsDump] Operation timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
+                process.destroy();
             }
-            // operation timed out
-            else{
-                logger.write("[CmdOperations.ecsDump] Operation timed out");
+            else {
+                logger.write("[CmdOperations.ecsDump] Operation successful");
             }
 
         } catch (IOException | InterruptedException e) {
@@ -304,30 +305,26 @@ public class CmdOperations {
         try {
             Process psProcess = runtime.exec(restartCommand);
 
+            String line;
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream()))) {
+                while ((line = reader.readLine()) != null){
+                    logger.write("[CmdOperations.restartECS] output: " + line);
+                }
+                SlackClient.getInstance().sendMessage("ECS restarted.");
+            }
+
+            String error;
+            try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream()))) {
+                while ((error = errorReader.readLine()) != null){
+                    logger.write("[CmdOperations.restartECS] ERROR: " + error);
+                }
+            }
+
             // check that process hasn't timed out
-            if (psProcess.waitFor(30, TimeUnit.SECONDS)){
-                logger.write("[CmdOperations.restartECS] Operation successful");
-                SlackClient.getInstance().sendMessage("ECS restarted ");
-
-                String line;
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream()))) {
-                    while ((line = reader.readLine()) != null){
-                        logger.write("[CmdOperations.restartECS] output: " + line);
-                    }
-                }
-
-                String error;
-                try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream()))) {
-                    while ((error = errorReader.readLine()) != null){
-                        logger.write("[CmdOperations.restartECS] ERROR: " + error);
-                    }
-                }
+            if (!psProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+                logger.write("[CmdOperations.restartECS] Operation timed out (" + PROCESS_TIMEOUT + "s.) Destroying process...");
+                psProcess.destroy();
             }
-            // operation timed out
-            else {
-                logger.write("[CmdOperations.restartECS] Operation timed out");
-            }
-
 
         } catch (IOException | InterruptedException e) {
             logger.write( methodName + "ERROR: " + e.getMessage());
@@ -335,7 +332,7 @@ public class CmdOperations {
 
     }
 
-    public void restartIIS(){
+    public void restartIIS() {
 
         String methodName = "[CmdOperations.restartIIS] ";
         String restartCommand = "iisreset";
@@ -343,30 +340,29 @@ public class CmdOperations {
         try {
             Process psProcess = runtime.exec(restartCommand);
 
-            // check that operation hasn't timed out
-            if (psProcess.waitFor(30, TimeUnit.SECONDS)){
-                String line;
+            String line;
+            logger.write(methodName + "restart command output:");
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream()))) {
+                while ((line = reader.readLine()) != null){
+                    logger.write("[CmdOperations.restartIIS] output: " + line);
+                }
                 SlackClient.getInstance().sendMessage("IIS restarted ");
+            }
 
-                logger.write(methodName + "restart command output:");
-
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream()))) {
-                    while ((line = reader.readLine()) != null){
-                        logger.write("[CmdOperations.restartIIS] output: " + line);
-                    }
-                }
-
-                String error;
-                try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream()))) {
-                    while ((error = errorReader.readLine()) != null){
-                        logger.write("[CmdOperations.restartIIS] ERROR: " + error);
-                    }
+            String error;
+            try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream()))) {
+                while ((error = errorReader.readLine()) != null){
+                    logger.write("[CmdOperations.restartIIS] ERROR: " + error);
                 }
             }
-            // operation timed out
-            else{
-                logger.write("[CmdOperations.restartIIS] Operation timed out");
+
+            // check that operation hasn't timed out
+            if (!psProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+                logger.write("[CmdOperations.restartIIS] Operation timed out (" +PROCESS_TIMEOUT + "s.) Destroying process...");
+                psProcess.destroy();
             }
+
         } catch (IOException | InterruptedException e) {
             logger.write( "[CmdOperations.restartIIS] ERROR: " + e.getMessage());
         }
@@ -379,30 +375,26 @@ public class CmdOperations {
         try {
             Process getHostnameProcess = runtime.exec(cmd);
 
-            // check that operation hasn't timed out
-            if (getHostnameProcess.waitFor(15, TimeUnit.SECONDS)){
-                BufferedReader reader = new BufferedReader(new InputStreamReader(getHostnameProcess.getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(getHostnameProcess.getInputStream()));
 
-                String s;
-                while ((s = reader.readLine()) != null){
-                    hostname = s;
-                }
-
-                return hostname;
-            }
-            // operation timed out
-            else {
-                logger.write("[CmdOperations.getHostname] Operation timed out");
-                return null;
+            String s;
+            while ((s = reader.readLine()) != null){
+                hostname = s;
             }
 
-        } catch (IOException e) {
+            if (!getHostnameProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+                logger.write("[CmdOperations.getHostname] Operation timed out " + PROCESS_TIMEOUT + "s.) Destroying process.");
+                getHostnameProcess.destroy();
+                return "";
+            }
+
+            return hostname;
+
+        } catch (IOException | InterruptedException e) {
             logger.write("[getHostname] ERROR: Can't get hostname - " + e.getMessage());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            return "";
         }
 
-        return null;
     }
 
     private String executionPath(){
