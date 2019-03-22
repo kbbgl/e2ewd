@@ -15,15 +15,7 @@
 * ElastiCube Server internal connectivity.
 * REST API is queriable.
 
-Tests are performed for all ElastiCubes with are in _RUNNING_ mode.
-
-### Result
-Once the application finishes execution, it will create a file in:
-`[path/to/dir]/build/libs/run/result.txt`
-which will contain a `boolean` as the result, i.e. `true` means that **ALL** ElastiCube tests ran successfully.
-
-If you've set `ecsDump`, `iisDump` to `true`, it will create a dump file of the respective process in the parent folder. 
-The dump includes a snapshot of the process memory set which can be useful in troubleshooting the root cause.  
+Tests are performed for all ElastiCubes with are in _RUNNING_ mode.  
 
 ### Instructions
 Installer available [here](https://github.com/kbbgl/e2ewd_installer). It will download assets and create the configuration file automatically.
@@ -46,7 +38,16 @@ Installer available [here](https://github.com/kbbgl/e2ewd_installer). It will do
  | (Optional) `slackWebhookURL`  | If set, the application will send a notification in the Slack channel. To retrieve, visit [Slack Incoming webhook documentation](https://api.slack.com/incoming-webhooks.) | `String`  | `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX` |
  | (Optional) `friendlyHostName` | Server alias. Will be used to notify Slack channel.                                                                                                                        | `String`  | `QUERY-NODE-1`                                                                  |
 
-4) Run the `run.bat` file as an Administrator.  
+ 4.Run the `run.bat` file as an Administrator.  
+    
+    
+### Result
+Once the application finishes execution, it will create a file in:
+`[path/to/dir]/build/libs/run/result.txt`
+which will contain a `boolean` as the result, i.e. `true` means that **ALL** ElastiCube tests ran successfully.
+    
+If you've set `ecsDump`, `iisDump` to `true`, it will create a dump file of the respective process in the parent folder. 
+The dump includes a snapshot of the process memory set which can be useful in troubleshooting the root cause.
     
 ### Troubleshooting
 See log file located in:
