@@ -3,7 +3,7 @@
 
 [![GitHub issues](https://img.shields.io/github/issues/kbbgl/e2ewd.svg?style=plastic)](https://github.com/kbbgl/e2ewd/issues)
 
-[![GitHub repo size in bytes](https://img.shields.io/github/repo-size/badges/shields.svg)](https://github.com/kbbgl/e2ewd)
+[![GitHub repo size in bytes](https://img.shields.io/github/languages/code-size/kbbgl/e2ewd.svg?label=Project%20Size&style=flat-square)](https://github.com/kbbgl/e2ewd)
 
 [![Depfu](https://img.shields.io/depfu/depfu/example-ruby.svg)](https://github.com/kbbgl/e2ewd)
 
@@ -18,7 +18,6 @@
 Tests are performed for all ElastiCubes with are in _RUNNING_ mode.  
 
 ### Instructions
-Installer available [here](https://github.com/kbbgl/e2ewd_installer). It will download assets and create the configuration file automatically.
 
 1) Download or clone the project to the Sisense server. 
 2) Navigate to `[path/to/dir]/build/libs/` (where `[path/to/dir]` is where you saved the project.)
