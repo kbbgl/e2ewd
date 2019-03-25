@@ -169,6 +169,7 @@ public class MainTest {
     private void terminate(){
 
         testLog.setTestEndTime(new Date());
+        testLog.setHealthy(testSuccess);
 
         // send Slack notification if enabled and test failed
         if (!isTestSuccess() && isSlackEnabled){
@@ -193,6 +194,7 @@ public class MainTest {
 
         testLog.setTestEndTime(new Date());
         testLog.setReasonForFailure(reasonForFailure);
+        testLog.setHealthy(testSuccess);
 
         // send Slack notification if enabled and test failed
         if (!isTestSuccess() && isSlackEnabled){
