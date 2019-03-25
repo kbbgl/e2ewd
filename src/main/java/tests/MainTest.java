@@ -182,6 +182,7 @@ public class MainTest {
             logger.write("[App.run] WARNING - Error sending test log:" + e.getMessage());
         }
         logger.write("[MainTest.terminate] EXITING...");
+        resultFile.write(testSuccess);
         System.exit(0);
 
     }
@@ -204,6 +205,7 @@ public class MainTest {
         }
 
         logger.write("[MainTest.terminate] EXITING...");
+        resultFile.write(testSuccess);
         System.exit(0);
 
     }
