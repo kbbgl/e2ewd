@@ -80,7 +80,7 @@ public class SlackClient {
         char boldChar = '*';
 
         Map<String, String> map = new HashMap<>();
-        map.put("text", message + boldChar + hostname + boldChar);
+        map.put("text", message + boldChar + " for host "  + hostname + boldChar);
         JSONObject jsonObject = new JSONObject(map);
 
         return new StringEntity(jsonObject.toString());

@@ -144,19 +144,19 @@ class SisenseRESTAPIClient{
         return rootObject;
     }
 
-    public void setCallResponse(String callResponse) {
+    private void setCallResponse(String callResponse) {
         this.callResponse = callResponse;
     }
 
-    public void setResponseCode(int responseCode) {
+    private void setResponseCode(int responseCode) {
         this.responseCode = responseCode;
     }
 
-    public int getResponseCode() {
+    int getResponseCode() {
         return responseCode;
     }
 
-    public String getCallResponse() {
+    String getCallResponse() {
         return callResponse;
     }
 }

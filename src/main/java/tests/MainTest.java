@@ -146,8 +146,8 @@ public class MainTest {
             // check if test failed and send warning and execute MonetDB query
             if (!client.isCallSuccessful()){
                 SlackClient.getInstance()
-                        .sendMessage(":warning: WARNING! REST API test failed for ElastiCube " +
-                                elastiCube.getName() + " with response code " + client.getResponseCode() + ", response body: " + client.getCallResponse() + " ");
+                        .sendMessage(":warning: WARNING! REST API test failed for ElastiCube *" +
+                                elastiCube.getName() + "* with response code *" + client.getResponseCode() + "*, response body: " + client.getCallResponse() + " ");
 
                 setTestSuccess(false);
 
