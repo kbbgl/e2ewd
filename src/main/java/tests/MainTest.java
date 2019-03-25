@@ -185,7 +185,6 @@ public class MainTest {
         ResultFile.getInstance().write(testSuccess);
         logger.write("[MainTest.terminate] Test result: " + testSuccess);
         logger.write("[MainTest.terminate] EXITING...");
-        resultFile.write(testSuccess);
         System.exit(0);
 
     }
@@ -210,7 +209,6 @@ public class MainTest {
         ResultFile.getInstance().write(testSuccess);
         logger.write("[MainTest.terminate] Test result: " + testSuccess);
         logger.write("[MainTest.terminate] EXITING...");
-        resultFile.write(testSuccess);
         System.exit(0);
 
     }
