@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class SlackClient {
 
     private static SlackClient instance;
-    private static Logger logger = LoggerFactory.getLogger(SlackClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(SlackClient.class);
     private HttpClient httpClient = HttpClientBuilder.create().build();
     private HttpPost post;
     private static String hostname;
@@ -33,8 +33,8 @@ public class SlackClient {
     public static SlackClient getInstance() {
 
         if (instance == null){
-            logger.debug("SlackClient instance created.");
             instance = new SlackClient();
+            logger.debug("SlackClient instance created.");
         }
 
         // check if friendlyHostName was set in config file

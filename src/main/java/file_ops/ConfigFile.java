@@ -215,7 +215,7 @@ public class ConfigFile {
                 "iisDump:" + iisDump + ",\n\t" +
                 "ecsDump:" + ecsDump + "\n\t" +
                 "slackWebhookURL:" + slackWebhookURL + "\n\t" +
-                "friendlyHostName :" + friendlyHostName + "\n\t" +
+                "friendlyHostName:" + friendlyHostName + "\n\t" +
                 "}";
     }
 }
