@@ -99,7 +99,7 @@ public class CmdOperations {
             if (!listCubesCommand.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
 
                 logger.write("[CmdOperations.getListElastiCubes] Operation timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
-                listCubesCommand.destroy();
+                listCubesCommand.destroyForcibly();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -253,7 +253,7 @@ public class CmdOperations {
             // check that process hasn't timed out
             if (!process.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
                 logger.write("[CmdOperations.w3wpDump] Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
-                process.destroy();
+                process.destroyForcibly();
             } else {
                 logger.write("[CmdOperations.w3wpDump] Operation successful");
             }
@@ -277,7 +277,7 @@ public class CmdOperations {
             // check that process hasn't timed out
             if (!process.waitFor(30, TimeUnit.SECONDS)) {
                 logger.write("[CmdOperations.ecsDump] Operation timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
-                process.destroy();
+                process.destroyForcibly();
             }
             else {
                 logger.write("[CmdOperations.ecsDump] Operation successful");
@@ -323,7 +323,7 @@ public class CmdOperations {
             // check that process hasn't timed out
             if (!psProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
                 logger.write("[CmdOperations.restartECS] Operation timed out (" + PROCESS_TIMEOUT + "s.) Destroying process...");
-                psProcess.destroy();
+                psProcess.destroyForcibly();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -360,7 +360,7 @@ public class CmdOperations {
             // check that operation hasn't timed out
             if (!psProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
                 logger.write("[CmdOperations.restartIIS] Operation timed out (" +PROCESS_TIMEOUT + "s.) Destroying process...");
-                psProcess.destroy();
+                psProcess.destroyForcibly();
             }
 
         } catch (IOException | InterruptedException e) {
@@ -384,7 +384,7 @@ public class CmdOperations {
 
             if (!getHostnameProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
                 logger.write("[CmdOperations.getHostname] Operation timed out " + PROCESS_TIMEOUT + "s.) Destroying process.");
-                getHostnameProcess.destroy();
+                getHostnameProcess.destroyForcibly();
                 return "";
             }
 
