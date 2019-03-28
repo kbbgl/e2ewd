@@ -1,19 +1,26 @@
 package run_strategy;
 
 import cmd_ops.CmdOperations;
-import logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 public class ECSDumpStrategy implements RunStrategy {
 
     private CmdOperations cmdOperations = CmdOperations.getInstance();
-    private Logger logger = Logger.getInstance();
+    private final Logger logger = LoggerFactory.getLogger(ECSDumpStrategy.class);
 
     @Override
     public void execute() {
 
-        logger.write("ECSDumpStrategy chosen");
+        logger.info("Executing ECSDumpStrategy...");
 
-        cmdOperations.ecsDump();
+        try {
+            cmdOperations.ecsDump();
+        } catch (InterruptedException | IOException e) {
+            logger.error("Error executing ECS memory dump: " + e.getMessage());
+        }
 
     }
 }

@@ -1,18 +1,26 @@
 package run_strategy;
 
 import cmd_ops.CmdOperations;
-import logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 public class IISResetStrategy implements RunStrategy {
 
-    private Logger logger = Logger.getInstance();
     private CmdOperations cmdOperations = CmdOperations.getInstance();
+    private final Logger logger = LoggerFactory.getLogger(IISResetStrategy.class);
 
     @Override
     public void execute() {
 
-        logger.write("IISResetStrategy chosen");
-        cmdOperations.restartIIS();
+        logger.info("Executing IISResetStrategy...");
+
+        try {
+            cmdOperations.restartIIS();
+        } catch (IOException | InterruptedException e) {
+            logger.error("Failed to run iisreset: " + e.getMessage());
+        }
 
     }
 

@@ -1,6 +1,7 @@
 package file_ops;
 
-import logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -12,7 +13,7 @@ import java.util.*;
 public class ConfigFile {
 
     private static ConfigFile configFileInstance = new ConfigFile();
-    private Logger logger = Logger.getInstance();
+    private static Logger logger = LoggerFactory.getLogger(ConfigFile.class);
     private String token;
     private String host;
     private String protocol;
@@ -26,49 +27,58 @@ public class ConfigFile {
     private String friendlyHostName;
 
     private ConfigFile(){
+
         Properties properties = new Properties();
         InputStream input;
 
-        try {
-            input = new FileInputStream(executionPath() + "/config.properties");
-            properties.load(input);
+        if (executionPath() != null){
+            try {
+                input = new FileInputStream(executionPath() + "/config.properties");
+                logger.debug("Reading config.properties file...");
+                properties.load(input);
 
-            setToken(properties.getProperty("token"));
-            setHost(properties.getProperty("host"));
-            setProtocol(properties.getProperty("protocol"));
-            setRestartECS(Boolean.parseBoolean(properties.getProperty("restartECS")));
-            setRestartIIS(Boolean.parseBoolean(properties.getProperty("restartIIS")));
-            setEcsDump(Boolean.parseBoolean(properties.getProperty("ecsDump")));
-            setIisDump(Boolean.parseBoolean(properties.getProperty("iisDump")));
-            setRequestTimeoutInSeconds(Integer.parseInt(properties.getProperty("requestTimeoutInSeconds")));
-            setPort(Integer.parseInt(properties.getProperty("port")));
-            setSlackWebhookURL(properties.getProperty("slackWebhookURL"));
-            setFriendlyHostName(properties.getProperty("friendlyHostName"));
+                setToken(properties.getProperty("token"));
+                setHost(properties.getProperty("host"));
+                setProtocol(properties.getProperty("protocol"));
+                setRestartECS(Boolean.parseBoolean(properties.getProperty("restartECS")));
+                setRestartIIS(Boolean.parseBoolean(properties.getProperty("restartIIS")));
+                setEcsDump(Boolean.parseBoolean(properties.getProperty("ecsDump")));
+                setIisDump(Boolean.parseBoolean(properties.getProperty("iisDump")));
+                setRequestTimeoutInSeconds(Integer.parseInt(properties.getProperty("requestTimeoutInSeconds")));
+                setPort(Integer.parseInt(properties.getProperty("port")));
+                setSlackWebhookURL(properties.getProperty("slackWebhookURL"));
+                setFriendlyHostName(properties.getProperty("friendlyHostName"));
 
-        } catch (IOException e) {
-            logger.write("[ConfigFile.instance] ERROR: reading configuration file - " + e.getMessage());
-        } catch (NumberFormatException e){
-            logger.write("ERROR: reading reading port - " + e.getMessage());
+            } catch (IOException e) {
+                logger.error("Error reading config.properties: " + e.getMessage() + ". Terminating...");
+                System.exit(0);
+            } catch (NumberFormatException e){
+                logger.error("Error parsing port number " + e.getMessage() + ". Terminating...");
+                System.exit(0);
+            }
+        } else {
+            logger.error("JAR execution path returned null. Terminating...");
+            System.exit(0);
         }
+
     }
 
     public static ConfigFile getInstance(){
         if (configFileInstance == null){
+            logger.debug("Created ConfigFile instance");
             configFileInstance = new ConfigFile();
         }
         return configFileInstance;
     }
 
     private String executionPath(){
-        String jarLocation = null;
         try {
-            jarLocation = new File(ConfigFile.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath();
-            Path path = Paths.get(jarLocation);
+            Path path = Paths.get(new File(ConfigFile.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath());
             return String.valueOf(path.getParent());
         } catch (IOException | URISyntaxException e) {
-            logger.write("ERROR: " + e.getMessage());
+            logger.error("Error getting JAR execution path: " + e.getMessage());
+            return null;
         }
-        return jarLocation;
     }
 
     private void setToken(String token) {
@@ -151,34 +161,6 @@ public class ConfigFile {
         this.slackWebhookURL = slackWebhookURL;
     }
 
-    public boolean isConfigFileValid(){
-        HashMap<String, String> configMap = new HashMap<>(5);
-        configMap.put("token", token);
-        configMap.put("host", host);
-        configMap.put("protocol", protocol);
-        configMap.put("port", String.valueOf(port));
-        configMap.put("restartECS", String.valueOf(restartECS));
-        configMap.put("restartIIS", String.valueOf(restartIIS));
-        configMap.put("iisDump", String.valueOf(iisDump));
-        configMap.put("ecsDump", String.valueOf(ecsDump));
-        configMap.put("requestTimeoutInSeconds", String.valueOf(requestTimeoutInSeconds));
-        configMap.put("slackWebhookURL", slackWebhookURL);
-        configMap.put("friendlyHostName", friendlyHostName);
-
-        Set set = configMap.entrySet();
-
-        for (Object o : set) {
-            Map.Entry mapEntry = (Map.Entry) o;
-            if (String.valueOf(mapEntry.getValue()).isEmpty()) {
-                logger.write(mapEntry.getKey() + " is empty.");
-                return false;
-            } else if (String.valueOf(mapEntry.getValue()).equals("0")) {
-                logger.write(mapEntry.getKey() + " is 0.");
-                return false;
-            }
-        }
-        return true;
-    }
 
     private void setFriendlyHostName(String friendlyHostName) {
         this.friendlyHostName = friendlyHostName;
@@ -187,6 +169,37 @@ public class ConfigFile {
     public String getFriendlyHostName() {
         return friendlyHostName;
     }
+
+    public boolean isConfigFileValid(){
+        HashMap<String, String> configMap = new HashMap<>(5);
+        configMap.put("token", token);
+        configMap.put("host", host);
+        configMap.put("protocol", protocol);
+        configMap.put("port", String.valueOf(port));
+        configMap.put("requestTimeoutInSeconds", String.valueOf(requestTimeoutInSeconds));
+
+        Set set = configMap.entrySet();
+
+        for (Object o : set) {
+            Map.Entry mapEntry = (Map.Entry) o;
+            if (String.valueOf(mapEntry.getValue()).isEmpty()) {
+                logger.error(mapEntry.getKey() + " is empty.");
+                return false;
+            } else if (String.valueOf(mapEntry.getValue()).equals("0")) {
+                logger.error(mapEntry.getKey() + " is 0.");
+                return false;
+            } else if (mapEntry.getKey().equals("port") || mapEntry.getKey().equals("requestTimeoutInSeconds")){
+                try {
+                    Integer.parseInt(String.valueOf(mapEntry.getValue()));
+                } catch (NumberFormatException e){
+                    logger.error(mapEntry.getKey() + " is not of type int. Current value is:" + mapEntry.getValue());
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
     @Override
     public String toString() {
@@ -201,6 +214,7 @@ public class ConfigFile {
                 "iisDump:" + iisDump + ",\n\t" +
                 "ecsDump:" + ecsDump + "\n\t" +
                 "slackWebhookURL:" + slackWebhookURL + "\n\t" +
+                "friendlyHostName :" + friendlyHostName + "\n\t" +
                 "}";
     }
 }

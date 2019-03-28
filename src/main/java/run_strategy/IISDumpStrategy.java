@@ -1,18 +1,26 @@
 package run_strategy;
 
 import cmd_ops.CmdOperations;
-import logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 public class IISDumpStrategy implements RunStrategy {
 
     private CmdOperations cmdOperations = CmdOperations.getInstance();
-    private Logger logger = Logger.getInstance();
+    private final Logger logger = LoggerFactory.getLogger(IISDumpStrategy.class);
 
     @Override
     public void execute() {
 
-        logger.write("IISDumpStrategy chosen");
-        cmdOperations.w3wpDump();
+        logger.info("Executing IISDumpStrategy...");
+
+        try {
+            cmdOperations.w3wpDump();
+        } catch (IOException | InterruptedException e) {
+            logger.error("Error creating IIS memory dump: " + e.getMessage());
+        }
 
     }
 }

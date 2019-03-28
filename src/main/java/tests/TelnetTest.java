@@ -1,21 +1,25 @@
 package tests;
 
-import logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.net.Socket;
+import java.util.Arrays;
 
-public class TelnetTest {
+class TelnetTest {
 
-    private static final String className = "[TelnetTest] ";
+    private static final Logger logger = LoggerFactory.getLogger(TelnetTest.class);
 
-    public static void isConnected(String host, int port){
+    static void isConnected(int port){
 
-        try (Socket socket = new Socket(host, port)){
-            Logger.getInstance().write(className  + socket.isConnected());
+        logger.info("Checking socket connectivity for " + "localhost" + ":" + port + "..");
 
-        } catch (IOException e) {
-            Logger.getInstance().write(className  + "ERROR: connecting to " + host + ":" + port + " - " +e.getMessage());
+        try (Socket socket = new Socket("localhost", port)){
+            logger.info("Socket open: " + socket.isConnected());
+
+        } catch (Exception e) {
+            logger.error("Socket test failed: " + e.getMessage());
+            logger.error(Arrays.toString(e.getStackTrace()));
         }
 
     }

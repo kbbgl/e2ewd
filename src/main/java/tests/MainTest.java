@@ -4,13 +4,14 @@ import file_ops.ConfigFile;
 import file_ops.ResultFile;
 import integrations.SlackClient;
 import integrations.WebAppDBConnection;
-import logging.Logger;
 import logging.TestLog;
 import logging.TestResultToJSONConverter;
 import models.ElastiCube;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import run_strategy.*;
 
 import java.io.IOException;
@@ -19,12 +20,12 @@ import java.util.*;
 
 public class MainTest {
 
+    private final Logger logger = LoggerFactory.getLogger(MainTest.class);
     private boolean testSuccess;
     private int attamptNumber;
     private final int maxNumberAttempts = 5;
     private int numberOfElastiCubes;
     private List<ElastiCube> elastiCubes;
-    private Logger logger = Logger.getInstance();
     private ResultFile resultFile = ResultFile.getInstance();
     private ConfigFile configFile = ConfigFile.getInstance();
     private boolean isSlackEnabled = !configFile.getSlackWebhookURL().isEmpty();
@@ -36,6 +37,7 @@ public class MainTest {
     }
 
     public void init() throws JSONException {
+        logger.debug("Initiating test...");
         preRun();
 
         attamptNumber = 1;
@@ -43,19 +45,17 @@ public class MainTest {
     }
 
     private void preRun(){
-
+        logger.debug("Executing pre-run test validations...");
         resultFile.delete();
         if (!configFile.isConfigFileValid()){
             terminate("Invalid config.properties file");
         } else {
-            logger.write(configFile.toString());
+            logger.info(configFile.toString());
             resultFile.create();
         }
     }
 
     private void run(int attempt) throws JSONException {
-
-        String methodName = "[MainTest.Run] ";
 
         // Set test success initially
         setTestSuccess(true);
@@ -63,13 +63,13 @@ public class MainTest {
         // Check number of attempts
         if (attempt > maxNumberAttempts){
             String message = "Max number of attempts " + maxNumberAttempts + " exceeded.";
-            logger.write(methodName + message);
+            logger.warn(message);
             setTestSuccess(false);
             setNumberOfElastiCubes(0);
             terminate(message);
         }
 
-        logger.write(methodName + "Attempt number " + attempt);
+        logger.info("Attempt number " + attempt);
 
         // check to see if 0 elasticubes returned with error
         if (elastiCubes == null){
@@ -90,14 +90,15 @@ public class MainTest {
             // if more than 0 running cubes
             else {
                 JSONArray elastiCubesJSONArray = new JSONArray(elastiCubes.toArray());
-                logger.write(methodName + "Found " +elastiCubes.size() + " running ElastiCubes: \n" + elastiCubesJSONArray.toString(3));
+                logger.info("Found " +elastiCubes.size() + " running ElastiCubes: \n" + elastiCubesJSONArray.toString(3));
 
                 // execute REST API tests and remove ElastiCubes that their REST API tests succeeded
                 try {
                     executeRESTAPITests();
 
                 } catch (IOException e) {
-                    logger.write(methodName + "failed to execute test, error: " + e.getMessage());
+                    logger.error("Failed to execute REST API tests: " + e.getMessage());
+                    logger.debug(Arrays.toString(e.getStackTrace()));
                 }
             }
         }
@@ -131,14 +132,13 @@ public class MainTest {
     }
 
     private static void runECSTelnetTests(){
-        TelnetTest.isConnected("localhost", 811);
-        TelnetTest.isConnected("localhost", 812);
+        TelnetTest.isConnected(811);
+        TelnetTest.isConnected(812);
     }
 
     private void executeRESTAPITests() throws JSONException, IOException {
-        String methodName = "[MainTest.restAPITestResultSet] ";
         Map<String, Boolean> restAPITests = new HashMap<>(elastiCubes.size());
-        logger.write(methodName + "Running REST API tests...");
+        logger.info("Running REST API tests...");
 
         for (ElastiCube elastiCube : elastiCubes){
 
@@ -148,6 +148,13 @@ public class MainTest {
 
             // check if test failed and send warning and execute MonetDB query
             if (!client.isCallSuccessful()){
+                logger.warn("REST API test failed for ElastiCube " +
+                            elastiCube.getName() +
+                            " with response code " +
+                            client.getResponseCode() +
+                            ", response body: \n" +
+                            client.getCallResponse());
+
                 SlackClient.getInstance()
                         .sendMessage(":warning: WARNING! REST API test failed for ElastiCube *" +
                                 elastiCube.getName() + "* with response code `" + client.getResponseCode() + "`, response body: \n```" + client.getCallResponse() + "```");
@@ -157,13 +164,14 @@ public class MainTest {
                 try {
                     executeMonetDBTest(elastiCube);
                 } catch (InterruptedException e) {
-                    logger.write(methodName + "ERROR running MonetDB test: " + e.getMessage());
+                    logger.error("Error running MonetDB test: " +e.getMessage());
+                    logger.debug(Arrays.toString(e.getStackTrace()));
                 }
             }
         }
 
-        logger.write(methodName + "REST API test results:");
-        logger.write(TestResultToJSONConverter.toJSON(restAPITests).toString(3));
+        logger.info("REST API test results:");
+        logger.info(TestResultToJSONConverter.toJSON(restAPITests).toString(3));
 
         terminate();
 
@@ -183,11 +191,12 @@ public class MainTest {
         try {
             WebAppDBConnection.sendOperation(testLog.toJSON());
         } catch (IOException | ParseException | JSONException e) {
-            logger.write("[MainTest.terminate] WARNING - Error sending test log:" + e.getMessage());
+            logger.warn("Failed sending test log to mongo: " + e.getMessage());
         }
+
         ResultFile.getInstance().write(testSuccess);
-        logger.write("[MainTest.terminate] Test result: " + testSuccess);
-        logger.write("[MainTest.terminate] EXITING...");
+        logger.info("Test result: " + testSuccess);
+        logger.info("EXITING...");
         System.exit(0);
 
     }
@@ -207,23 +216,23 @@ public class MainTest {
         try {
             WebAppDBConnection.sendOperation(testLog.toJSON());
         } catch (IOException | ParseException | JSONException e) {
-            logger.write("[App.run] WARNING - Error sending test log:" + e.getMessage());
+            logger.warn("Failed sending test log to mongo: " + e.getMessage());
         }
         ResultFile.getInstance().write(testSuccess);
-        logger.write("[MainTest.terminate] Test result: " + testSuccess);
-        logger.write("[MainTest.terminate] EXITING...");
+        logger.info("Test result: " + testSuccess);
+        logger.info("EXITING...");
         System.exit(0);
 
     }
 
     private void executeMonetDBTest(ElastiCube elastiCube) throws IOException, InterruptedException {
 
-        logger.write("[MainTest.executeMonetDBTests] Running MonetDB test... ");
+        logger.info("Running MonetDB test...");
 
         MonetDBTest monetDBTest = new MonetDBTest(elastiCube);
         monetDBTest.executeQuery();
 
-        logger.write("[MainTest.executeMonetDBTests] MonetDB query result for ElastiCube " + elastiCube.getName() + ":" + monetDBTest.isQuerySuccessful());
+        logger.info("MonetDB query result for ElastiCube " + elastiCube.getName() + ":" + monetDBTest.isQuerySuccessful());
         testLog.addElastiCubeToFailedElastiCubes(elastiCube.getName(), monetDBTest.isQuerySuccessful());
 
     }

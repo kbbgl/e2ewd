@@ -1,7 +1,6 @@
 package tests;
 
 import file_ops.ConfigFile;
-import logging.Logger;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -13,6 +12,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 
 class SisenseRESTAPIClient{
 
-    private static final Logger logger = Logger.getInstance();
+    private static final Logger logger = LoggerFactory.getLogger(SisenseRESTAPIClient.class);
     private static final ConfigFile configFile = ConfigFile.getInstance();
     private HttpClient client;
     private HttpPost post;
@@ -58,12 +59,14 @@ class SisenseRESTAPIClient{
     void executeQuery() throws IOException {
 
         HttpResponse response = client.execute(post);
+        logger.debug("Executing REST API query...");
         parseResponse(response);
 
     }
 
     private void parseResponse(HttpResponse response){
 
+        logger.debug("Parsing response...");
         HttpEntity entity = response.getEntity();
         int responseCode = response.getStatusLine().getStatusCode();
         setResponseCode(responseCode);
@@ -72,11 +75,13 @@ class SisenseRESTAPIClient{
 
             try(InputStream inputStream = entity.getContent()){
 
+
                 String res = new BufferedReader(new InputStreamReader(inputStream))
                         .lines()
                         .collect(Collectors.joining("\n"));
 
                 setCallResponse(res);
+                logger.debug("Call response:" + getCallResponse());
 
                 if (responseCode == 200){
 
@@ -90,15 +95,15 @@ class SisenseRESTAPIClient{
                     }
 
                     } else {
-                    logger.write("[SisenseRESTAPIClient.queryTableIsSuccessful] query failed for " +
+                    logger.info("Query failed for " +
                             elastiCubeName + " with code " +
                             responseCode + " ,response: " +
-                            res);
+                            getCallResponse());
                     setCallSuccessful(false);
                     }
                 }
             catch (IOException | JSONException e){
-                logger.write("[SisenseRESTAPIClient.queryTableIsSuccessful] query failed for " +
+                logger.error("Query failed for " +
                         elastiCubeName + " with code " +
                         responseCode + " , error: " +
                         e.getMessage());
@@ -149,7 +154,7 @@ class SisenseRESTAPIClient{
             JSONObject response = new JSONObject(callResponse);
             this.callResponse = response.toString(3);
         } catch (JSONException e) {
-            logger.write("WARNING: Couldn't parse response as valid JSON");
+            logger.warn("WARNING: Couldn't parse response as valid JSON");
             this.callResponse = callResponse;
         }
     }
@@ -163,6 +168,7 @@ class SisenseRESTAPIClient{
     }
 
     String getCallResponse() {
+
         return callResponse;
     }
 }
