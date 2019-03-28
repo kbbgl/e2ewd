@@ -310,7 +310,7 @@ public class CmdOperations {
                 while ((line = reader.readLine()) != null){
                     logger.write("[CmdOperations.restartECS] output: " + line);
                 }
-                SlackClient.getInstance().sendMessage("ECS restarted.");
+                SlackClient.getInstance().sendMessage(":recycle: ECS restarted.");
             }
 
             String error;
@@ -347,7 +347,7 @@ public class CmdOperations {
                 while ((line = reader.readLine()) != null){
                     logger.write("[CmdOperations.restartIIS] output: " + line);
                 }
-                SlackClient.getInstance().sendMessage("IIS restarted ");
+                SlackClient.getInstance().sendMessage(":recycle: IIS restarted ");
             }
 
             String error;
