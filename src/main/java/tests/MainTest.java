@@ -147,7 +147,7 @@ public class MainTest {
             if (!client.isCallSuccessful()){
                 SlackClient.getInstance()
                         .sendMessage(":warning: WARNING! REST API test failed for ElastiCube *" +
-                                elastiCube.getName() + "* with response code *" + client.getResponseCode() + "*, response body: \n```" + client.getCallResponse() + "```");
+                                elastiCube.getName() + "* with response code `" + client.getResponseCode() + "`, response body: \n```" + client.getCallResponse() + "```");
 
                 setTestSuccess(false);
 
