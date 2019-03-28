@@ -26,6 +26,7 @@ public class ResultFile {
 
             if (filePath() != null){
                 file = new File(filePath());
+                logger.debug("Result file path: " + file.getAbsolutePath());
             } else {
                 logger.error("Result path returned null");
             }
@@ -78,7 +79,6 @@ public class ResultFile {
     private static String filePath(){
         try {
             Path path = Paths.get(new File(ResultFile.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath());
-            logger.debug("Result file path " + path.getParent() + "\\run\\result.txt");
             return path.getParent() + "\\run\\result.txt";
         } catch (IOException | URISyntaxException e) {
             logger.error("Error reading file path: " + e.getMessage());

@@ -12,8 +12,8 @@ import java.util.*;
 
 public class ConfigFile {
 
-    private static ConfigFile configFileInstance = new ConfigFile();
-    private static Logger logger = LoggerFactory.getLogger(ConfigFile.class);
+    private static ConfigFile configFileInstance;
+    private static final Logger logger = LoggerFactory.getLogger(ConfigFile.class);
     private String token;
     private String host;
     private String protocol;
@@ -31,6 +31,7 @@ public class ConfigFile {
         Properties properties = new Properties();
         InputStream input;
 
+        logger.debug("Execution path: " + executionPath());
         if (executionPath() != null){
             try {
                 input = new FileInputStream(executionPath() + "/config.properties");
@@ -65,8 +66,8 @@ public class ConfigFile {
 
     public static ConfigFile getInstance(){
         if (configFileInstance == null){
-            logger.debug("Created ConfigFile instance");
             configFileInstance = new ConfigFile();
+            logger.debug("Created ConfigFile instance");
         }
         return configFileInstance;
     }

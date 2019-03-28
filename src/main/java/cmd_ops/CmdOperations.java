@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -20,7 +21,6 @@ public class CmdOperations {
 
     private static CmdOperations instance;
     private final Runtime runtime = Runtime.getRuntime();
-//    private final Logger logger = Logger.getInstance();
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(CmdOperations.class);
     private final String procdumpPath = executionPath() + "\\procdump\\procdump.exe";
     private final int PROCESS_TIMEOUT = 15;
@@ -53,7 +53,7 @@ public class CmdOperations {
             String[] environmentalVariable = { "SISENSE_PSM=true" };
 
             Process listCubesCommand = runtime.exec(psmCmd, environmentalVariable);
-            logger.debug("Executing " + environmentalVariable + "&&" + psmCmd);
+            logger.debug("Executing " + Arrays.toString(environmentalVariable) + "&&" + Arrays.toString(psmCmd));
 
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
             BufferedReader errorInput = new BufferedReader(new InputStreamReader(listCubesCommand.getErrorStream()));
@@ -63,8 +63,9 @@ public class CmdOperations {
 
             // Read stdout
             String s;
+            logger.debug("Output stream:");
             while ((s = stdInput.readLine()) != null) {
-                logger.debug("Output stream: " + s);
+                logger.debug(s);
 
                 if (s.startsWith("Cube Name")){
                     Matcher cubeNameMatcher = listCubesPattern.matcher(s);
@@ -86,7 +87,7 @@ public class CmdOperations {
                     Matcher m = errorPattern.matcher(s);
                     while (m.find()){
 
-                        logger.error("Command " + psmCmd + "returned an error: " + m.group(1));
+                        logger.error("Command " + Arrays.toString(psmCmd) + "returned an error: " + m.group(1));
                         if (m.group(1).equals("the server, 'localhost', is not responding.")){
                             elasticubes = null;
                         }
@@ -97,9 +98,9 @@ public class CmdOperations {
 
             // Read stderr
             String e;
+            logger.debug("Error stream: ");
             while ((e = errorInput.readLine()) != null){
-//                    logger.write("[getListElastiCubes] ERROR: " + e);
-                    logger.error("Error stream: " + e);
+                    logger.error(e);
                 }
 
             // Check for timeout
@@ -126,15 +127,16 @@ public class CmdOperations {
                 "serverAddress=localhost"};
 
         Process ecubePortCommand = Runtime.getRuntime().exec(psmCmd);
-        logger.debug("Running command " + psmCmd);
+        logger.debug("Running command " + Arrays.toString(psmCmd));
 
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubePortCommand.getInputStream()));
         BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubePortCommand.getErrorStream()));
 
         // read stdin
         String s;
+        logger.debug("Output stream:");
         while ((s = stdInput.readLine()) != null){
-            logger.debug("Output stream: " + s);
+            logger.debug(s);
             if (s.startsWith("Port")){
                 int port = Integer.parseInt(s.split("Port: ")[1]);
                 elastiCube.setPort(port);
@@ -146,8 +148,9 @@ public class CmdOperations {
 
         // Read stderr
         String e;
+        logger.debug("Error stream:");
         while ((e = errorStream.readLine()) != null){
-            logger.error("Error stream:" + e);
+            logger.error(e);
         }
 
         // Check that process hasn't timed out
@@ -171,7 +174,7 @@ public class CmdOperations {
                 "\"SELECT 1\""};
 
         Process monetDBQueryCmd = runtime.exec(command, null, new File(executionPath() + "\\mclient\\"));
-        logger.debug("Executing command " + command);
+        logger.debug("Executing command " + Arrays.toString(command));
 
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getInputStream()));
         BufferedReader errorStream = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getErrorStream()));
@@ -215,7 +218,8 @@ public class CmdOperations {
 
         String[] command = new String[]{
                 "reg",
-                "QUERY HKEY_LOCAL_MACHINE\\SOFTWARE\\Sisense\\ECS",
+                "QUERY",
+                "HKEY_LOCAL_MACHINE\\SOFTWARE\\Sisense\\ECS",
                 "/v",
                 "Version"
         };
@@ -224,21 +228,23 @@ public class CmdOperations {
 
         StringWriter stringWriter = new StringWriter();
 
+        logger.debug("Output stream:");
         try (InputStream inputStream = process.getInputStream()){
 
             int c;
             while ((c = inputStream.read()) != -1){
                 stringWriter.write(c);
-                logger.debug("Output stream: " + stringWriter.toString());
             }
+            logger.debug(stringWriter.toString());
         }
 
-        try (InputStream errorStream = process.getErrorStream()){
 
+        try (InputStream errorStream = process.getErrorStream()){
+            logger.debug("Error stream:");
             int e;
             while ((e = errorStream.read()) != -1){
                 stringWriter.write(e);
-                logger.error("Error stream: " + stringWriter.toString());
+                logger.error(stringWriter.toString());
             }
         }
 
