@@ -147,7 +147,7 @@ public class MainTest {
             if (!client.isCallSuccessful()){
                 SlackClient.getInstance()
                         .sendMessage(":warning: WARNING! REST API test failed for ElastiCube *" +
-                                elastiCube.getName() + "* with response code *" + client.getResponseCode() + "*, response body: " + client.getCallResponse() + " ");
+                                elastiCube.getName() + "* with response code *" + client.getResponseCode() + "*, response body: \n```" + client.getCallResponse() + "```");
 
                 setTestSuccess(false);
 
@@ -173,7 +173,7 @@ public class MainTest {
 
         // send Slack notification if enabled and test failed
         if (!isTestSuccess() && isSlackEnabled){
-            SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed for ");
+            SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed ");
         }
 
         // send test to web app db
@@ -197,7 +197,7 @@ public class MainTest {
 
         // send Slack notification if enabled and test failed
         if (!isTestSuccess() && isSlackEnabled){
-            SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed for ");
+            SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed ");
         }
 
         // send test to web app db

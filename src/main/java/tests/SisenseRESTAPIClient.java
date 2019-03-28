@@ -145,7 +145,13 @@ class SisenseRESTAPIClient{
     }
 
     private void setCallResponse(String callResponse) {
-        this.callResponse = callResponse;
+        try {
+            JSONObject response = new JSONObject(callResponse);
+            this.callResponse = response.toString(3);
+        } catch (JSONException e) {
+            logger.write("WARNING: Couldn't parse response as valid JSON");
+            this.callResponse = callResponse;
+        }
     }
 
     private void setResponseCode(int responseCode) {
