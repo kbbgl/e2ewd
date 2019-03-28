@@ -8,7 +8,9 @@ import logging.Logger;
 import logging.TestLog;
 import logging.TestResultToJSONConverter;
 import models.ElastiCube;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import run_strategy.*;
 
 import java.io.IOException;
@@ -87,7 +89,8 @@ public class MainTest {
             }
             // if more than 0 running cubes
             else {
-                logger.write(methodName + "Found " +elastiCubes.size() + " running ElastiCubes: \n" + Arrays.toString(elastiCubes.toArray()));
+                JSONArray elastiCubesJSONArray = new JSONArray(elastiCubes.toArray());
+                logger.write(methodName + "Found " +elastiCubes.size() + " running ElastiCubes: \n" + elastiCubesJSONArray.toString(3));
 
                 // execute REST API tests and remove ElastiCubes that their REST API tests succeeded
                 try {
