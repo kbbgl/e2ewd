@@ -2,7 +2,7 @@
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-        <file>log/log.log</file>
+        <file>${user.dir}/log/log.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <fileNamePattern>log.%i.log</fileNamePattern>
@@ -18,9 +18,9 @@
         </encoder>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-        <file>log/log-error.log</file>
+        <file>${user.dir}/log/log-error.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <fileNamePattern>log-error%i.log</fileNamePattern>
@@ -40,8 +40,6 @@
         </encoder>
     </appender>
 
-
-
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{dd/MM/yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
@@ -51,5 +49,6 @@
     <root level="info">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
+        <appender-ref ref="FILE-ERROR" />
     </root>
 </configuration>
