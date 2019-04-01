@@ -35,6 +35,11 @@ Tests are performed for all ElastiCubes with are in _RUNNING_ mode.
 
  4.Run the `run.bat` file as an Administrator.  
     
+If you're planning to run the `bat` file as a task (such as Windows Task Scheduler), make sure to set the `Start In` option to the 
+directory from which the `bat` file is located. For example:
+
+![image](https://files.slack.com/files-pri/T02564ELD-FHEJKE5BJ/image.png)
+
     
 ### Result
 Once the application finishes execution, it will create a file in:
