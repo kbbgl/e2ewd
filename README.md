@@ -40,7 +40,7 @@ directory from which the `bat` file is located. For example:
 
 ![alt text](https://i.ibb.co/wMBbtsk/2019-04-01-10h27-08.png)
 
-###[High Availability](https://documentation.sisense.com/latest/administration/high-availability-in-sisense/high-availability.htm) environments
+### [High Availability](https://documentation.sisense.com/latest/administration/high-availability-in-sisense/high-availability.htm) environments
 
 In HA environments, some services might run and others not (depending on the version). This means that the application
 should only run on certain nodes (never on the Build Node). Use the table below as reference.
