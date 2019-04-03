@@ -40,7 +40,7 @@ public class App {
             String sisenseVersion = operations.getSisenseVersion();
 
             if (sisenseVersion.equals("CANNOT DETECT")) {
-                logger.info("[App.main] Sisense version: " + sisenseVersion);
+                logger.info("Sisense version: " + sisenseVersion);
             }
         } catch (InterruptedException | IOException e) {
             logger.error("Failed retrieving Sisense version from registry: " + e.getMessage());
