@@ -26,6 +26,8 @@
 # .idea/modules.xml
 # .idea/*.iml
 # .idea/modules
+gradle
+log
 
 # CMake
 cmake-build-*/
