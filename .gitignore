@@ -110,7 +110,13 @@ $RECYCLE.BIN/
 hs_err_pid*
 ### Gradle template
 .gradle
-/build/
+build/classes/
+build/distributions/
+build/resources/
+build/scripts/
+build/tmp/
+/SiSense
+
 
 # Ignore Gradle GUI config
 gradle-app.setting

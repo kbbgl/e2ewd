@@ -214,6 +214,57 @@ public class CmdOperations {
         return success;
     }
 
+    public int getMonetDBConcurrentConnections(ElastiCube elastiCube) throws IOException, InterruptedException {
+
+        int numberOfConnections = 0;
+
+        String[] command = new String[]{
+                "cmd.exe",
+                "/c",
+                "mclient.exe",
+                "-p" + elastiCube.getPort(),
+                "-fcsv",
+                "-lmal",
+                "-s",
+                "\"c := status.count_clients();io.print(c);\""};
+
+        Process monetDBQueryCmd = runtime.exec(command, null, new File(executionPath() + "\\mclient\\"));
+        logger.debug("Executing command " + Arrays.toString(command));
+
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getInputStream()));
+        BufferedReader errorStream = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getErrorStream()));
+
+        // Read stdin
+        String s;
+        while ((s = stdInput.readLine()) != null) {
+            logger.debug("Output stream: " + s);
+
+            try{
+                // subtracting 1 because the test creates a connection
+                numberOfConnections = Integer.parseInt(s) -1 ;
+
+            } catch (NumberFormatException e){
+                logger.error("Error parsing command output as integer.");
+                numberOfConnections = 0;
+            }
+        }
+
+
+        // Read stderr
+        String e;
+        while ((e = errorStream.readLine()) != null){
+            logger.error("Error stream: " + e);
+        }
+
+        // Check for process timeout
+        if(!monetDBQueryCmd.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+            logger.error("Operation timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
+            monetDBQueryCmd.destroyForcibly();
+        }
+
+        return numberOfConnections;
+    }
+
     public String getSisenseVersion() throws IOException, InterruptedException {
 
         String[] command = new String[]{
