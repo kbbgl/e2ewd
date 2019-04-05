@@ -9,6 +9,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,6 +48,7 @@ class SisenseRESTAPIClient{
         RequestConfig requestConfig = RequestConfig.custom()
                 .setConnectionRequestTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
                 .setConnectTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
+                .setSocketTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
                 .build();
 
         client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
@@ -74,7 +76,6 @@ class SisenseRESTAPIClient{
         if (entity != null){
 
             try(InputStream inputStream = entity.getContent()){
-
 
                 String res = new BufferedReader(new InputStreamReader(inputStream))
                         .lines()
@@ -108,8 +109,12 @@ class SisenseRESTAPIClient{
                         responseCode + " , error: " +
                         e.getMessage());
                 setCallSuccessful(false);
+            } finally {
+                logger.warn("Releasing REST API client connection");
+                post.releaseConnection();
             }
         }
+
     }
 
     private void setCallSuccessful(boolean callSuccessful) {
