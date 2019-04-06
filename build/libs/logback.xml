@@ -47,7 +47,7 @@
     </appender>
 
 
-    <root level="debug"> <!--Change log level here-->
+    <root level="info"> <!--Change log level here-->
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
         <appender-ref ref="FILE-ERROR" />
