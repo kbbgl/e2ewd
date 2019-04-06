@@ -47,12 +47,10 @@ public class MainTest {
     private void preRun(){
         logger.debug("Executing pre-run test validations...");
         resultFile.delete();
-        if (!configFile.isConfigFileValid()){
-            terminate("Invalid config.properties file");
-        } else {
-            logger.info(configFile.toString());
-            resultFile.create();
-        }
+
+        logger.info(configFile.toString());
+        resultFile.create();
+
     }
 
     private void run(int attempt) throws JSONException {
@@ -163,6 +161,12 @@ public class MainTest {
 
                 try {
                     executeMonetDBTest(elastiCube);
+
+                    // Check if ecDump option enabled in config.properties
+                    if (ConfigFile.getInstance().isEcDump()){
+                        CmdOperations.getInstance().ecDump(elastiCube);
+                    }
+
                 } catch (InterruptedException e) {
                     logger.error("Error running MonetDB test: " +e.getMessage());
                     logger.debug(Arrays.toString(e.getStackTrace()));

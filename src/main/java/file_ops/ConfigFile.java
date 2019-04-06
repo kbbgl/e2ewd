@@ -21,6 +21,7 @@ public class ConfigFile {
     private boolean restartECS;
     private boolean restartIIS;
     private boolean ecsDump;
+    private boolean ecDump;
     private boolean iisDump;
     private int port;
     private String slackWebhookURL;
@@ -44,6 +45,7 @@ public class ConfigFile {
                 setRestartECS(Boolean.parseBoolean(properties.getProperty("restartECS")));
                 setRestartIIS(Boolean.parseBoolean(properties.getProperty("restartIIS")));
                 setEcsDump(Boolean.parseBoolean(properties.getProperty("ecsDump")));
+                setEcDump(Boolean.parseBoolean(properties.getProperty("ecDump")));
                 setIisDump(Boolean.parseBoolean(properties.getProperty("iisDump")));
                 setRequestTimeoutInSeconds(Integer.parseInt(properties.getProperty("requestTimeoutInSeconds")));
                 setPort(Integer.parseInt(properties.getProperty("port")));
@@ -146,6 +148,14 @@ public class ConfigFile {
         this.ecsDump = ecsDump;
     }
 
+    public boolean isEcDump() {
+        return ecDump;
+    }
+
+    private void setEcDump(boolean ecDump) {
+        this.ecDump = ecDump;
+    }
+
     public boolean isIisDump() {
         return iisDump;
     }
@@ -214,6 +224,7 @@ public class ConfigFile {
                 "restartIIS:" + restartIIS + ",\n\t" +
                 "iisDump:" + iisDump + ",\n\t" +
                 "ecsDump:" + ecsDump + "\n\t" +
+                "ecDump:" + ecDump + "\n\t" +
                 "slackWebhookURL:" + slackWebhookURL + "\n\t" +
                 "friendlyHostName:" + friendlyHostName + "\n\t" +
                 "}";

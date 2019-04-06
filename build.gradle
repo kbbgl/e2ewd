@@ -3,7 +3,7 @@ plugins {
     id "application"
 }
 
-version = "2.3.12475"
+version = "2.4.87415"
 
 
 sourceSets {
@@ -56,6 +56,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+
+    // https://mvnrepository.com/artifact/com.profesorfalken/jPowerShell
+    compile group: 'com.profesorfalken', name: 'jPowerShell', version: '3.0.4'
 
 }
 

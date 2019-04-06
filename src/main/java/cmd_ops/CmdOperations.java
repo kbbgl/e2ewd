@@ -1,5 +1,6 @@
 package cmd_ops;
 
+import com.profesorfalken.jpowershell.PowerShell;
 import integrations.SlackClient;
 import logging.Logger;
 import models.ElastiCube;
@@ -375,6 +376,58 @@ public class CmdOperations {
             logger.info("Operation successful");
         }
 
+    }
+
+    public void ecDump(ElastiCube elastiCube){
+
+        logger.info("Creating ElastiCube " + elastiCube.getName() + " process memory dump...");
+        int ecPort = elastiCube.getPort();
+
+        String output = PowerShell.executeSingleCommand("Get-WmiObject Win32_Process -Filter \"name = 'elasticube.exe'\" | Select-Object ProcessId, CommandLine | where CommandLine -CMatch \"mapi_port=" + ecPort + "\" | Select-Object ProcessId -ExpandProperty ProcessId").getCommandOutput();
+        logger.info("Output " + output);
+
+        Process process;
+        try {
+            int pid = Integer.parseInt(output);
+            logger.debug("PID: " + pid);
+
+            String command = procdumpPath + " -accepteula -o -ma " + pid + " " + elastiCube.getName() + ".dmp";
+
+            process = runtime.exec(command);
+
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            BufferedReader errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+
+            // Read stdout
+            String s;
+            while ((s = stdInput.readLine()) != null){
+                logger.debug("Output stream: " + s);
+            }
+
+            // Read stderr
+            String e;
+            while ((e = errorStream.readLine()) != null){
+                logger.error("Error stream: " + e);
+            }
+
+            // check that process hasn't timed out
+            if (!process.waitFor(30, TimeUnit.SECONDS)) {
+                logger.error("Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
+                process.destroyForcibly();
+            }
+            else {
+                logger.info("Operation successful");
+            }
+
+
+
+        } catch (NumberFormatException e){
+            logger.error("Unable to parse output as integer: " + e.getMessage());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            logger.error("Unable to execute process - " + e.getMessage());
+        }
     }
 
     public void restartECS() throws IOException, InterruptedException {

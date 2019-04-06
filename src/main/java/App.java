@@ -49,8 +49,11 @@ public class App {
             logger.debug(Arrays.toString(e.getStackTrace()));
         }
 
+
         // Check if config.properties is valid
+        logger.info(ConfigFile.getInstance().toString());
         if (ConfigFile.getInstance().isConfigFileValid()){
+
             // Retrieve list of RUNNING ElastiCubes
             logger.info("[App.main] Retrieving list of ElastiCubes...");
             List<ElastiCube> elastiCubeList = operations.getListElastiCubes();
