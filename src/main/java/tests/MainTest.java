@@ -162,11 +162,6 @@ public class MainTest {
                 try {
                     executeMonetDBTest(elastiCube);
 
-                    // Check if ecDump option enabled in config.properties
-                    if (ConfigFile.getInstance().isEcDump()){
-                        CmdOperations.getInstance().ecDump(elastiCube);
-                    }
-
                 } catch (InterruptedException e) {
                     logger.error("Error running MonetDB test: " +e.getMessage());
                     logger.debug(Arrays.toString(e.getStackTrace()));
@@ -237,6 +232,9 @@ public class MainTest {
         monetDBTest.executeQuery();
 
         logger.info("MonetDB query result for ElastiCube " + elastiCube.getName() + ":" + monetDBTest.isQuerySuccessful());
+        if (!monetDBTest.isQuerySuccessful() && configFile.isEcDump()){
+            CmdOperations.getInstance().ecDump(elastiCube);
+        }
         logger.info("Number of concurrent connection to ElastiCube " + elastiCube.getName() +  " : " + CmdOperations.getInstance().getMonetDBConcurrentConnections(elastiCube));
         testLog.addElastiCubeToFailedElastiCubes(elastiCube.getName(), monetDBTest.isQuerySuccessful());
 

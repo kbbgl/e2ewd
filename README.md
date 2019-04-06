@@ -27,11 +27,12 @@ If you've decided to run the installation script, you may skip steps 2 and 3 as 
  | `host`                        | The hostname of your Sisense site.                                                                                                                                         | `String`  | `mycompany.sisense.com`                                                         |
  | `protocol`                    | The protocol used to access your Sisense site.                                                                                                                             | `String`  | `https` or `http`                                                               |  
  | `port`                        | The port which your Sisense application listens on.                                                                                                                        | `int`     | `80`, `8081`, `443`                                                             |
+ | `requestTimeoutInSeconds`     | The number of seconds to wait until timing out of the REST API test.                                                                                                       | `int`     | `300`                                                                           |
  | (Optional) `restartECS`       | Whether to perform an ElastiCube Server restart if it is unresponsive.                                                                                                     | `boolean` | `true` or `false`[default]                                                      |
  | (Optional) `restartIIS`       | Whether to perform an IIS reset if the ElastiCube Server is unresponsive.                                                                                                  | `boolean` | `true` or `false`[default]                                                      |
  | (Optional) `iisDump`          | Whether to perform an IIS process memory dump if the ElastiCube Server is unresponsive.                                                                                    | `boolean` | `true` or `false`[default]                                                      |
  | (Optional) `ecsDump`          | Whether to perform an ElastiCubeManagementService process memory dump if the ElastiCube Server is unresponsive.                                                            | `boolean` | `true` or `false`[default]                                                      |
- | `requestTimeoutInSeconds`     | The number of seconds to wait until timing out of the REST API test.                                                                                                       | `int`     | `300`                                                                           |
+ | (Optional) `ecDump`           | Whether to perform an ElastiCube process memory dump if the direct ElastiCube query fails.                                                            | `boolean` | `true` or `false`[default]                                                      |
  | (Optional) `slackWebhookURL`  | If set, the application will send a notification in the Slack channel. To retrieve, visit [Slack Incoming webhook documentation](https://api.slack.com/incoming-webhooks.) | `String`  | `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX` |
  | (Optional) `friendlyHostName` | Server alias. Will be used to notify Slack channel.                                                                                                                        | `String`  | `QUERY-NODE-1`                                                                  |
 
@@ -69,7 +70,7 @@ See log files located in:
 
 ### Configuration
 
-If `ecsDump`, `iisDump` are set to `true`, it will create a dump file of the respective process in the parent folder. 
+If `ecsDump`, `iisDump`, `ecDump` are set to `true`, it will create a dump file of the respective process in the parent folder. 
 The dump includes a snapshot of the process memory set which can be useful in troubleshooting the root cause.
 
 The application logging framework is [logback/slf4j](https://logback.qos.ch/) so any configuration options offered by the library can be used by modifying the `logback.xml` file.  
