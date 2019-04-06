@@ -10,7 +10,7 @@
 * Checks and alerts whether the ElastiCube Server query engine is up.
 * Checks the ElastiCube Server internal connectivity.
 * Performs direct ElastiCube query.
-* Slack Webhook alerts on individual REST API query .
+* Slack Webhook alerts on individual REST API query failures.
 
 Tests are performed for all ElastiCubes with are in _RUNNING_ mode.  
 
