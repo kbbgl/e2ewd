@@ -1,4 +1,5 @@
 import cmd_ops.CmdOperations;
+import file_ops.ConfigFile;
 import file_ops.VersionFile;
 import logging.TestLog;
 import models.ElastiCube;
@@ -21,6 +22,7 @@ public class App {
     private static final CmdOperations operations = CmdOperations.getInstance();
     private static TestLog testLog = TestLog.getInstance();
     private static String host = System.getenv("COMPUTERNAME");
+    private static MainTest mainTest = new MainTest();
 
     public static void main(String[] args) throws JSONException {
 
@@ -47,15 +49,18 @@ public class App {
             logger.debug(Arrays.toString(e.getStackTrace()));
         }
 
+        // Check if config.properties is valid
+        if (ConfigFile.getInstance().isConfigFileValid()){
+            // Retrieve list of RUNNING ElastiCubes
+            logger.info("[App.main] Retrieving list of ElastiCubes...");
+            List<ElastiCube> elastiCubeList = operations.getListElastiCubes();
 
-        // Retrieve list of RUNNING ElastiCubes
-        logger.info("[App.main] Retrieving list of ElastiCubes...");
-        List<ElastiCube> elastiCubeList = operations.getListElastiCubes();
-
-        // Start test
-        MainTest test = new MainTest(elastiCubeList);
-        test.init();
-
+            // Start test
+            mainTest.setElastiCubes(elastiCubeList);
+            mainTest.init();
+        } else {
+            mainTest.terminate("Configuration file is invalid.");
+        }
     }
 
     private static void setRunningLocation(){

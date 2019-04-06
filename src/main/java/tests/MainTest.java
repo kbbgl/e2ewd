@@ -33,8 +33,7 @@ public class MainTest {
     private TestLog testLog = TestLog.getInstance();
     private StrategyContext strategyContext = new StrategyContext();
 
-    public MainTest(List<ElastiCube> elastiCubes){
-        this.elastiCubes = elastiCubes;
+    public MainTest(){
     }
 
     public void init() throws JSONException {
@@ -202,7 +201,7 @@ public class MainTest {
 
     }
 
-    private void terminate(String reasonForFailure){
+    public void terminate(String reasonForFailure){
 
         testLog.setTestEndTime(new Date());
         testLog.setReasonForFailure(reasonForFailure);
@@ -253,4 +252,7 @@ public class MainTest {
         testLog.setNumberOfElastiCubes(numberOfElastiCubes);
     }
 
+    public void setElastiCubes(List<ElastiCube> elastiCubes) {
+        this.elastiCubes = elastiCubes;
+    }
 }
