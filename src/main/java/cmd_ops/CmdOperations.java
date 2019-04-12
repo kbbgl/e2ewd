@@ -5,7 +5,6 @@ import integrations.SlackClient;
 import logging.Logger;
 import models.ElastiCube;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -306,7 +305,7 @@ public class CmdOperations {
             process.destroyForcibly();
             return "CANNOT DETECT";
         }
-        return stringWriter.toString().split("   ")[3].trim();
+        return stringWriter.toString().split(" {3}")[3].trim();
 
     }
 
