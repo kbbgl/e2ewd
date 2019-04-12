@@ -166,9 +166,9 @@ public class MainTest {
 
                 } catch (InterruptedException e) {
                     logger.error("Error running MonetDB test: " +e.getMessage());
-                    terminate("Error running MonetDB test: " + e.getMessage());
-                    testSuccess = false;
                     logger.debug(Arrays.toString(e.getStackTrace()));
+                    testSuccess = false;
+                    terminate("Error running MonetDB test: " + e.getMessage());
                 }
             }
         }
