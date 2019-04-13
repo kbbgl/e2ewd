@@ -10,7 +10,6 @@ import logging.TestResultToJSONConverter;
 import models.ElastiCube;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import run_strategy.*;
@@ -24,8 +23,6 @@ public class MainTest {
     private final Logger logger = LoggerFactory.getLogger(MainTest.class);
     private boolean testSuccess;
     private int attamptNumber;
-    private final int maxNumberAttempts = 5;
-    private int numberOfElastiCubes;
     private List<ElastiCube> elastiCubes;
     private ResultFile resultFile = ResultFile.getInstance();
     private ConfigFile configFile = ConfigFile.getInstance();
@@ -59,6 +56,7 @@ public class MainTest {
         setTestSuccess(true);
 
         // Check number of attempts
+        int maxNumberAttempts = 5;
         if (attempt > maxNumberAttempts){
             String message = "Max number of attempts " + maxNumberAttempts + " exceeded.";
             logger.warn(message);
@@ -254,7 +252,6 @@ public class MainTest {
     }
 
     private void setNumberOfElastiCubes(int numberOfElastiCubes){
-        this.numberOfElastiCubes = numberOfElastiCubes;
         testLog.setNumberOfElastiCubes(numberOfElastiCubes);
     }
 

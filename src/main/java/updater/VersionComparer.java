@@ -43,15 +43,13 @@ public class VersionComparer {
         String url = "https://raw.githubusercontent.com/kbbgl/e2ewd/master/build/libs/version";
         HttpGet get = new HttpGet(url);
 
-//        logger.debug("Sending request to " + url);
-        System.out.println("Sending request to " + url);
+        logger.debug("Sending request to " + url);
         HttpResponse response = client.execute(get);
 
         int responseCode = response.getStatusLine().getStatusCode();
         HttpEntity responseBody = response.getEntity();
 
-//        logger.debug("Response code: " + responseCode);
-        System.out.println("Response code: " + responseCode);
+        logger.debug("Response code: " + responseCode);
         if (responseBody != null){
 
             try (InputStream inputStream = responseBody.getContent()){
@@ -75,8 +73,8 @@ public class VersionComparer {
     public boolean isUpToDate(){
 
         boolean upToDate = false;
-        System.out.println("Current version: `" + currentRunningVersion + "`");
-        System.out.println("Latest version: `" + latestVersion + "`");
+        logger.debug("Current version: `" + currentRunningVersion + "`");;
+        logger.debug("Latest version: `" + latestVersion + "`");
 
         if (getMajor(latestVersion) == getMajor(currentRunningVersion)
             && getMinor(latestVersion) == getMinor(currentRunningVersion)
@@ -84,22 +82,28 @@ public class VersionComparer {
             upToDate = true;
         }
 
-        System.out.println("Is up to date: " + upToDate);
+        logger.info("Is up to date: " + upToDate);
         return upToDate;
 
     }
 
     private int getMajor(String version) throws NumberFormatException{
 
+        logger.debug("Attempting to parse major...");
         return Integer.parseInt(version.split("\\.")[0]);
 
     }
 
     private int getMinor(String version) throws NumberFormatException{
+
+        logger.debug("Attempting to parse minor...");
         return Integer.parseInt(version.split("\\.")[1]);
+
     }
 
     private int getBuild(String version) throws NumberFormatException{
+
+        logger.debug("Attempting to parse build...");
         return Integer.parseInt(version.split("\\.")[2]);
     }
 
