@@ -69,6 +69,10 @@ public class MainTest {
 
         logger.info("Attempt number " + attempt);
 
+        // Retrieve list of RUNNING ElastiCubes
+        logger.info("Retrieving list of ElastiCubes...");
+        elastiCubes = CmdOperations.getInstance().getListElastiCubes();
+
         // check to see if 0 elasticubes returned with error
         if (elastiCubes == null){
             setAndExecuteStrategy();
@@ -82,6 +86,7 @@ public class MainTest {
 
             // end test if 0 running cubes
             if (elastiCubes.size() == 0){
+                logger.info("No ElastiCubes in RUNNING mode.");
                 setTestSuccess(true);
                 terminate();
             }
@@ -256,9 +261,5 @@ public class MainTest {
     private void setNumberOfElastiCubes(int numberOfElastiCubes){
         this.numberOfElastiCubes = numberOfElastiCubes;
         testLog.setNumberOfElastiCubes(numberOfElastiCubes);
-    }
-
-    public void setElastiCubes(List<ElastiCube> elastiCubes) {
-        this.elastiCubes = elastiCubes;
     }
 }

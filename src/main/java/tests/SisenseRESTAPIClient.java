@@ -84,33 +84,61 @@ class SisenseRESTAPIClient{
                 setCallResponse(res);
                 logger.debug("Call response:" + getCallResponse());
 
-                if (responseCode == 200){
+                if (responseCode == 200) {
 
-                    JSONObject responseObject = new JSONObject(res);
-                    JSONObject valuesArray = (JSONObject) responseObject.getJSONArray("values").get(0);
-                    int count = valuesArray.getInt("data");
+                    try {
+                        JSONObject responseObject = new JSONObject(res);
+                        JSONObject valuesArray = (JSONObject) responseObject.getJSONArray("values").get(0);
+                        int count = valuesArray.getInt("data");
 
-                    // Check if result is larger than 0
-                    if (count > 0) {
-                        setCallSuccessful(true);
-                    }
+                        // Check if result is larger than 0
+                        if (count > 0) {
+                            setCallSuccessful(true);
+                        } else {
+                            logger.info("Query failed for " +
+                                    elastiCubeName + " with code " +
+                                    responseCode + " ,response: " +
+                                    getCallResponse());
+                            setCallSuccessful(false);
+                        }
+                    } catch (JSONException e){
+                        logger.warn("Query returned no `values.data` object");
+                        try {
+                            JSONObject responseObject = new JSONObject(res);
+                            String details = responseObject.getString("details");
 
-                    } else {
-                    logger.info("Query failed for " +
-                            elastiCubeName + " with code " +
-                            responseCode + " ,response: " +
-                            getCallResponse());
-                    setCallSuccessful(false);
+                            if (details.equals("ElastiCube is processing and cannot be queried.")){
+                                logger.info("ElastiCube is processing and cannot be queried.");
+                                setCallSuccessful(true);
+                            } else {
+                                logger.error("Query failed for " +
+                                        elastiCubeName + " with code " +
+                                        responseCode + " , error: " +
+                                        e.getMessage());
+                                setCallSuccessful(false);
+                            }
+
+                        } catch (JSONException ex) {
+                            logger.error("Query failed for " +
+                                    elastiCubeName + " with code " +
+                                    responseCode + " , error: " +
+                                    e.getMessage());
+                            setCallSuccessful(false);
+                        }
                     }
                 }
-            catch (IOException | JSONException e){
+
+            }
+            catch (IOException e){
+
+
                 logger.error("Query failed for " +
                         elastiCubeName + " with code " +
                         responseCode + " , error: " +
                         e.getMessage());
                 setCallSuccessful(false);
             } finally {
-                logger.warn("Releasing REST API client connection");
+                logger.debug("Releasing REST API client connection");
                 post.releaseConnection();
             }
         }

@@ -43,10 +43,15 @@ public class App {
 
             if (sisenseVersion.equals("CANNOT DETECT")) {
                 logger.info("Sisense version: " + sisenseVersion);
+                logger.error("Sisense is not installed or cannot detect version from registry.");
+                logger.info("EXITING...");
+                System.exit(0);
             }
         } catch (InterruptedException | IOException e) {
             logger.error("Failed retrieving Sisense version from registry: " + e.getMessage());
+            logger.info("EXITING...");
             logger.debug(Arrays.toString(e.getStackTrace()));
+            System.exit(0);
         }
 
 
@@ -54,12 +59,7 @@ public class App {
         logger.info(ConfigFile.getInstance().toString());
         if (ConfigFile.getInstance().isConfigFileValid()){
 
-            // Retrieve list of RUNNING ElastiCubes
-            logger.info("[App.main] Retrieving list of ElastiCubes...");
-            List<ElastiCube> elastiCubeList = operations.getListElastiCubes();
-
             // Start test
-            mainTest.setElastiCubes(elastiCubeList);
             mainTest.init();
         } else {
             mainTest.terminate("Configuration file is invalid.");
