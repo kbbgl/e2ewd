@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import run_strategy.*;
 
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.*;
 
@@ -99,11 +102,11 @@ public class MainTest {
                 try {
                     executeRESTAPITests();
 
-                } catch (IOException e) {
+                } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
                     logger.error("Failed to execute REST API tests: " + e.getMessage());
                     logger.debug(Arrays.toString(e.getStackTrace()));
                     testSuccess = false;
-                    terminate("Error running MonetDB test: " + e.getMessage());
+                    terminate("Error running REST API test: " + e.getMessage());
                 }
             }
         }
@@ -141,7 +144,7 @@ public class MainTest {
         TelnetTest.isConnected(812);
     }
 
-    private void executeRESTAPITests() throws JSONException, IOException {
+    private void executeRESTAPITests() throws JSONException, IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
         Map<String, Boolean> restAPITests = new HashMap<>(elastiCubes.size());
         logger.info("Running REST API tests...");
 

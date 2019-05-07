@@ -3,7 +3,7 @@ plugins {
     id "application"
 }
 
-version = "2.6.24512"
+version = "2.6.68752"
 
 
 sourceSets {

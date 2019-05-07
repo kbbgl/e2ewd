@@ -6,9 +6,17 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.conn.socket.ConnectionSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,10 +24,14 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLContext;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.stream.Collectors;
 
 class SisenseRESTAPIClient{
@@ -34,7 +46,7 @@ class SisenseRESTAPIClient{
     private int responseCode;
     private String elastiCubeName;
 
-    SisenseRESTAPIClient(String elastiCubeName) throws JSONException {
+    SisenseRESTAPIClient(String elastiCubeName) throws JSONException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
 
         this.elastiCubeName = elastiCubeName;
 
@@ -43,7 +55,11 @@ class SisenseRESTAPIClient{
 
     }
 
-    private void initializeClient(JSONObject jaql){
+    private void initializeClient(JSONObject jaql) throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+
+        SSLContext sslContext = new SSLContextBuilder()
+                .loadTrustMaterial(null, (x509CertChain, authType) -> true)
+                .build();
 
         RequestConfig requestConfig = RequestConfig.custom()
                 .setConnectionRequestTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
@@ -51,7 +67,22 @@ class SisenseRESTAPIClient{
                 .setSocketTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
                 .build();
 
-        client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
+        CloseableHttpClient httpClient = HttpClientBuilder
+                .create()
+                .setDefaultRequestConfig(requestConfig)
+                .setSSLContext(sslContext)
+                .setConnectionManager(
+                        new PoolingHttpClientConnectionManager(
+                                RegistryBuilder.<ConnectionSocketFactory>create()
+                                        .register("http", PlainConnectionSocketFactory.INSTANCE)
+                                        .register("https", new SSLConnectionSocketFactory(sslContext,
+                                                NoopHostnameVerifier.INSTANCE))
+                                        .build()
+                        )
+                ).build();
+
+
+        client = httpClient;
         post = new HttpPost(uri);
         post.addHeader("authorization", "Bearer " + configFile.getToken());
         post.setEntity(new StringEntity(jaql.toString(), ContentType.APPLICATION_JSON));
