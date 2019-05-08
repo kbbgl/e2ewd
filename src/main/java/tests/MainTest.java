@@ -28,11 +28,10 @@ public class MainTest {
     private boolean testSuccess;
     private int attamptNumber;
     private final int maxNumberAttempts = 5;
-    private int numberOfElastiCubes;
     private List<ElastiCube> elastiCubes;
     private ResultFile resultFile = ResultFile.getInstance();
     private ConfigFile configFile = ConfigFile.getInstance();
-    private boolean isSlackEnabled = !configFile.getSlackWebhookURL().isEmpty();
+    private boolean isSlackEnabled;
     private TestLog testLog = TestLog.getInstance();
     private StrategyContext strategyContext = new StrategyContext();
 
@@ -54,6 +53,9 @@ public class MainTest {
         logger.info(configFile.toString());
         resultFile.create();
 
+        if (configFile.getSlackWebhookURL() != null){
+            isSlackEnabled =  !configFile.getSlackWebhookURL().isEmpty();
+        }
     }
 
     private void run(int attempt) throws JSONException {
@@ -262,7 +264,6 @@ public class MainTest {
     }
 
     private void setNumberOfElastiCubes(int numberOfElastiCubes){
-        this.numberOfElastiCubes = numberOfElastiCubes;
         testLog.setNumberOfElastiCubes(numberOfElastiCubes);
     }
 }
