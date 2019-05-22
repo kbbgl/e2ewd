@@ -180,6 +180,12 @@ public class MainTest {
                     testSuccess = false;
                     terminate("Error running MonetDB test: " + e.getMessage());
                 }
+
+                // If response code is 404 or 401, do not run any more tests
+                if (client.getResponseCode() == 404 || client.getResponseCode() == 401){
+                    break;
+                }
+
             }
         }
 

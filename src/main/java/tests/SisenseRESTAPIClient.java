@@ -13,11 +13,9 @@ import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,7 +65,8 @@ class SisenseRESTAPIClient{
                 .setSocketTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
                 .build();
 
-        CloseableHttpClient httpClient = HttpClientBuilder
+
+        client = HttpClientBuilder
                 .create()
                 .setDefaultRequestConfig(requestConfig)
                 .setSSLContext(sslContext)
@@ -80,9 +79,6 @@ class SisenseRESTAPIClient{
                                         .build()
                         )
                 ).build();
-
-
-        client = httpClient;
         post = new HttpPost(uri);
         post.addHeader("authorization", "Bearer " + configFile.getToken());
         post.setEntity(new StringEntity(jaql.toString(), ContentType.APPLICATION_JSON));
