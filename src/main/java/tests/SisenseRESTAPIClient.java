@@ -197,15 +197,20 @@ class SisenseRESTAPIClient{
     private static JSONObject createJAQL(String elastiCube) throws JSONException {
 
         JSONObject rootObject = new JSONObject();
+
+        // datasource object
+        JSONObject datasourceObj = new JSONObject();
+        datasourceObj.put("fullname", "10.12.19.120/" + elastiCube);
+
         JSONArray metadataArray = new JSONArray();
-
         JSONObject jaqlObject = new JSONObject();
-
-        rootObject.put("datasource", elastiCube);
         jaqlObject.put("formula", "1");
         metadataArray.put(jaqlObject);
+
+        rootObject.put("datasource", datasourceObj);
         rootObject.put("metadata", metadataArray);
 
+        logger.debug("JAQL body: " + rootObject.toString(3));
         return rootObject;
     }
 
