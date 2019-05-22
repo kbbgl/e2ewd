@@ -133,6 +133,8 @@ public class CmdOperations {
         BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubePortCommand.getInputStream()));
         BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubePortCommand.getErrorStream()));
 
+        // check whether the waitFor protects the state where
+
         // read stdin
         String s;
         logger.debug("Output stream:");
@@ -310,7 +312,6 @@ public class CmdOperations {
 
     }
 
-    // TODO add indication to mongo and Slack about dump occurrance
     public void w3wpDump() throws IOException, InterruptedException {
 
         String command = procdumpPath + " -accepteula -o -ma w3wp iis_dump.dmp";

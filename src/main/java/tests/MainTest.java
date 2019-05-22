@@ -50,7 +50,6 @@ public class MainTest {
         logger.debug("Executing pre-run test validations...");
         resultFile.delete();
 
-        logger.info(configFile.toString());
         resultFile.create();
 
         if (configFile.getSlackWebhookURL() != null){
@@ -152,6 +151,7 @@ public class MainTest {
 
         for (ElastiCube elastiCube : elastiCubes){
 
+            // close client after
             SisenseRESTAPIClient client = new SisenseRESTAPIClient(elastiCube.getName());
             client.executeQuery();
             restAPITests.put(elastiCube.getName(), client.isCallSuccessful());
