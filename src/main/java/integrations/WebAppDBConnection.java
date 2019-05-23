@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 public class WebAppDBConnection {
@@ -39,7 +40,7 @@ public class WebAppDBConnection {
                 logger.info("Operation sent successfully");
             }
             else {
-                String result = new BufferedReader(new InputStreamReader(responseData.getContent()))
+                String result = new BufferedReader(new InputStreamReader(responseData.getContent(), StandardCharsets.UTF_8))
                         .lines().collect(Collectors.joining("\n"));
                 JSONObject responseJSON = new JSONObject(result);
                 logger.warn("Call failed with response code " + response.getStatusLine().getStatusCode());

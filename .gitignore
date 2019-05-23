@@ -111,6 +111,7 @@ build/resources/
 build/scripts/
 build/tmp/
 /SiSense
+/src/main/java/testing
 
 
 # Ignore Gradle GUI config

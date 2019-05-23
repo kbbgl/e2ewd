@@ -2,7 +2,6 @@ import cmd_ops.CmdOperations;
 import file_ops.ConfigFile;
 import file_ops.VersionFile;
 import logging.TestLog;
-import models.ElastiCube;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class App {
 

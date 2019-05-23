@@ -20,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -89,7 +90,7 @@ public class SlackClient {
             HttpEntity responseData = response.getEntity();
 
             if (responseData != null){
-                String result = new BufferedReader(new InputStreamReader(responseData.getContent()))
+                String result = new BufferedReader(new InputStreamReader(responseData.getContent(), StandardCharsets.UTF_8))
                         .lines().collect(Collectors.joining("\n"));
 
                 logger.info("Response from Slack: " + result);

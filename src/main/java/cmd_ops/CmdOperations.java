@@ -9,6 +9,7 @@ import org.slf4j.Marker;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class CmdOperations {
     private final Runtime runtime = Runtime.getRuntime();
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(CmdOperations.class);
     private final String procdumpPath = executionPath() + "\\procdump\\procdump.exe";
+    private final String ELASTICUBE_PROCESS_NAME = "ElastiCube.ManagementService";
+    private final String IIS_PROCESS_NAME = "w3wp";
     private final int PROCESS_TIMEOUT = 15;
 
     private CmdOperations(){
@@ -56,8 +59,8 @@ public class CmdOperations {
             Process listCubesCommand = runtime.exec(psmCmd, environmentalVariable);
             logger.debug("Executing " + Arrays.toString(environmentalVariable) + "&&" + Arrays.toString(psmCmd));
 
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream()));
-            BufferedReader errorInput = new BufferedReader(new InputStreamReader(listCubesCommand.getErrorStream()));
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream(), StandardCharsets.UTF_8));
+            BufferedReader errorInput = new BufferedReader(new InputStreamReader(listCubesCommand.getErrorStream(), StandardCharsets.UTF_8));
 
             Pattern listCubesPattern = Pattern.compile("Cube Name \\[(.*?)] ID : \\[(.*?)] FarmPath \\[(.*?)] Status \\[(.*?)]");
             Pattern errorPattern = Pattern.compile("\\((.*?)\\)");
@@ -71,7 +74,7 @@ public class CmdOperations {
                 if (s.startsWith("Cube Name")){
                     Matcher cubeNameMatcher = listCubesPattern.matcher(s);
                     while (cubeNameMatcher.find()){
-
+                        logger.debug(s);
                         ElastiCube elastiCube = new ElastiCube(cubeNameMatcher.group(1), cubeNameMatcher.group(4));
                         setElastiCubeProperties(elastiCube);
 
@@ -99,8 +102,8 @@ public class CmdOperations {
 
             // Read stderr
             String e;
-            logger.debug("Error stream: ");
             while ((e = errorInput.readLine()) != null){
+                    logger.debug("Error stream: ");
                     logger.error(e);
                 }
 
@@ -130,8 +133,8 @@ public class CmdOperations {
         Process ecubePortCommand = Runtime.getRuntime().exec(psmCmd);
         logger.debug("Running command " + Arrays.toString(psmCmd));
 
-        BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubePortCommand.getInputStream()));
-        BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubePortCommand.getErrorStream()));
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubePortCommand.getInputStream(), StandardCharsets.UTF_8));
+        BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubePortCommand.getErrorStream(), StandardCharsets.UTF_8));
 
         // check whether the waitFor protects the state where
 
@@ -179,8 +182,8 @@ public class CmdOperations {
         Process monetDBQueryCmd = runtime.exec(command, null, new File(executionPath() + "\\mclient\\"));
         logger.debug("Executing command " + Arrays.toString(command));
 
-        BufferedReader stdInput = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getInputStream()));
-        BufferedReader errorStream = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getErrorStream()));
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getInputStream(), StandardCharsets.UTF_8));
+        BufferedReader errorStream = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getErrorStream(), StandardCharsets.UTF_8));
 
         // Read stdin
         String s;
@@ -234,8 +237,8 @@ public class CmdOperations {
         Process monetDBQueryCmd = runtime.exec(command, null, new File(executionPath() + "\\mclient\\"));
         logger.debug("Executing command " + Arrays.toString(command));
 
-        BufferedReader stdInput = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getInputStream()));
-        BufferedReader errorStream = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getErrorStream()));
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getInputStream(), StandardCharsets.UTF_8));
+        BufferedReader errorStream = new BufferedReader(new InputStreamReader(monetDBQueryCmd.getErrorStream(), StandardCharsets.UTF_8));
 
         // Read stdin
         String s;
@@ -314,69 +317,96 @@ public class CmdOperations {
 
     public void w3wpDump() throws IOException, InterruptedException {
 
-        String command = procdumpPath + " -accepteula -o -ma w3wp iis_dump.dmp";
+        boolean isProcessRunning = false;
+        List<String> runningProcesses = processList();
 
-        Process process = runtime.exec(command);
-        logger.info("Creating IIS memory dump...");
-
-        BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        BufferedReader errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-
-        // Read stdout
-        String s;
-        while ((s = stdInput.readLine()) != null){
-            logger.debug("Output stream: " + s);
+        // Check whether IIS process is running
+        for (String process : runningProcesses){
+            if (process.contains(IIS_PROCESS_NAME)){
+                isProcessRunning = true;
+            }
         }
 
-        // Read stderr
-        String e;
-        while ((e = errorStream.readLine()) != null){
-            logger.error("Error stream: " + e);
-        }
+        if (isProcessRunning){
 
-        // check that process hasn't timed out
-        if (!process.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
-            logger.error("Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
-            process.destroyForcibly();
+            String command = procdumpPath + " -accepteula -o -ma " + IIS_PROCESS_NAME + " iis_dump.dmp";
+
+            Process process = runtime.exec(command);
+            logger.info("Creating IIS memory dump...");
+
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+            BufferedReader errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8));
+
+            // Read stdout
+            String s;
+            while ((s = stdInput.readLine()) != null){
+                logger.debug("Output stream: " + s);
+            }
+
+            // Read stderr
+            String e;
+            while ((e = errorStream.readLine()) != null){
+                logger.error("Error stream: " + e);
+            }
+
+            // check that process hasn't timed out
+            if (!process.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+                logger.error("Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
+                process.destroyForcibly();
+            } else {
+                logger.info("Operation successful");
+            }
+
         } else {
-            logger.info("Operation successful");
+            logger.warn(IIS_PROCESS_NAME + " not running. Cannot create memory dump");
         }
-
-
     }
 
     // TODO add indication to mongo and Slack about dump occurrance
     public void ecsDump() throws IOException, InterruptedException {
 
-        String command = procdumpPath + " -accepteula -o -ma ElastiCube.ManagementService ecs_dump.dmp";
-        logger.info("Creating ECS memory dump...");
+        boolean isProcessRunning = false;
+        List<String> runningProcesses = processList();
 
-        Process process = runtime.exec(command);
-
-        BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        BufferedReader errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-
-        // Read stdout
-        String s;
-        while ((s = stdInput.readLine()) != null){
-            logger.debug("Output stream: " + s);
+        // Check whether ECS process is running
+        for (String process : runningProcesses){
+            if (process.contains(ELASTICUBE_PROCESS_NAME)){
+                isProcessRunning = true;
+            }
         }
 
-        // Read stderr
-        String e;
-        while ((e = errorStream.readLine()) != null){
-            logger.error("Error stream: " + e);
-        }
+        if (isProcessRunning){
+            String command = procdumpPath + " -accepteula -o -ma " + ELASTICUBE_PROCESS_NAME + " ecs_dump.dmp";
+            logger.info("Creating ECS memory dump...");
 
-        // check that process hasn't timed out
-        if (!process.waitFor(30, TimeUnit.SECONDS)) {
-            logger.error("Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
-            process.destroyForcibly();
-        }
-        else {
-            logger.info("Operation successful");
-        }
+            Process process = runtime.exec(command);
 
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+            BufferedReader errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8));
+
+            // Read stdout
+            String s;
+            while ((s = stdInput.readLine()) != null){
+                logger.debug("Output stream: " + s);
+            }
+
+            // Read stderr
+            String e;
+            while ((e = errorStream.readLine()) != null){
+                logger.error("Error stream: " + e);
+            }
+
+            // check that process hasn't timed out
+            if (!process.waitFor(30, TimeUnit.SECONDS)) {
+                logger.error("Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
+                process.destroyForcibly();
+            }
+            else {
+                logger.info("Operation successful");
+            }
+        } else {
+            logger.warn(ELASTICUBE_PROCESS_NAME + " not running. Cannot create memory dump");
+        }
     }
 
     public void ecDump(ElastiCube elastiCube){
@@ -396,8 +426,8 @@ public class CmdOperations {
 
             process = runtime.exec(command);
 
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            BufferedReader errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+            BufferedReader errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8));
 
             // Read stdout
             String s;
@@ -449,14 +479,14 @@ public class CmdOperations {
         Process psProcess = runtime.exec(restartCommand);
 
         String line;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream()))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream(), StandardCharsets.UTF_8))) {
             while ((line = reader.readLine()) != null){
                 logger.debug("Output stream " + line);
             }
         }
 
         String error;
-        try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream()))) {
+        try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream(), StandardCharsets.UTF_8))) {
             while ((error = errorReader.readLine()) != null){
                 logger.error(error);
             }
@@ -483,14 +513,14 @@ public class CmdOperations {
         logger.debug("Running command " + restartCommand);
 
         String line;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream()))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream(), StandardCharsets.UTF_8))) {
                 while ((line = reader.readLine()) != null){
                     logger.debug("Output stream: " + line);
                 }
             }
 
         String error;
-        try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream()))) {
+        try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream(), StandardCharsets.UTF_8))) {
                 while ((error = errorReader.readLine()) != null){
                     logger.error("Error stream: " + error);
                 }
@@ -516,7 +546,7 @@ public class CmdOperations {
         Process getHostnameProcess = runtime.exec(cmd);
 
         // read stdout
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(getHostnameProcess.getInputStream()))){
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(getHostnameProcess.getInputStream(), StandardCharsets.UTF_8))){
             // read stdout
             String s;
             while ((s = reader.readLine()) != null){
@@ -526,7 +556,7 @@ public class CmdOperations {
         }
 
         // read stderr
-        try(BufferedReader errorReader = new BufferedReader(new InputStreamReader(getHostnameProcess.getErrorStream()))){
+        try(BufferedReader errorReader = new BufferedReader(new InputStreamReader(getHostnameProcess.getErrorStream(), StandardCharsets.UTF_8))){
 
             String e;
             while ((e = errorReader.readLine()) != null){
@@ -556,5 +586,25 @@ public class CmdOperations {
             System.out.println(e.getMessage());
         }
         return jarLocation;
+    }
+
+    private List<String> processList() throws IOException {
+
+        List<String> processes = new ArrayList<>();
+
+        Process p = Runtime.getRuntime().exec(System.getenv("windir") + "\\system32\\" + "tasklist.exe");
+
+        BufferedReader inputStream = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        BufferedReader errorStream = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+
+        String line;
+        //logger.debug("List of processes:");
+        while ((line = inputStream.readLine()) != null){
+            //logger.debug();
+            processes.add(line);
+        }
+
+        return processes;
+
     }
 }
