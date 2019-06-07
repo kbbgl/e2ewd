@@ -91,8 +91,15 @@ public class MainTest {
             // end test if 0 running cubes
             if (elastiCubes.size() == 0){
                 logger.info("No ElastiCubes in RUNNING mode.");
-                setTestSuccess(true);
-                terminate();
+
+                try {
+                    CmdOperations.getInstance().runElastiCube();
+                    retry();
+
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+
             }
             // if more than 0 running cubes
             else {
@@ -272,4 +279,5 @@ public class MainTest {
     private void setNumberOfElastiCubes(int numberOfElastiCubes){
         testLog.setNumberOfElastiCubes(numberOfElastiCubes);
     }
+
 }
