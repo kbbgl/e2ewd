@@ -171,6 +171,45 @@ public class CmdOperations {
         }
     }
 
+    public void runElastiCube() throws IOException, InterruptedException {
+
+        String[] psmCmd = new String[]{
+                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
+                "ecube",
+                "start",
+                "name=" + defaultElastiCube.getName(),
+                "serverAddress=localhost"
+        };
+
+        Process ecubeStartProcess = runtime.exec(psmCmd);
+        logger.debug("Executing " + Arrays.toString(psmCmd));
+        logger.info("Starting ElastiCube " + defaultElastiCube.getName());
+
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubeStartProcess.getInputStream(), StandardCharsets.UTF_8));
+        BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubeStartProcess.getErrorStream(), StandardCharsets.UTF_8));
+
+        // read stdin
+        String s;
+        logger.debug("Output stream:");
+        while ((s = stdInput.readLine()) != null){
+            logger.debug(s);
+        }
+
+        // Read stderr
+        String e;
+        logger.debug("Error stream:");
+        while ((e = errorStream.readLine()) != null){
+            logger.error(e);
+        }
+
+        // Check that process hasn't timed out
+        if (!ecubeStartProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+            logger.error("ecubeStartProcess timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
+            ecubeStartProcess.destroyForcibly();
+        }
+
+    }
+
     public boolean isMonetDBQuerySuccessful(ElastiCube elastiCube) throws IOException, InterruptedException {
 
         boolean success = false;
@@ -610,47 +649,6 @@ public class CmdOperations {
         }
 
         return processes;
-
-    }
-
-    public void runElastiCube() throws IOException, InterruptedException {
-
-        String[] psmCmd = new String[]{
-                "cmd.exe",
-                "/c",
-                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
-                "ecube",
-                "start",
-                "name=" + defaultElastiCube.getName(),
-                "serverAddress=localhost"
-        };
-
-        Process ecubeStartProcess = runtime.exec(psmCmd);
-        logger.debug("Executing " + Arrays.toString(psmCmd));
-        logger.info("Starting ElastiCube " + defaultElastiCube.getName());
-
-        BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubeStartProcess.getInputStream(), StandardCharsets.UTF_8));
-        BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubeStartProcess.getErrorStream(), StandardCharsets.UTF_8));
-
-        // read stdin
-        String s;
-        logger.debug("Output stream:");
-        while ((s = stdInput.readLine()) != null){
-            logger.debug(s);
-        }
-
-        // Read stderr
-        String e;
-        logger.debug("Error stream:");
-        while ((e = errorStream.readLine()) != null){
-            logger.error(e);
-        }
-
-        // Check that process hasn't timed out
-        if (!ecubeStartProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
-            logger.error("ecubeStartProcess timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
-            ecubeStartProcess.destroyForcibly();
-        }
 
     }
 }

@@ -214,11 +214,12 @@ public class MainTest {
         }
 
         // send test to web app db
-        try {
-            WebAppDBConnection.sendOperation(testLog.toJSON());
-        } catch (IOException | ParseException | JSONException e) {
-            logger.warn("Failed sending test log to mongo: " + e.getMessage());
-        }
+        // quota exceeded so disabling
+//        try {
+//            WebAppDBConnection.sendOperation(testLog.toJSON());
+//        } catch (IOException | ParseException | JSONException e) {
+//            logger.warn("Failed sending test log to mongo: " + e.getMessage());
+//        }
 
         ResultFile.getInstance().write(testSuccess);
         logger.info("Test result: " + testSuccess);
@@ -239,11 +240,13 @@ public class MainTest {
         }
 
         // send test to web app db
-        try {
-            WebAppDBConnection.sendOperation(testLog.toJSON());
-        } catch (IOException | ParseException | JSONException e) {
-            logger.warn("Failed sending test log to mongo: " + e.getMessage());
-        }
+        // quota exceeded so disabling
+//        try {
+//            WebAppDBConnection.sendOperation(testLog.toJSON());
+//        } catch (IOException | ParseException | JSONException e) {
+//            logger.warn("Failed sending test log to mongo: " + e.getMessage());
+//        }
+
         ResultFile.getInstance().write(testSuccess);
         logger.info("Test result: " + testSuccess);
         logger.info("EXITING...");
