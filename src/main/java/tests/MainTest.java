@@ -97,7 +97,14 @@ public class MainTest {
                     retry();
 
                 } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
+                    setTestSuccess(false);
+                    setNumberOfElastiCubes(0);
+                    terminate("No ElastiCubes found in ECS");
+                    logger.debug("Exception thrown when trying to initialize an ElastiCube and retry");
+                } catch (NullPointerException e){
+                    setTestSuccess(false);
+                    setNumberOfElastiCubes(0);
+                    terminate("No ElastiCubes found in ECS");
                 }
 
             }
