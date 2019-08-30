@@ -75,3 +75,9 @@ The dump includes a snapshot of the process memory set which can be useful in tr
 
 The application logging framework is [logback/slf4j](https://logback.qos.ch/) so any configuration options offered by the library can be used by modifying the `logback.xml` file.  
 The default configuration is set to log level `INFO`, 10 files  `FixedWindowRollingPolicy` sized 10MB each. 
+
+
+#### Building
+
+* Must have `gradle` installed.
+* Run `gradle build` 
