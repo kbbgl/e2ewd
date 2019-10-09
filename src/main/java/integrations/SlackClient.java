@@ -93,7 +93,7 @@ public class SlackClient {
                 String result = new BufferedReader(new InputStreamReader(responseData.getContent(), StandardCharsets.UTF_8))
                         .lines().collect(Collectors.joining("\n"));
 
-                logger.info("Response from Slack: " + result);
+                logger.debug("Response from Slack: " + result);
             } else {
                 logger.debug("Response is empty");
             }
@@ -112,7 +112,7 @@ public class SlackClient {
             logger.error("JSON exception: ");
             logger.debug(Arrays.toString(e.getStackTrace()));
         } finally {
-            logger.warn("Releasing Slack connection");
+            logger.debug("Releasing Slack connection");
             post.releaseConnection();
         }
     }

@@ -1,33 +1,24 @@
 package testing;
 
-import cmd_ops.CmdOperations;
-import models.ElastiCube;
+import tests.BrokerHealthClient;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 
 public class MainTest {
 
+    public static void main(String[] args) {
 
-    public static void main(String[] args) throws IOException, InterruptedException {
+        try {
+            BrokerHealthClient brokerHealthClient = BrokerHealthClient.getInstance();
+            brokerHealthClient.executeQuery();
+        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+            e.printStackTrace();
+        }
 
 
-//        File fe=new File("C:\\Users\\kobbi.gal.CORP\\IdeaProjects\\e2ewd\\src\\main\\java\\testing\\test.txt");
-//        FileInputStream fis =new FileInputStream(fe);
-//
-//        BufferedReader stdInput = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8));
-//        String s;
-//        while ((s = stdInput.readLine()) != null) {
-//
-//
-//            System.out.println(s);
-//
-//
-//        }
-
-        CmdOperations.getInstance().ecsDump();
-        CmdOperations.getInstance().w3wpDump();
     }
 
 }

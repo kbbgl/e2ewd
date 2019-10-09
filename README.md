@@ -11,6 +11,7 @@
 * Checks the ElastiCube Server internal connectivity.
 * Performs direct ElastiCube query.
 * Slack Webhook alerts on individual REST API query failures.
+* Checks that Broker (`RabbitMQ`) is healthy (number of consumers, messages stuck in queue)  
 
 Tests are performed for all ElastiCubes with are in _RUNNING_ mode.  
 

@@ -30,6 +30,7 @@ public class MainTest {
     private final int maxNumberAttempts = 5;
     private List<ElastiCube> elastiCubes;
     private ResultFile resultFile = ResultFile.getInstance();
+    private BrokerHealthClient brokerHealthClient;
     private ConfigFile configFile = ConfigFile.getInstance();
     private boolean isSlackEnabled;
     private TestLog testLog = TestLog.getInstance();
@@ -61,6 +62,14 @@ public class MainTest {
 
         // Set test success initially
         setTestSuccess(true);
+
+        // Run Broker health test
+        try {
+            brokerHealthClient = BrokerHealthClient.getInstance();
+            brokerHealthClient.executeQuery();
+        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+            logger.error("Error initializing broker health client: " + e.getMessage());
+        }
 
         // Check number of attempts
         if (attempt > maxNumberAttempts){

@@ -159,11 +159,14 @@ class SisenseRESTAPIClient{
             }
             catch (IOException e){
 
-
                 logger.error("Query failed for " +
                         elastiCubeName + " with code " +
                         responseCode + " , error: " +
                         e.getMessage());
+
+                if (responseCode == 401){
+                    logger.warn("Check that the token in the configuration file is valid");
+                }
                 setCallSuccessful(false);
             } finally {
                 logger.debug("Releasing REST API client connection");

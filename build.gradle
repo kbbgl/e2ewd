@@ -3,7 +3,7 @@ plugins {
     id "application"
 }
 
-version = "2.9.2"
+version = "3.0.0"
 
 
 sourceSets {
@@ -68,6 +68,15 @@ task preBuild(){
         new File("$projectDir/build/libs/log/log.txt").text = ""
         new File("$projectDir/build/libs/version").text = getVersion().toString()
         new File("$projectDir/build/libs/SiSense").deleteDir()
+    }
+}
+
+task copyFilesToTestServer(){
+    doLast {
+        copy {
+            from 'build/libs/e2ewd.jar'
+            into 'C:/temp/'
+        }
     }
 }
 
