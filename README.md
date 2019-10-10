@@ -10,7 +10,7 @@
 * Checks and alerts whether the ElastiCube Server query engine is up.
 * Checks the ElastiCube Server internal connectivity.
 * Performs direct ElastiCube query.
-* Slack Webhook alerts on individual REST API query failures.
+* Slack Webhook alerts on individual REST API query failures, unhealthy microservices and Broker queues.
 * Checks that Broker (`RabbitMQ`) is healthy (number of consumers, messages stuck in queue.)
 * Checks the health of the microservices ( using `/api/test` endpoint.)  
 
