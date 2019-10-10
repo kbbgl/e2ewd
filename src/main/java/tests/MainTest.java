@@ -30,7 +30,6 @@ public class MainTest {
     private final int maxNumberAttempts = 5;
     private List<ElastiCube> elastiCubes;
     private ResultFile resultFile = ResultFile.getInstance();
-    private BrokerHealthClient brokerHealthClient;
     private ConfigFile configFile = ConfigFile.getInstance();
     private boolean isSlackEnabled;
     private TestLog testLog = TestLog.getInstance();
@@ -63,14 +62,6 @@ public class MainTest {
         // Set test success initially
         setTestSuccess(true);
 
-        // Run Broker health test
-        try {
-            brokerHealthClient = BrokerHealthClient.getInstance();
-            brokerHealthClient.executeQuery();
-        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
-            logger.error("Error initializing broker health client: " + e.getMessage());
-        }
-
         // Check number of attempts
         if (attempt > maxNumberAttempts){
             String message = "Max number of attempts " + maxNumberAttempts + " exceeded.";
@@ -81,6 +72,23 @@ public class MainTest {
         }
 
         logger.info("Attempt number " + attempt);
+
+
+        // Run Broker health test
+        try {
+            BrokerHealthClient brokerHealthClient = BrokerHealthClient.getInstance();
+            brokerHealthClient.executeQuery();
+        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+            logger.error("Error initializing broker health client: " + e.getMessage());
+        }
+
+        // Run microservices health test
+        try {
+            MicroservicesHealthClient microservicesHealthClient = MicroservicesHealthClient.getInstance();
+            microservicesHealthClient.executeCall();
+        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException e) {
+            logger.error("Error running microservices health test: " + e.getMessage());
+        }
 
         // Retrieve list of RUNNING ElastiCubes
         logger.info("Retrieving list of ElastiCubes...");
