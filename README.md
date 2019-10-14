@@ -18,8 +18,7 @@ Tests are performed for all ElastiCubes with are in _RUNNING_ mode.
 
 ### Instructions
 
-1) Download or clone the project to the Sisense server or run the [installation script](https://github.com/kbbgl/e2ewd_deployer/tree/master/build/libs).
-If you've decided to run the installation script, you may skip steps 2 and 3 as it the script will create all directories, download the necessary files and create the configuration file with the default values mentioned in the table below.  
+1) Download or clone the project to the Sisense server.  
 2) Navigate to `[path/to/dir]/build/libs/` (where `[path/to/dir]` is where you saved the project.)
 3) Open the `config.properties` file and fill it out according to the following options:
  
