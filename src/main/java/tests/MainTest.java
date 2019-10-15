@@ -31,7 +31,6 @@ public class MainTest {
     private List<ElastiCube> elastiCubes;
     private ResultFile resultFile = ResultFile.getInstance();
     private ConfigFile configFile = ConfigFile.getInstance();
-    private boolean isSlackEnabled;
     private TestLog testLog = TestLog.getInstance();
     private StrategyContext strategyContext = new StrategyContext();
 
@@ -51,10 +50,6 @@ public class MainTest {
         resultFile.delete();
 
         resultFile.create();
-
-        if (configFile.getSlackWebhookURL() != null){
-            isSlackEnabled =  !configFile.getSlackWebhookURL().isEmpty();
-        }
     }
 
     private void run(int attempt) throws JSONException {
@@ -75,19 +70,24 @@ public class MainTest {
 
 
         // Run Broker health test
-        try {
-            BrokerHealthClient brokerHealthClient = BrokerHealthClient.getInstance();
-            brokerHealthClient.executeQuery();
-        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
-            logger.error("Error initializing broker health client: " + e.getMessage());
+        if (configFile.isRunBrokerHealthCheck()){
+            try {
+                BrokerHealthClient brokerHealthClient = BrokerHealthClient.getInstance();
+                brokerHealthClient.executeQuery();
+            } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+                logger.error("Error initializing broker health client: " + e.getMessage());
+            }
         }
 
+
         // Run microservices health test
-        try {
-            MicroservicesHealthClient microservicesHealthClient = MicroservicesHealthClient.getInstance();
-            microservicesHealthClient.executeCall();
-        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException e) {
-            logger.error("Error running microservices health test: " + e.getMessage());
+        if (configFile.isRunMicroservicesHealthCheck()){
+            try {
+                MicroservicesHealthClient microservicesHealthClient = MicroservicesHealthClient.getInstance();
+                microservicesHealthClient.executeCall();
+            } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | IOException e) {
+                logger.error("Error running microservices health test: " + e.getMessage());
+            }
         }
 
         // Retrieve list of RUNNING ElastiCubes
@@ -233,7 +233,7 @@ public class MainTest {
         testLog.setHealthy(testSuccess);
 
         // send Slack notification if enabled and test failed
-        if (!isTestSuccess() && isSlackEnabled){
+        if (!isTestSuccess() && SlackClient.getInstance() != null){
             SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed ");
         }
 
@@ -259,7 +259,7 @@ public class MainTest {
         testLog.setHealthy(testSuccess);
 
         // send Slack notification if enabled and test failed
-        if (!isTestSuccess() && isSlackEnabled){
+        if (!isTestSuccess() && SlackClient.getInstance() != null){
             SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed ");
         }
 

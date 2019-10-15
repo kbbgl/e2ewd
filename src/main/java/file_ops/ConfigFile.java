@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -26,6 +28,9 @@ public class ConfigFile {
     private int port;
     private String slackWebhookURL;
     private String friendlyHostName;
+    private boolean runBrokerHealthCheck;
+    private boolean runMicroservicesHealthCheck;
+    private boolean isSlackEnabled;
 
     private ConfigFile(){
 
@@ -49,8 +54,25 @@ public class ConfigFile {
                 setIisDump(Boolean.parseBoolean(properties.getProperty("iisDump")));
                 setRequestTimeoutInSeconds(Integer.parseInt(properties.getProperty("requestTimeoutInSeconds")));
                 setPort(Integer.parseInt(properties.getProperty("port")));
-                setSlackWebhookURL(properties.getProperty("slackWebhookURL"));
                 setFriendlyHostName(properties.getProperty("friendlyHostName"));
+                setRunBrokerHealthCheck(Boolean.parseBoolean(properties.getProperty("runBrokerHealthCheck")));
+                setRunMicroservicesHealthCheck(Boolean.parseBoolean(properties.getProperty("runMicroservicesHealthCheck")));
+
+                setSlackWebhookURL(properties.getProperty("slackWebhookURL"));
+
+                // Validate the URL
+                if (!properties.getProperty("slackWebhookURL").isEmpty() || !properties.getProperty("slackWebhookURL").equals("")){
+                    try {
+                        new URL(properties.getProperty("slackWebhookURL"));
+                        setSlackEnabled(true);
+                    } catch (MalformedURLException e){
+                        logger.warn("Error parsing 'slackWebhookURL' as a valid URL: " + e.getMessage());
+                        setSlackEnabled(false);
+                    }
+                } else {
+                    logger.info("'slackWebhookURL' value is empty");
+                    setSlackEnabled(false);
+                }
 
             } catch (IOException e) {
                 logger.error("Error reading config.properties: " + e.getMessage() + ". Terminating...");
@@ -172,13 +194,37 @@ public class ConfigFile {
         this.slackWebhookURL = slackWebhookURL;
     }
 
-
     private void setFriendlyHostName(String friendlyHostName) {
         this.friendlyHostName = friendlyHostName;
     }
 
     public String getFriendlyHostName() {
         return friendlyHostName;
+    }
+
+    private void setRunBrokerHealthCheck(boolean runBrokerHealthCheck) {
+        this.runBrokerHealthCheck = runBrokerHealthCheck;
+    }
+
+    private void setRunMicroservicesHealthCheck(boolean runMicroservicesHealthCheck) {
+        this.runMicroservicesHealthCheck = runMicroservicesHealthCheck;
+    }
+
+    public boolean isRunBrokerHealthCheck() {
+        return runBrokerHealthCheck;
+    }
+
+    public boolean isRunMicroservicesHealthCheck() {
+        return runMicroservicesHealthCheck;
+    }
+
+    public boolean isSlackEnabled() {
+        return isSlackEnabled;
+    }
+
+    private void setSlackEnabled(boolean slackEnabled) {
+        logger.info("Slack notifications are enabled: " + slackEnabled);
+        isSlackEnabled = slackEnabled;
     }
 
     public boolean isConfigFileValid(){
@@ -211,7 +257,6 @@ public class ConfigFile {
         return true;
     }
 
-
     @Override
     public String toString() {
         return "ConfigFile{\n\t" +
@@ -227,6 +272,8 @@ public class ConfigFile {
                 "ecDump:" + ecDump + "\n\t" +
                 "slackWebhookURL:" + slackWebhookURL + "\n\t" +
                 "friendlyHostName:" + friendlyHostName + "\n\t" +
+                "runBrokerHealthCheck:" + runBrokerHealthCheck + "\n\t" +
+                "runMicroservicesHealthCheck:" + runMicroservicesHealthCheck + "\n\t" +
                 "}";
     }
 }

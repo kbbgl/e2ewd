@@ -152,7 +152,11 @@ public class MicroservicesHealthClient {
                                 // Check if any is unhealthy
                                 if (!isMicroserviceHealthy){
                                     logger.warn(microservice + " is unhealthy!");
-                                    slackClient.sendMessage(":warning: `" + microservice + "` is unhealthy!");
+
+                                    if (slackClient != null){
+                                        slackClient.sendMessage(":warning: `" + microservice + "` is unhealthy!");
+                                    }
+
                                 }
                             }
 

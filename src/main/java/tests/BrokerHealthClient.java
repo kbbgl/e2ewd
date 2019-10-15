@@ -1,6 +1,7 @@
 package tests;
 
 
+import file_ops.ConfigFile;
 import integrations.SlackClient;
 import models.BrokerQueue;
 import org.apache.commons.codec.binary.Base64;
@@ -98,13 +99,12 @@ public class BrokerHealthClient{
 
         String auth = "guest:guest";
         byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(StandardCharsets.ISO_8859_1));
-        String authHeader = "Basic " + new String(encodedAuth);
 
-        return authHeader;
+        return "Basic " + new String(encodedAuth);
 
     }
 
-    public void executeQuery() throws IOException {
+    void executeQuery() throws IOException {
 
         logger.info("Checking Broker health...");
         HttpResponse response = client.execute(get);
@@ -144,8 +144,12 @@ public class BrokerHealthClient{
 
                             // Check if one of the queues us unhealthy
                             if (queue.getNumberOfMessages() > 0 || queue.getNumberOfConsumers() == 0){
-                                logger.warn("Queue '" + queue.getName() + "' unhealthy! Has " + queue.getNumberOfConsumers() + " consumers, " + queue.getNumberOfMessages() + "messages stuck in queue");
-                                slackClient.sendMessage(":warning: Queue `" + queue.getName() + "` is unhealthy! \n```" + queue.toString() + "```" );
+                                logger.warn("Queue '" + queue.getName() + "' unhealthy! Has " + queue.getNumberOfConsumers() + " consumers, " + queue.getNumberOfMessages() + " messages stuck in queue");
+
+                                if (slackClient != null){
+                                    slackClient.sendMessage(":warning: Queue `" + queue.getName() + "` is unhealthy! \n```" + queue.toString() + "```" );
+                                }
+
                                 logger.debug(queue.toString());
                             }
                         }

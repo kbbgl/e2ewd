@@ -42,6 +42,23 @@ public class SlackClient {
             logger.debug("SlackClient instance created.");
         }
 
+        if (!ConfigFile.getInstance().isSlackEnabled()){
+            instance = null;
+        }
+
+        return instance;
+    }
+
+    private SlackClient(){
+
+        logger.debug("Initialized slack client, set timeout: " + REQUEST_TIMEOUT_SECONDS);
+
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectionRequestTimeout(REQUEST_TIMEOUT_SECONDS * 1000)
+                .setConnectTimeout(REQUEST_TIMEOUT_SECONDS * 1000)
+                .setSocketTimeout(REQUEST_TIMEOUT_SECONDS * 1000)
+                .build();
+
         // check if friendlyHostName was set in config file
         if (!ConfigFile.getInstance().getFriendlyHostName().isEmpty() ||
                 !ConfigFile.getInstance().getFriendlyHostName().equals("") ||
@@ -58,18 +75,6 @@ public class SlackClient {
                 logger.debug(Arrays.toString(e.getStackTrace()));
             }
         }
-        return instance;
-    }
-
-    private SlackClient(){
-
-        logger.debug("Initialized slack client, set timeout: " + REQUEST_TIMEOUT_SECONDS);
-
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout(REQUEST_TIMEOUT_SECONDS * 1000)
-                .setConnectTimeout(REQUEST_TIMEOUT_SECONDS * 1000)
-                .setSocketTimeout(REQUEST_TIMEOUT_SECONDS * 1000)
-                .build();
 
         client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
         post = new HttpPost(ConfigFile.getInstance().getSlackWebhookURL());

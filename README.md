@@ -36,6 +36,8 @@ Tests are performed for all ElastiCubes with are in _RUNNING_ mode.
  | (Optional) `ecDump`           | Whether to perform an ElastiCube process memory dump if the direct ElastiCube query fails.                                                            | `boolean` | `true` or `false`[default]                                                      |
  | (Optional) `slackWebhookURL`  | If set, the application will send a notification in the Slack channel. To retrieve, visit [Slack Incoming webhook documentation](https://api.slack.com/incoming-webhooks.) | `String`  | `https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX` |
  | (Optional) `friendlyHostName` | Server alias. Will be used to notify Slack channel.                                                                                                                        | `String`  | `QUERY-NODE-1`                                                                  |
+ | (Optional) `runBrokerHealthCheck` | Whether to check the Broker queues (`localhost:15672)` as part of the test.                                                                                                                        | `boolean`  | `true` or `false` [default]                                                                |
+ | (Optional) `runMicroservicesHealthCheck` | Whether to check the microservices (`/app/test`) queues as part of the test.                                                                                                                        | `boolean`  | `true` or `false` [default]                                                                 |
 
  4.Run the `run.bat` file as an Administrator.  
     

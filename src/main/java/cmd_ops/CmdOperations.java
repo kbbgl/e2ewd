@@ -126,6 +126,7 @@ public class CmdOperations {
         return elasticubes;
     }
 
+    // TODO handle cubes in FAULTED state
     private void setElastiCubeProperties(ElastiCube elastiCube) throws IOException, InterruptedException {
 
         String[] psmCmd = new String[]{
@@ -152,7 +153,7 @@ public class CmdOperations {
                 int port = Integer.parseInt(s.split("Port: ")[1]);
                 elastiCube.setPort(port);
             } else if (s.startsWith("IsLocked")){
-                boolean locked = Boolean.valueOf(s.split("IsLocked: ")[1]);
+                boolean locked = Boolean.parseBoolean(s.split("IsLocked: ")[1]);
                 elastiCube.setLocked(locked);
             }
         }
