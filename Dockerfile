@@ -1,4 +1,4 @@
-FROM openjdk:7
+FROM openjdk:8
 MAINTAINER kgwack@gmail.com
 COPY ./build/libs/ /usr/src/e2ewd
 WORKDIR /usr/src/e2ewd
