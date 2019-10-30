@@ -4,22 +4,19 @@ import cmd_ops.CmdOperations;
 import file_ops.ConfigFile;
 import file_ops.ResultFile;
 import integrations.SlackClient;
-import integrations.WebAppDBConnection;
 import logging.TestLog;
 import logging.TestResultToJSONConverter;
 import models.ElastiCube;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import run_strategy.*;
+import features.*;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
 import java.util.*;
 
 public class MainTest {

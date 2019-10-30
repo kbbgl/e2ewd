@@ -1,0 +1,1 @@
+java -Dlogback.configurationFile='./logback.xml' -jar e2ewd.jar
