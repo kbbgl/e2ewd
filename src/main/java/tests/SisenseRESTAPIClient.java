@@ -154,6 +154,12 @@ class SisenseRESTAPIClient{
                             setCallSuccessful(false);
                         }
                     }
+                } else if (responseCode == 401){
+                    logger.warn("Check that the token '" + configFile.getToken() + "' in the configuration file is valid");
+                    setCallSuccessful(false);
+                } else if (responseCode == 403){
+                    logger.warn("Ensure that you have sufficient permissions to run JAQLs");
+                    setCallSuccessful(false);
                 }
 
             }
@@ -164,9 +170,6 @@ class SisenseRESTAPIClient{
                         responseCode + " , error: " +
                         e.getMessage());
 
-                if (responseCode == 401){
-                    logger.warn("Check that the token in the configuration file is valid");
-                }
                 setCallSuccessful(false);
             } finally {
                 logger.debug("Releasing REST API client connection");
