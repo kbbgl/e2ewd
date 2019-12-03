@@ -111,7 +111,7 @@ public class MicroservicesHealthClient {
     public void executeCall() throws IOException {
 
         HttpResponse response = client.execute(get);
-        logger.info("Executing call to app/test endpoint...");
+        logger.info("Executing call to api/test endpoint...");
         parseResponse(response);
     }
 
