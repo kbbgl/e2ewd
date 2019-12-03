@@ -1,6 +1,7 @@
 package tests;
 
 import cmd_ops.CmdOperations;
+import cmd_ops.ElastiCubeRESTAPIClient;
 import file_ops.ConfigFile;
 import file_ops.ResultFile;
 import integrations.SlackClient;
@@ -92,41 +93,30 @@ public class MainTest {
 
         // Retrieve list of RUNNING ElastiCubes
         logger.info("Retrieving list of ElastiCubes...");
-        elastiCubes = CmdOperations.getInstance().getListElastiCubes();
 
-        // check to see if 0 elasticubes returned with error
-        if (elastiCubes == null){
-            setAndExecuteStrategy();
-            runECSTelnetTests();
-            retry();
-        }
-        // if no ECS error
-        else {
+        // requirement https://github.com/kbbgl/e2ewd/issues/39 to use API instead of PSM to retrieve EC names
+        //        elastiCubes = CmdOperations.getInstance().getListElastiCubes();
 
-            setNumberOfElastiCubes(elastiCubes.size());
+        // Create EC client and retrieve list of ElastiCubes
+        try {
+            ElastiCubeRESTAPIClient ecClient = new ElastiCubeRESTAPIClient();
+            elastiCubes = ecClient.getListOfElastiSucbes();
 
-            // end test if 0 running cubes
-            if (elastiCubes.size() == 0){
+            // Case when API call to get ElastiCubes succeeded but 0 returned
+            if (ecClient.isCallSuccessful() && elastiCubes.size() == 0){
+                String defaultEC = ecClient.getDefaultElastiCube();
                 logger.info("No ElastiCubes in RUNNING mode.");
+                logger.info("Chosen default ElastiCube to start: " + defaultEC);
+                CmdOperations.getInstance().runDefaultElastiCube(defaultEC);
+                retry();
+            } else if (!ecClient.isCallSuccessful()){
+                logger.error("API call to retrieve ElastiCubes was not successful");
+                setAndExecuteStrategy();
+                runECSTelnetTests();
+                retry();
+            } else if(elastiCubes.size() > 0){
+                setNumberOfElastiCubes(elastiCubes.size());
 
-                try {
-                    CmdOperations.getInstance().runElastiCube();
-                    retry();
-
-                } catch (IOException | InterruptedException e) {
-                    setTestSuccess(false);
-                    setNumberOfElastiCubes(0);
-                    terminate("No ElastiCubes found in ECS");
-                    logger.debug("Exception thrown when trying to initialize an ElastiCube and retry");
-                } catch (NullPointerException e){
-                    setTestSuccess(false);
-                    setNumberOfElastiCubes(0);
-                    terminate("No ElastiCubes found in ECS");
-                }
-
-            }
-            // if more than 0 running cubes
-            else {
                 JSONArray elastiCubesJSONArray = new JSONArray(elastiCubes.toArray());
                 logger.info("Found " +elastiCubes.size() + " running ElastiCubes: \n" + elastiCubesJSONArray.toString(3));
 
@@ -135,17 +125,22 @@ public class MainTest {
                     executeRESTAPITests();
 
                 } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
-                    logger.error("Failed to execute REST API tests: " + e.getMessage());
+                    logger.error("Failed to execute JAQL REST API call: " + e.getMessage());
                     logger.debug(Arrays.toString(e.getStackTrace()));
                     testSuccess = false;
                     terminate("Error running REST API test: " + e.getMessage());
                 }
             }
+
+        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | InterruptedException e) {
+            logger.error("Error running API call to retrieve ElastiCubes. Exception: \n" + Arrays.toString(e.getStackTrace()));
+            terminate("Could not get ElastiCubes from API: " + e.getMessage());
         }
     }
 
     private void retry() throws JSONException {
 
+        logger.info("Retrying...");
         run(++attamptNumber);
 
     }

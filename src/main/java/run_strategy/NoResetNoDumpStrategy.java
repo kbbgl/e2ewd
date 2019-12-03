@@ -31,11 +31,11 @@ public class NoResetNoDumpStrategy implements RunStrategy {
             SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed and no service restart mechanism chosen");
         }
 
-        try {
-            WebAppDBConnection.sendOperation(TestLog.getInstance().toJSON());
-        } catch (IOException | JSONException | ParseException e) {
-            logger.warn("No data sent to e2ewd dashboard DB");
-        }
+//        try {
+//            WebAppDBConnection.sendOperation(TestLog.getInstance().toJSON());
+//        } catch (IOException | JSONException | ParseException e) {
+//            logger.warn("No data sent to e2ewd dashboard DB");
+//        }
 
         System.exit(0);
 

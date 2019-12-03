@@ -211,6 +211,45 @@ public class CmdOperations {
 
     }
 
+    public void runDefaultElastiCube(String elastiCubeName) throws InterruptedException, IOException {
+
+        String[] psmCmd = new String[]{
+                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
+                "ecube",
+                "start",
+                "name=" + elastiCubeName,
+                "serverAddress=localhost"
+        };
+
+        Process ecubeStartProcess = runtime.exec(psmCmd);
+        logger.debug("Executing " + Arrays.toString(psmCmd));
+        logger.info("Starting ElastiCube " + elastiCubeName);
+
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubeStartProcess.getInputStream(), StandardCharsets.UTF_8));
+        BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubeStartProcess.getErrorStream(), StandardCharsets.UTF_8));
+
+        // read stdin
+        String s;
+        logger.debug("Output stream:");
+        while ((s = stdInput.readLine()) != null){
+            logger.debug(s);
+        }
+
+        // Read stderr
+        String e;
+        logger.debug("Error stream:");
+        while ((e = errorStream.readLine()) != null){
+            logger.error(e);
+        }
+
+        // Check that process hasn't timed out
+        if (!ecubeStartProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+            logger.error("ecubeStartProcess timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
+            ecubeStartProcess.destroyForcibly();
+        }
+
+    }
+
     public boolean isMonetDBQuerySuccessful(ElastiCube elastiCube) throws IOException, InterruptedException {
 
         boolean success = false;
