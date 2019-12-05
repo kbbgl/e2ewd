@@ -14,7 +14,7 @@
 * Checks that Broker (`RabbitMQ`) is healthy (number of consumers, messages stuck in queue.)
 * Checks the health of the microservices ( using `/api/test` endpoint.)  
 
-Tests are performed for all ElastiCubes with are in _RUNNING_ mode.  If there are no ElastiCubes in _RUNNING_ mode, a default ElastiCube will be started and used.
+Tests are performed for all ElastiCubes which are in _RUNNING_ mode.  If there are no ElastiCubes in _RUNNING_ mode, a default ElastiCube will be started and used.
 
 Supports **all** Sisense versions.
 
