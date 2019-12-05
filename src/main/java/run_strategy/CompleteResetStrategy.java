@@ -19,8 +19,17 @@ public class CompleteResetStrategy implements RunStrategy {
         try {
             cmdOperations.restartECS();
             cmdOperations.restartIIS();
+
+            if (!cmdOperations.getSisenseVersion().startsWith("6") ||
+                    !cmdOperations.getSisenseVersion().startsWith("7.0") ||
+                    !cmdOperations.getSisenseVersion().startsWith("7.1") ||
+                    !cmdOperations.getSisenseVersion().startsWith("7.2") ||
+                    !cmdOperations.getSisenseVersion().startsWith("7.3")
+            ){
+                cmdOperations.restartQueryProxy();
+            }
         } catch (InterruptedException | IOException e) {
-            logger.error("Failed to run dump: " + e.getMessage());
+            logger.error("Failed to run operation: " + e.getMessage());
             logger.debug(Arrays.toString(e.getStackTrace()));
         }
     }

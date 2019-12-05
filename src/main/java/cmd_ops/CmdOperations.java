@@ -77,7 +77,7 @@ public class CmdOperations {
                     while (cubeNameMatcher.find()){
                         logger.debug(s);
                         ElastiCube elastiCube = new ElastiCube(cubeNameMatcher.group(1), cubeNameMatcher.group(4));
-                        setElastiCubeProperties(elastiCube);
+                        setElastiCubePort(elastiCube);
 
                         // filter out all non running ElastiCubes
                         if (elastiCube.getState().equals("RUNNING") && !elastiCube.isLocked()){
@@ -127,7 +127,7 @@ public class CmdOperations {
     }
 
     // TODO handle cubes in FAULTED state
-    private void setElastiCubeProperties(ElastiCube elastiCube) throws IOException, InterruptedException {
+    public void setElastiCubePort(ElastiCube elastiCube) throws IOException, InterruptedException {
 
         String[] psmCmd = new String[]{
                 "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
@@ -551,7 +551,7 @@ public class CmdOperations {
 
         String serviceName;
         if (getSisenseVersion().startsWith("6") || getSisenseVersion().startsWith("7.1") || getSisenseVersion().startsWith("7.0")){
-            serviceName = "ElastiCubeManagmentService";
+            serviceName = "ElastiCubeManagementService";
         }
         else {
             serviceName = "Sisense.ECMS";
@@ -620,6 +620,40 @@ public class CmdOperations {
             SlackClient.getInstance().sendMessage(":recycle: IIS restarted.");
         }
 
+    }
+
+    public void restartQueryProxy() throws IOException, InterruptedException {
+        logger.info("Running QueryProxy service restart...");
+        String serviceName = "Sisense.QueryProxy";
+        String restartCommand = "powershell.exe Restart-Service -DisplayName " + serviceName + " -Force";
+
+        logger.debug("Running command '" + restartCommand +"'...");
+        Process psProcess = runtime.exec(restartCommand);
+
+        String line;
+        logger.debug("Output");
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream(), StandardCharsets.UTF_8))){
+            while ((line = reader.readLine()) != null){
+                logger.debug(line);
+            }
+        }
+
+        String error;
+        logger.debug("Error stream:");
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream(), StandardCharsets.UTF_8))){
+            while ((error = reader.readLine()) != null){
+                logger.debug(error);
+            }
+        }
+
+        // Check that process hasn't timed out
+        if (!psProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+            logger.error("Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
+            psProcess.destroyForcibly();
+        } else {
+            logger.info("ECS restarted.");
+            SlackClient.getInstance().sendMessage(":recycle: QueryProxy restarted.");
+        }
     }
 
     public String getHostname() throws IOException, InterruptedException {

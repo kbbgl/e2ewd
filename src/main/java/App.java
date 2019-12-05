@@ -25,7 +25,7 @@ public class App {
     private static String host = System.getenv("COMPUTERNAME");
     private static MainTest mainTest = new MainTest();
 
-    public static void main(String[] args) throws JSONException {
+    public static void main(String[] args) throws JSONException, IOException, InterruptedException {
 
         // Initialize test
         setRunningLocation();
@@ -43,10 +43,11 @@ public class App {
             String sisenseVersion = operations.getSisenseVersion();
 
             if (sisenseVersion.equals("CANNOT DETECT")) {
-                logger.info("Sisense version: " + sisenseVersion);
                 logger.error("Sisense is not installed or cannot detect version from registry.");
                 logger.info("EXITING...");
                 System.exit(0);
+            } else {
+                logger.info("Sisense version: " + sisenseVersion);
             }
         } catch (InterruptedException | IOException e) {
             logger.error("Failed retrieving Sisense version from registry: " + e.getMessage());

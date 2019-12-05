@@ -5,10 +5,10 @@ import cmd_ops.ElastiCubeRESTAPIClient;
 import file_ops.ConfigFile;
 import file_ops.ResultFile;
 import integrations.SlackClient;
-import integrations.WebAppDBConnection;
 import logging.TestLog;
 import logging.TestResultToJSONConverter;
 import models.ElastiCube;
+import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
 import java.util.*;
 
 public class MainTest {
@@ -40,6 +39,7 @@ public class MainTest {
 
     public void init() throws JSONException {
         logger.debug("Initiating test...");
+
         preRun();
 
         attamptNumber = 1;
@@ -49,7 +49,6 @@ public class MainTest {
     private void preRun(){
         logger.debug("Executing pre-run test validations...");
         resultFile.delete();
-
         resultFile.create();
     }
 
@@ -80,8 +79,8 @@ public class MainTest {
             }
         }
 
-
         // Run microservices health test
+        // TODO - add response from 7.1 =<
         if (configFile.isRunMicroservicesHealthCheck()){
             try {
                 MicroservicesHealthClient microservicesHealthClient = MicroservicesHealthClient.getInstance();
@@ -94,35 +93,33 @@ public class MainTest {
         // Retrieve list of RUNNING ElastiCubes
         logger.info("Retrieving list of ElastiCubes...");
 
-        // requirement https://github.com/kbbgl/e2ewd/issues/39 to use API instead of PSM to retrieve EC names
-        //        elastiCubes = CmdOperations.getInstance().getListElastiCubes();
-
         // Create EC client and retrieve list of ElastiCubes
         try {
             ElastiCubeRESTAPIClient ecClient = new ElastiCubeRESTAPIClient();
-            elastiCubes = ecClient.getListOfElastiSucbes();
+            elastiCubes = ecClient.getListOfElastiScubes();
 
             // Case when API call to get ElastiCubes succeeded but 0 returned
+            // Start a default ElastiCube and retry
             if (ecClient.isCallSuccessful() && elastiCubes.size() == 0){
                 String defaultEC = ecClient.getDefaultElastiCube();
                 logger.info("No ElastiCubes in RUNNING mode.");
                 logger.info("Chosen default ElastiCube to start: " + defaultEC);
                 CmdOperations.getInstance().runDefaultElastiCube(defaultEC);
                 retry();
-            } else if (!ecClient.isCallSuccessful()){
+            } // The call to retrieve ECs from endpoint failed (4XX,5XX) => run config strategy and retry
+            else if (!ecClient.isCallSuccessful()){
                 logger.error("API call to retrieve ElastiCubes was not successful");
-                setAndExecuteStrategy();
-                runECSTelnetTests();
-                retry();
-            } else if(elastiCubes.size() > 0){
+                runStrategyAndRetryLogic();
+            } // Happy path. More than 0 ElastiCubes returned and we can start the JAQL test
+            else {
                 setNumberOfElastiCubes(elastiCubes.size());
 
                 JSONArray elastiCubesJSONArray = new JSONArray(elastiCubes.toArray());
-                logger.info("Found " +elastiCubes.size() + " running ElastiCubes: \n" + elastiCubesJSONArray.toString(3));
+                logger.info("Found " + elastiCubes.size() + " running ElastiCubes: \n" + elastiCubesJSONArray.toString(3));
 
                 // execute REST API tests and remove ElastiCubes that their REST API tests succeeded
                 try {
-                    executeRESTAPITests();
+                    executeJAQLCalls();
 
                 } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
                     logger.error("Failed to execute JAQL REST API call: " + e.getMessage());
@@ -171,20 +168,22 @@ public class MainTest {
         TelnetTest.isConnected(812);
     }
 
-    private void executeRESTAPITests() throws JSONException, IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+    private void executeJAQLCalls() throws JSONException, IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
         Map<String, Boolean> restAPITests = new HashMap<>(elastiCubes.size());
-        logger.info("Running REST API tests...");
+        logger.info("Running JAQL API tests...");
 
+        boolean callFailed = false;
         for (ElastiCube elastiCube : elastiCubes){
 
-            // close client after
+            // Execute REST API call to /jaql endpoint with supplied ElastiCube
             SisenseRESTAPIClient client = new SisenseRESTAPIClient(elastiCube.getName());
             client.executeQuery();
             restAPITests.put(elastiCube.getName(), client.isCallSuccessful());
 
-            // check if test failed and send warning and execute MonetDB query
+            // check if test failed
+            // and send warning and execute MonetDB query
             if (!client.isCallSuccessful()){
-                logger.warn("REST API test failed for ElastiCube " +
+                logger.warn("REST API JAQL test failed for ElastiCube " +
                             elastiCube.getName() +
                             " with response code " +
                             client.getResponseCode() +
@@ -196,30 +195,57 @@ public class MainTest {
                                 elastiCube.getName() + "* with response code `" + client.getResponseCode() + "`, response body: \n```" + client.getCallResponse() + "```");
 
                 setTestSuccess(false);
+                callFailed = true;
 
+                // Run MonetDB test
                 try {
                     executeMonetDBTest(elastiCube);
 
                 } catch (InterruptedException e) {
                     logger.error("Error running MonetDB test: " +e.getMessage());
                     logger.debug(Arrays.toString(e.getStackTrace()));
-                    testSuccess = false;
+                    setTestSuccess(false);
                     terminate("Error running MonetDB test: " + e.getMessage());
                 }
-
-                // If response code is 404 or 401, do not run any more tests
-                if (client.getResponseCode() == 404 || client.getResponseCode() == 401){
-                    break;
-                }
-
+                break;
             }
+
+            // Deal with cases where response is 200 but contains error
+            else if (client.getResponseCode() == HttpStatus.SC_OK){
+
+                // Check if response is valid JSON
+                try {
+                    String clientResponseContent = client.getCallResponse();
+                    JSONObject response = new JSONObject(clientResponseContent);
+
+                    // Verify the response is actually an error
+                    if (response.has("error") && response.getBoolean("error")){
+                        String responseDetails = response.getString("details");
+                        logger.error("JAQL endpoint returned an error: '" + responseDetails +"'.");
+
+                        if (responseDetails.contains("net.tcp://localhost:812/AbacusQueryService")){
+                            callFailed = true;
+                        }
+
+                    }
+                } catch (JSONException e){
+                    logger.warn("Response '" + client.getCallResponse() + "' from JAQL API is not valid JSON");
+                    logger.info(Arrays.toString(e.getStackTrace()));
+                }
+            }
+
         }
 
-        logger.info("REST API test results:");
+        logger.info("JAQL API test results:");
         logger.info(TestResultToJSONConverter.toJSON(restAPITests).toString(3));
 
-        terminate();
-
+        // If the call failed (200 with error) or any 4XX/5XX error
+        // Run strategy
+        if (callFailed){
+            runStrategyAndRetryLogic();
+        } else {
+            terminate();
+        }
     }
 
     private void terminate(){
@@ -300,6 +326,13 @@ public class MainTest {
 
     private void setNumberOfElastiCubes(int numberOfElastiCubes){
         testLog.setNumberOfElastiCubes(numberOfElastiCubes);
+    }
+
+    private void runStrategyAndRetryLogic() throws JSONException {
+
+        runECSTelnetTests();
+        setAndExecuteStrategy();
+        retry();
     }
 
 }

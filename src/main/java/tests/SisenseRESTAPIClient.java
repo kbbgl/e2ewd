@@ -3,6 +3,7 @@ package tests;
 import file_ops.ConfigFile;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
@@ -89,7 +90,7 @@ class SisenseRESTAPIClient{
     void executeQuery() throws IOException {
 
         HttpResponse response = client.execute(post);
-        logger.debug("Executing REST API query...");
+        logger.debug("Executing JAQL for ElastiCube '" + elastiCubeName +"'...");
         parseResponse(response);
 
     }
@@ -154,11 +155,37 @@ class SisenseRESTAPIClient{
                             setCallSuccessful(false);
                         }
                     }
-                } else if (responseCode == 401){
+                } else if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
                     logger.warn("Check that the token '" + configFile.getToken() + "' in the configuration file is valid");
+                    logger.debug(res);
                     setCallSuccessful(false);
-                } else if (responseCode == 403){
-                    logger.warn("Ensure that you have sufficient permissions to run JAQLs");
+                } else if (responseCode == HttpStatus.SC_NOT_FOUND){
+                    logger.error("The endpoint '/api/elasticubes/servers/LocalHost' was not found (404).");
+                    logger.debug(res);
+                    setCallSuccessful(false);
+                } else if (responseCode == HttpStatus.SC_FORBIDDEN) {
+                    logger.warn("Ensure that you have sufficient permissions to run calls to GET '/api/elasticubes/servers/LocalHost'");
+                    logger.debug(res);
+                    setCallSuccessful(false);
+                } else if (responseCode == HttpStatus.SC_BAD_REQUEST){
+                    logger.warn("Bad GET request sent to '/api/elasticubes/servers/LocalHost'");
+                    logger.debug(res);
+                    setCallSuccessful(false);
+                } else if (responseCode == HttpStatus.SC_BAD_GATEWAY){
+                    logger.error("Server returned 'Bad Gateway' (502)");
+                    logger.debug(res);
+                    setCallSuccessful(false);
+                } else if (responseCode == HttpStatus.SC_GATEWAY_TIMEOUT){
+                    logger.error("Server returned 'Gateway Timeout' (504)");
+                    logger.debug(res);
+                    setCallSuccessful(false);
+                } else if (responseCode == HttpStatus.SC_INTERNAL_SERVER_ERROR){
+                    logger.error("Server returned 'Internal Server Error' (500)");
+                    logger.debug(res);
+                    setCallSuccessful(false);
+                } else {
+                    logger.error("Call failed with error code " + responseCode);
+                    logger.debug(res);
                     setCallSuccessful(false);
                 }
 
@@ -172,8 +199,9 @@ class SisenseRESTAPIClient{
 
                 setCallSuccessful(false);
             } finally {
-                logger.debug("Releasing REST API client connection");
+                logger.debug("Releasing JAQL REST API client connection...");
                 post.releaseConnection();
+                logger.debug("JAQL REST API client connection released");
             }
         }
 

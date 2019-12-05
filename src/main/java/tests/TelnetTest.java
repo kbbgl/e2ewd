@@ -19,7 +19,7 @@ class TelnetTest {
 
         } catch (Exception e) {
             logger.error("Socket test failed: " + e.getMessage());
-            logger.error(Arrays.toString(e.getStackTrace()));
+            logger.debug(Arrays.toString(e.getStackTrace()));
         }
 
     }

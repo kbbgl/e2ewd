@@ -4,17 +4,15 @@ import file_ops.ConfigFile;
 import models.ElastiCube;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
@@ -34,6 +32,7 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,10 +44,9 @@ public class ElastiCubeRESTAPIClient {
     private HttpGet get;
     private String uri;
     private boolean isCallSuccessful;
-    private String callResponse;
-    private int responseCode;
-    private List<ElastiCube> listOfElastiSucbes = new ArrayList<>();
+    private List<ElastiCube> listOfElastiScubes = new ArrayList<>();
     private String defaultElastiCube;
+    private int responseCode;
 
     public ElastiCubeRESTAPIClient() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
 
@@ -101,7 +99,9 @@ public class ElastiCubeRESTAPIClient {
         logger.debug("Parsing response...");
         HttpEntity entity = response.getEntity();
         int responseCode = response.getStatusLine().getStatusCode();
+        setResponseCode(responseCode);
 
+        // Check that response
         if (entity != null){
 
             try(InputStream inputStream = entity.getContent()) {
@@ -110,9 +110,8 @@ public class ElastiCubeRESTAPIClient {
                         .lines()
                         .collect(Collectors.joining("\n"));
 
-                logger.debug("Call response: \n" + res);
-
-                if (responseCode == 200) {
+                // todo add logger.debug with response for each
+                if (responseCode == HttpStatus.SC_OK) {
 
                     try {
                         JSONArray elastiCubesArray = new JSONArray(res);
@@ -130,6 +129,9 @@ public class ElastiCubeRESTAPIClient {
                             // Check that ElastiCube is running (status == 2 is running)
                             if (elastiCubeStatus == 2){
                                 ElastiCube currentElastiCube = new ElastiCube(elastiCubeName, "RUNNING");
+                                logger.debug("Getting ElastiCube port from PSM...");
+                                CmdOperations.getInstance().setElastiCubePort(currentElastiCube);
+                                logger.debug("Finished getting ElastiCube port from PSM.");
                                 addElastiCubeToList(currentElastiCube);
 
                             } else {
@@ -144,12 +146,40 @@ public class ElastiCubeRESTAPIClient {
                                 responseCode + " , error: " +
                                 ex.getMessage());
                         setCallSuccessful(false);
+                    } catch (InterruptedException e) {
+                        logger.error("Error getting port for ElastiCube. Exception: \n" + Arrays.toString(e.getStackTrace()));
                     }
-                } else if (responseCode == 401) {
+                } else if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
                     logger.warn("Check that the token '" + configFile.getToken() + "' in the configuration file is valid");
+                    logger.debug(res);
                     setCallSuccessful(false);
-                } else if (responseCode == 403) {
-                    logger.warn("Ensure that you have sufficient permissions to run calls to GET /getElastiCubes");
+                } else if (responseCode == HttpStatus.SC_NOT_FOUND){
+                    logger.error("The endpoint '/api/elasticubes/servers/LocalHost' was not found (404).");
+                    logger.debug(res);
+                  setCallSuccessful(false);
+                } else if (responseCode == HttpStatus.SC_FORBIDDEN) {
+                    logger.warn("Ensure that you have sufficient permissions to run calls to GET '/api/elasticubes/servers/LocalHost'");
+                    logger.debug(res);
+                    setCallSuccessful(false);
+                } else if (responseCode == HttpStatus.SC_BAD_REQUEST){
+                    logger.warn("Bad GET request sent to '/api/elasticubes/servers/LocalHost'");
+                    logger.debug(res);
+                    setCallSuccessful(false);
+                } else if (responseCode == HttpStatus.SC_BAD_GATEWAY){
+                    logger.error("Server returned 'Bad Gateway' (502)");
+                    logger.debug(res);
+                    setCallSuccessful(false);
+                } else if (responseCode == HttpStatus.SC_GATEWAY_TIMEOUT){
+                    logger.error("Server returned 'Gateway Timeout' (504)");
+                    logger.debug(res);
+                    setCallSuccessful(false);
+                } else if (responseCode == HttpStatus.SC_INTERNAL_SERVER_ERROR){
+                    logger.error("Server returned 'Internal Server Error' (500)");
+                    logger.debug(res);
+                    setCallSuccessful(false);
+                } else {
+                    logger.error("Call failed with error code " + responseCode);
+                    logger.debug(res);
                     setCallSuccessful(false);
                 }
 
@@ -195,11 +225,12 @@ public class ElastiCubeRESTAPIClient {
     }
 
     public void addElastiCubeToList(ElastiCube ec) {
-        this.listOfElastiSucbes.add(ec);
+        logger.debug("Added " + ec.toString() + " to list of ElastiCubes.");
+        this.listOfElastiScubes.add(ec);
     }
 
-    public List<ElastiCube> getListOfElastiSucbes() {
-        return listOfElastiSucbes ;
+    public List<ElastiCube> getListOfElastiScubes() {
+        return listOfElastiScubes;
     }
 
     public void setDefaultElastiCube(String defaultElastiCube) {
@@ -208,5 +239,13 @@ public class ElastiCubeRESTAPIClient {
 
     public String getDefaultElastiCube() {
         return defaultElastiCube;
+    }
+
+    private void setResponseCode(int responseCode) {
+        this.responseCode = responseCode;
+    }
+
+    public int getResponseCode() {
+        return responseCode;
     }
 }
