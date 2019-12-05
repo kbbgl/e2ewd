@@ -14,7 +14,9 @@
 * Checks that Broker (`RabbitMQ`) is healthy (number of consumers, messages stuck in queue.)
 * Checks the health of the microservices ( using `/api/test` endpoint.)  
 
-Tests are performed for all ElastiCubes with are in _RUNNING_ mode.  
+Tests are performed for all ElastiCubes with are in _RUNNING_ mode.  If there are no ElastiCubes in _RUNNING_ mode, a default ElastiCube will be started and used.
+
+Supports **all** Sisense versions.
 
 ### Instructions
 
@@ -80,7 +82,7 @@ The application logging framework is [logback/slf4j](https://logback.qos.ch/) so
 The default configuration is set to log level `INFO`, 10 files  `FixedWindowRollingPolicy` sized 10MB each. 
 
 
-#### Building
+#### Building (for developers)
 
 * Must have `gradle` installed.
 * Run `gradle build` 
