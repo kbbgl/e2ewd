@@ -1,5 +1,6 @@
 package tests;
 
+import cmd_ops.CmdOperations;
 import file_ops.ConfigFile;
 import integrations.SlackClient;
 import org.apache.http.HttpEntity;
@@ -45,6 +46,7 @@ public class MicroservicesHealthClient {
     private HttpGet get;
     private String uri;
     private SlackClient slackClient = SlackClient.getInstance();
+    private CmdOperations cmdOperations = CmdOperations.getInstance();
 
     public static MicroservicesHealthClient getInstance() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
 
@@ -111,7 +113,7 @@ public class MicroservicesHealthClient {
     public void executeCall() throws IOException {
 
         HttpResponse response = client.execute(get);
-        logger.info("Executing call to api/test endpoint...");
+        logger.info("Executing call to 'api/test' endpoint...");
         parseResponse(response);
     }
 
@@ -135,44 +137,82 @@ public class MicroservicesHealthClient {
 
                 if (responseCode == 200 || responseCode == 304) {
 
-                    try {
-                        JSONObject responseObject = new JSONObject(res);
-                        Iterator<String> keysIterator = responseObject.keys();
+                    if (cmdOperations.getSisenseVersion().startsWith("6") ||
+                            cmdOperations.getSisenseVersion().startsWith("7.0") ||
+                            cmdOperations.getSisenseVersion().startsWith("7.1")){
 
-                        // Iterate over response keys
-                        while (keysIterator.hasNext()){
-
-                            String microservice = keysIterator.next();
-
-                            if (responseObject.get(microservice) instanceof JSONObject){
-                                boolean isMicroserviceHealthy = ((JSONObject) responseObject.get(microservice)).getBoolean("active");
-
-                                logger.debug(microservice + " is healthy: " + isMicroserviceHealthy);
-
-                                // Check if any is unhealthy
-                                if (!isMicroserviceHealthy){
-                                    logger.warn(microservice + " is unhealthy!");
-
-                                    if (slackClient != null){
-                                        slackClient.sendMessage(":warning: `" + microservice + "` is unhealthy!");
-                                    }
-
-                                }
+                        try {
+                            JSONObject responseObject = new JSONObject(res);
+                            if (!responseObject.getString("test").equals("pass")){
+                                logger.warn("Application is down.");
+                                cmdOperations.restartIIS();
+                            } else {
+                                logger.info("Application is up.");
                             }
+
+                        } catch (JSONException e) {
+                            logger.error("Error parsing response as JSON");
+                            logger.info("Error: " + e.getMessage());
+                            logger.info("Response: " + res);
+                        }
+
+
+                    }else {
+                        try {
+                            JSONObject responseObject = new JSONObject(res);
+                            Iterator<String> keysIterator = responseObject.keys();
+
+                            // Iterate over response keys (microservice)
+                            while (keysIterator.hasNext()){
+
+                                String microservice = keysIterator.next();
+
+                                if (responseObject.get(microservice) instanceof JSONObject){
+                                    boolean isMicroserviceHealthy = ((JSONObject) responseObject.get(microservice)).getBoolean("active");
+
+                                    logger.debug(microservice + " is healthy: " + isMicroserviceHealthy);
+
+                                    // Check if any is unhealthy
+                                    if (!isMicroserviceHealthy){
+                                        logger.warn(microservice + " is unhealthy!");
+
+                                        if (slackClient != null){
+                                            slackClient.sendMessage(":warning: `" + microservice + "` is unhealthy!");
+                                        }
+
+                                    }
+                                }
+
+                            }
+
+                        } catch (JSONException e){
+                            logger.error("Error parsing response as JSON");
+                            logger.info("Error: " + e.getMessage());
+                            logger.info("Response: " + res);
+                        }
+                    }
+                }
+
+                else {
+
+                    if (cmdOperations.getSisenseVersion().startsWith("6") ||
+                            cmdOperations.getSisenseVersion().startsWith("7.0") ||
+                            cmdOperations.getSisenseVersion().startsWith("7.1")) {
+
+                        logger.warn("Application is down.");
+                        cmdOperations.restartIIS();
 
                         }
 
-                    } catch (JSONException e){
-                        logger.error("Error parsing response as JSON");
-                        logger.info("Error: " + e.getMessage());
-                        logger.info("Response: " + res);
-                    }
+
                 }
 
             } catch (IOException e){
 
                 logger.error("Error reading response: " + e.getMessage());
 
+            } catch (InterruptedException e) {
+                logger.error("Error retrieving Sisense version from registry: " + e.getMessage());
             } finally {
                 logger.debug("Releasing api/test client connection...");
                 get.releaseConnection();

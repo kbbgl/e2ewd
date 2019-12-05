@@ -142,7 +142,7 @@ public class ElastiCubeRESTAPIClient {
                         setCallSuccessful(true);
 
                     } catch (JSONException ex) {
-                        logger.error("Error parsing response from GET /getElastiCubes. Response code " +
+                        logger.error("Error parsing response from GET '/api/elasticubes/servers/LocalHost'. Response code " +
                                 responseCode + " , error: " +
                                 ex.getMessage());
                         setCallSuccessful(false);

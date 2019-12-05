@@ -19,10 +19,10 @@ public class IISResetStrategy implements RunStrategy {
         try {
             cmdOperations.restartIIS();
 
-            if (!cmdOperations.getSisenseVersion().startsWith("6") ||
-                    !cmdOperations.getSisenseVersion().startsWith("7.0") ||
-                    !cmdOperations.getSisenseVersion().startsWith("7.1") ||
-                    !cmdOperations.getSisenseVersion().startsWith("7.2") ||
+            if (!cmdOperations.getSisenseVersion().startsWith("6") &&
+                    !cmdOperations.getSisenseVersion().startsWith("7.0") &&
+                    !cmdOperations.getSisenseVersion().startsWith("7.1") &&
+                    !cmdOperations.getSisenseVersion().startsWith("7.2") &&
                     !cmdOperations.getSisenseVersion().startsWith("7.3")
             ){
                 cmdOperations.restartQueryProxy();
