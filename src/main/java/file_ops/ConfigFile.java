@@ -31,6 +31,7 @@ public class ConfigFile {
     private boolean runBrokerHealthCheck;
     private boolean runMicroservicesHealthCheck;
     private boolean isSlackEnabled;
+    private boolean checkLiveConnections;
 
     private ConfigFile(){
 
@@ -57,8 +58,8 @@ public class ConfigFile {
                 setFriendlyHostName(properties.getProperty("friendlyHostName"));
                 setRunBrokerHealthCheck(Boolean.parseBoolean(properties.getProperty("runBrokerHealthCheck")));
                 setRunMicroservicesHealthCheck(Boolean.parseBoolean(properties.getProperty("runMicroservicesHealthCheck")));
-
                 setSlackWebhookURL(properties.getProperty("slackWebhookURL"));
+                setCheckLiveConnections(Boolean.parseBoolean(properties.getProperty("checkLiveConnections")));
 
                 // Validate the URL
                 if (!properties.getProperty("slackWebhookURL").isEmpty() || !properties.getProperty("slackWebhookURL").equals("")){
@@ -227,6 +228,14 @@ public class ConfigFile {
         isSlackEnabled = slackEnabled;
     }
 
+    public void setCheckLiveConnections(boolean checkLiveConnections) {
+        this.checkLiveConnections = checkLiveConnections;
+    }
+
+    public boolean isCheckLiveConnections() {
+        return checkLiveConnections;
+    }
+
     public boolean isConfigFileValid(){
         HashMap<String, String> configMap = new HashMap<>(5);
         configMap.put("token", token);
@@ -274,6 +283,7 @@ public class ConfigFile {
                 "friendlyHostName:" + friendlyHostName + "\n\t" +
                 "runBrokerHealthCheck:" + runBrokerHealthCheck + "\n\t" +
                 "runMicroservicesHealthCheck:" + runMicroservicesHealthCheck + "\n\t" +
+                "checkLiveConnections:" + checkLiveConnections + "\n\t" +
                 "}";
     }
 }

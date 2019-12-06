@@ -1,7 +1,6 @@
 package cmd_ops;
 
 import file_ops.ConfigFile;
-import models.ElastiCube;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -32,23 +31,21 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ElastiCubeRESTAPIClient {
+public class LiveConnectionRESTAPIClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(ElastiCubeRESTAPIClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(LiveConnectionRESTAPIClient.class);
     private static final ConfigFile configFile = ConfigFile.getInstance();
     private HttpClient client;
     private HttpGet get;
     private String uri;
     private boolean isCallSuccessful;
-    private List<ElastiCube> listOfElastiCubes = new ArrayList<>();
-    private String defaultElastiCube;
+    private List<String> listLiveConnections = new ArrayList<>();
     private int responseCode;
 
-    public ElastiCubeRESTAPIClient() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
+    public LiveConnectionRESTAPIClient() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
 
         setUri();
         initializeClient();
@@ -89,7 +86,7 @@ public class ElastiCubeRESTAPIClient {
     void executeCall() throws IOException {
 
         HttpResponse response = client.execute(get);
-        logger.debug("Executing REST API call to GET /getElastiCubes...");
+        logger.debug("Executing REST API call to GET " + getUri() + "...");
         parseResponse(response);
 
     }
@@ -114,79 +111,64 @@ public class ElastiCubeRESTAPIClient {
                 if (responseCode == HttpStatus.SC_OK) {
 
                     try {
-                        JSONArray elastiCubesArray = new JSONArray(res);
-                        defaultElastiCube = elastiCubesArray.getJSONObject(0).getString("title");
-                        setDefaultElastiCube(defaultElastiCube);
+                        JSONArray liveConnections = new JSONArray(res);
 
-                        logger.info("GET api/elasticubes/servers/LocalHost returned " + elastiCubesArray.length() + " ElastiCubes");
+                        logger.info("GET " + getUri() + " returned " + liveConnections.length() + " Live Connections");
 
-                        // Iterate over all ElastiCubes
-                        for (int i = 0; i < elastiCubesArray.length(); i++){
-                            JSONObject currentElastiCubeObject = (JSONObject) elastiCubesArray.get(i);
-                            String elastiCubeName = currentElastiCubeObject.getString("title");
-                            int elastiCubeStatus = currentElastiCubeObject.getInt("status");
+                        // Iterate over all Live Connections
+                        for (int i = 0; i < liveConnections.length(); i++){
+                            JSONObject currentLiveConnection = (JSONObject) liveConnections.get(i);
+                            String liveConnectionString = currentLiveConnection.getString("title");
 
-                            // Check that ElastiCube is running (status == 2 is running)
-                            if (elastiCubeStatus == 2){
-                                ElastiCube currentElastiCube = new ElastiCube(elastiCubeName, "RUNNING");
-                                logger.debug("Getting ElastiCube port from PSM...");
-                                CmdOperations.getInstance().setElastiCubePort(currentElastiCube);
-                                logger.debug("Finished getting ElastiCube port from PSM.");
-                                addElastiCubeToList(currentElastiCube);
-
-                            } else {
-                                logger.debug("ElastiCube " + elastiCubeName + " not in RUNNING mode.");
-                            }
+                            addLiveConnectionToList(liveConnectionString);
                         }
 
                         setCallSuccessful(true);
 
                     } catch (JSONException ex) {
-                        logger.error("Error parsing response from GET '/api/elasticubes/servers/LocalHost'. Response code " +
+                        logger.error("Error parsing response from GET" + getUri() + ". Response code " +
                                 responseCode + " , error: " +
                                 ex.getMessage());
                         setCallSuccessful(false);
-                    } catch (InterruptedException e) {
-                        logger.error("Error getting port for ElastiCube. Exception: \n" + Arrays.toString(e.getStackTrace()));
                     }
                 } else if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
                     logger.warn("Check that the token '" + configFile.getToken() + "' in the configuration file is valid");
-                    logger.debug(res);
+                    logger.info(res);
                     setCallSuccessful(false);
                 } else if (responseCode == HttpStatus.SC_NOT_FOUND){
-                    logger.error("The endpoint '/api/elasticubes/servers/LocalHost' was not found (404).");
-                    logger.debug(res);
+                    logger.error("The endpoint " + getUri() + " was not found (404). Check '/app/paths' for the microservice serving this endpoint");
+                    logger.info(res);
                   setCallSuccessful(false);
                 } else if (responseCode == HttpStatus.SC_FORBIDDEN) {
-                    logger.warn("Ensure that you have sufficient permissions to run calls to GET '/api/elasticubes/servers/LocalHost'");
-                    logger.debug(res);
+                    logger.warn("Ensure that you have sufficient permissions to run calls to GET '" + getUri() + "'");
+                    logger.info(res);
                     setCallSuccessful(false);
                 } else if (responseCode == HttpStatus.SC_BAD_REQUEST){
-                    logger.warn("Bad GET request sent to '/api/elasticubes/servers/LocalHost'");
-                    logger.debug(res);
+                    logger.warn("Bad GET request sent to '" + getUri() + "'");
+                    logger.info(res);
                     setCallSuccessful(false);
                 } else if (responseCode == HttpStatus.SC_BAD_GATEWAY){
                     logger.error("Server returned 'Bad Gateway' (502)");
-                    logger.debug(res);
+                    logger.info(res);
                     setCallSuccessful(false);
                 } else if (responseCode == HttpStatus.SC_GATEWAY_TIMEOUT){
                     logger.error("Server returned 'Gateway Timeout' (504)");
-                    logger.debug(res);
+                    logger.info(res);
                     setCallSuccessful(false);
                 } else if (responseCode == HttpStatus.SC_INTERNAL_SERVER_ERROR){
                     logger.error("Server returned 'Internal Server Error' (500)");
-                    logger.debug(res);
+                    logger.info(res);
                     setCallSuccessful(false);
                 } else {
                     logger.error("Call failed with error code " + responseCode);
-                    logger.debug(res);
+                    logger.info(res);
                     setCallSuccessful(false);
                 }
 
             }
             catch (IOException e){
 
-                logger.error("Error getting list of ElastiCubes from GET api/elasticubes/servers/LocalHost. Response code " +
+                logger.error("Error getting list of Live Connections from GET " + getUri() + ". Response code " +
                         responseCode + " , error: " +
                         e.getMessage());
 
@@ -210,7 +192,7 @@ public class ElastiCubeRESTAPIClient {
 
     private void setUri() {
 
-        String endpoint = "/api/elasticubes/servers/LocalHost";
+        String endpoint = "/api/v1/elasticubes/live";
 
         if (configFile.getPort() != 443){
             uri = configFile.getProtocol() +
@@ -224,21 +206,17 @@ public class ElastiCubeRESTAPIClient {
 
     }
 
-    public void addElastiCubeToList(ElastiCube ec) {
-        logger.debug("Added " + ec.toString() + " to list of ElastiCubes.");
-        this.listOfElastiCubes.add(ec);
+    public String getUri() {
+        return uri;
     }
 
-    public List<ElastiCube> getListOfElastiCubes() {
-        return listOfElastiCubes;
+    public void addLiveConnectionToList(String liveConnectionTitle ) {
+        logger.debug("Added " + liveConnectionTitle + " to list of Live Connections.");
+        this.listLiveConnections.add(liveConnectionTitle);
     }
 
-    public void setDefaultElastiCube(String defaultElastiCube) {
-        this.defaultElastiCube = defaultElastiCube;
-    }
-
-    public String getDefaultElastiCube() {
-        return defaultElastiCube;
+    public List<String> getListLiveConnections() {
+        return listLiveConnections;
     }
 
     private void setResponseCode(int responseCode) {

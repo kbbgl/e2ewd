@@ -2,6 +2,7 @@ package tests;
 
 import cmd_ops.CmdOperations;
 import cmd_ops.ElastiCubeRESTAPIClient;
+import cmd_ops.LiveConnectionRESTAPIClient;
 import file_ops.ConfigFile;
 import file_ops.ResultFile;
 import integrations.SlackClient;
@@ -29,6 +30,7 @@ public class MainTest {
     private int attamptNumber;
     private final int maxNumberAttempts = 5;
     private List<ElastiCube> elastiCubes;
+    private List<String> liveConnections;
     private ResultFile resultFile = ResultFile.getInstance();
     private ConfigFile configFile = ConfigFile.getInstance();
     private TestLog testLog = TestLog.getInstance();
@@ -90,13 +92,35 @@ public class MainTest {
             }
         }
 
+        // Run Live Connection test
+        if (configFile.isCheckLiveConnections()){
+            try {
+                LiveConnectionRESTAPIClient liveConnectionClient = new LiveConnectionRESTAPIClient();
+                liveConnections = liveConnectionClient.getListLiveConnections();
+
+                if (liveConnectionClient.isCallSuccessful() && liveConnections.size() == 0){
+                    logger.info("No Live Connections found. Consider setting `checkLiveConnections=false` in config.properties' to skip testing for Live Connections.");
+                } else if (!liveConnectionClient.isCallSuccessful()){
+                    logger.error("API call to retrieve Live Connections was not successful");
+                } else {
+                    JSONArray liveConnectionsArray = new JSONArray(liveConnections.toArray());
+                    logger.info("Found " + liveConnections.size() + " Live Connections: \n" + liveConnectionsArray.toString(3));
+                    executeLiveConnectionJAQLCalls();
+                }
+
+            } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | JSONException | IOException e) {
+                logger.error("Error creating Live Connection REST API client. Reason: " + e.getMessage());
+                logger.debug(Arrays.toString(e.getStackTrace()));
+            }
+        }
+
         // Retrieve list of RUNNING ElastiCubes
         logger.info("Retrieving list of ElastiCubes...");
 
         // Create EC client and retrieve list of ElastiCubes
         try {
             ElastiCubeRESTAPIClient ecClient = new ElastiCubeRESTAPIClient();
-            elastiCubes = ecClient.getListOfElastiScubes();
+            elastiCubes = ecClient.getListOfElastiCubes();
 
             // Case when API call to get ElastiCubes succeeded but 0 returned
             // Start a default ElastiCube and retry
@@ -119,7 +143,7 @@ public class MainTest {
 
                 // execute REST API tests and remove ElastiCubes that their REST API tests succeeded
                 try {
-                    executeJAQLCalls();
+                    executeElastiCubeJAQLCalls();
 
                 } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
                     logger.error("Failed to execute JAQL REST API call: " + e.getMessage());
@@ -168,9 +192,9 @@ public class MainTest {
         TelnetTest.isConnected(812);
     }
 
-    private void executeJAQLCalls() throws JSONException, IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+    private void executeElastiCubeJAQLCalls() throws JSONException, IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
         Map<String, Boolean> restAPITests = new HashMap<>(elastiCubes.size());
-        logger.info("Running JAQL API tests...");
+        logger.info("Running ElastiCube JAQL API tests...");
 
         boolean callFailed = false;
         for (ElastiCube elastiCube : elastiCubes){
@@ -183,9 +207,9 @@ public class MainTest {
             // check if test failed
             // and send warning and execute MonetDB query
             if (!client.isCallSuccessful()){
-                logger.warn("REST API JAQL test failed for ElastiCube " +
+                logger.warn("REST API JAQL test failed for ElastiCube '" +
                             elastiCube.getName() +
-                            " with response code " +
+                            "' with response code " +
                             client.getResponseCode() +
                             ", response body: \n" +
                             client.getCallResponse());
@@ -236,7 +260,7 @@ public class MainTest {
 
         }
 
-        logger.info("JAQL API test results:");
+        logger.info("ElasitCube JAQL API test results:");
         logger.info(TestResultToJSONConverter.toJSON(restAPITests).toString(3));
 
         // If the call failed (200 with error) or any 4XX/5XX error
@@ -246,6 +270,41 @@ public class MainTest {
         } else {
             terminate();
         }
+    }
+
+    private void executeLiveConnectionJAQLCalls() throws JSONException, IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+        Map<String, Boolean> restAPITests = new HashMap<>(liveConnections.size());
+        logger.info("Running Live Connection JAQL API tests...");
+
+        for (String liveConnection : liveConnections){
+
+            // Execute REST API call to /jaql endpoint with supplied ElastiCube
+            SisenseRESTAPIClient client = new SisenseRESTAPIClient(liveConnection);
+            client.executeQuery();
+            restAPITests.put(liveConnection, client.isCallSuccessful());
+
+            // check if test failed
+            // and send warning and execute MonetDB query
+            if (!client.isCallSuccessful()){
+                logger.warn("REST API JAQL test failed for Live Connection '" +
+                        liveConnection +
+                        "' with response code " +
+                        client.getResponseCode() +
+                        ", response body: \n" +
+                        client.getCallResponse());
+
+                SlackClient.getInstance()
+                        .sendMessage(":warning: WARNING! REST API test failed for Live Connection *" +
+                                liveConnection + "* with response code `" + client.getResponseCode() + "`, response body: \n```" + client.getCallResponse() + "```");
+
+                break;
+            }
+
+        }
+
+        logger.info("Live Connection JAQL API test results:");
+        logger.info(TestResultToJSONConverter.toJSON(restAPITests).toString(3));
+
     }
 
     private void terminate(){

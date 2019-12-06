@@ -12,7 +12,8 @@
 * Performs direct ElastiCube query.
 * Slack Webhook alerts on individual REST API query failures, unhealthy microservices and Broker queues.
 * Checks that Broker (`RabbitMQ`) is healthy (number of consumers, messages stuck in queue.)
-* Checks the health of the microservices ( using `/api/test` endpoint.)  
+* Checks the health of the microservices ( using `/api/test` endpoint.)
+* Checks if Live Connection are queriable.  
 
 Tests are performed for all ElastiCubes which are in _RUNNING_ mode.  If there are no ElastiCubes in _RUNNING_ mode, a default ElastiCube will be started and used.
 
@@ -40,6 +41,9 @@ Supports **all** Sisense versions.
  | (Optional) `friendlyHostName` | Server alias. Will be used to notify Slack channel.                                                                                                                        | `String`  | `QUERY-NODE-1`                                                                  |
  | (Optional) `runBrokerHealthCheck` | Whether to check the Broker queues (`localhost:15672)` as part of the test.                                                                                                                        | `boolean`  | `true` or `false` [default]                                                                |
  | (Optional) `runMicroservicesHealthCheck` | Whether to check the microservices (`/api/test`) queues as part of the test.                                                                                                                        | `boolean`  | `true` or `false` [default]                                                                 |
+ | (Optional) `checkLiveConnections` | Whether to run test JAQLs for [Live Connections](https://documentation.sisense.com/latest/managing-data/LiveConnect.htm#gsc.tab=0) as part of the test.| `boolean`  | `true`  or `false` [default]
+ 
+ <br></br>
 
  4.Run the `run.bat` file as an Administrator.  
     
