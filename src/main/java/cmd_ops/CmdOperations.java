@@ -28,6 +28,7 @@ public class CmdOperations {
     private final String ELASTICUBE_PROCESS_NAME = "ElastiCube.ManagementService";
     private final String IIS_PROCESS_NAME = "w3wp";
     private final int PROCESS_TIMEOUT = 15;
+    private final int IIS_TIMEOUT_IN_MINUTES = 3;
     private ElastiCube defaultElastiCube;
 
     private CmdOperations(){
@@ -620,6 +621,9 @@ public class CmdOperations {
             SlackClient.getInstance().sendMessage(":recycle: IIS restarted.");
         }
 
+        logger.info("Setting a timeout of " + IIS_TIMEOUT_IN_MINUTES +" minuteS to wait for IIS...");
+        TimeUnit.MINUTES.sleep(IIS_TIMEOUT_IN_MINUTES);
+        logger.info("Timeout finished. Resuming execution");
     }
 
     public void restartQueryProxy() throws IOException, InterruptedException {

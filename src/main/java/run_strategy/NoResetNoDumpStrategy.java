@@ -1,16 +1,12 @@
 package run_strategy;
 
-import file_ops.ConfigFile;
+import file_ops.Configuration;
 import file_ops.ResultFile;
 import integrations.SlackClient;
-import integrations.WebAppDBConnection;
 import logging.TestLog;
-import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.Date;
 
 public class NoResetNoDumpStrategy implements RunStrategy {
@@ -27,7 +23,7 @@ public class NoResetNoDumpStrategy implements RunStrategy {
         TestLog.getInstance().setReasonForFailure("Tests failed and all restart and dump options are false");
         TestLog.getInstance().setTestEndTime(new Date());
 
-        if (!ConfigFile.getInstance().getSlackWebhookURL().isEmpty()){
+        if (!Configuration.getInstance().getSlackWebhookURL().isEmpty()){
             SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed and no service restart mechanism chosen");
         }
 

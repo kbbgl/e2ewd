@@ -3,13 +3,14 @@ package tests;
 import cmd_ops.CmdOperations;
 import cmd_ops.ElastiCubeRESTAPIClient;
 import cmd_ops.LiveConnectionRESTAPIClient;
-import file_ops.ConfigFile;
+import file_ops.Configuration;
 import file_ops.ResultFile;
 import integrations.SlackClient;
 import logging.TestLog;
 import logging.TestResultToJSONConverter;
 import models.ElastiCube;
 import org.apache.http.HttpStatus;
+import org.apache.http.conn.HttpHostConnectException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +33,7 @@ public class MainTest {
     private List<ElastiCube> elastiCubes;
     private List<String> liveConnections;
     private ResultFile resultFile = ResultFile.getInstance();
-    private ConfigFile configFile = ConfigFile.getInstance();
+    private Configuration config = Configuration.getInstance();
     private TestLog testLog = TestLog.getInstance();
     private StrategyContext strategyContext = new StrategyContext();
 
@@ -72,7 +73,7 @@ public class MainTest {
 
 
         // Run Broker health test
-        if (configFile.isRunBrokerHealthCheck()){
+        if (config.isRunBrokerHealthCheck()){
             try {
                 BrokerHealthClient brokerHealthClient = BrokerHealthClient.getInstance();
                 brokerHealthClient.executeQuery();
@@ -83,7 +84,7 @@ public class MainTest {
 
         // Run microservices health test
         // TODO - add response from 7.1 =<
-        if (configFile.isRunMicroservicesHealthCheck()){
+        if (config.isRunMicroservicesHealthCheck()){
             try {
                 MicroservicesHealthClient microservicesHealthClient = MicroservicesHealthClient.getInstance();
                 microservicesHealthClient.executeCall();
@@ -93,7 +94,7 @@ public class MainTest {
         }
 
         // Run Live Connection test
-        if (configFile.isCheckLiveConnections()){
+        if (config.isCheckLiveConnections()){
             try {
                 LiveConnectionRESTAPIClient liveConnectionClient = new LiveConnectionRESTAPIClient();
                 liveConnections = liveConnectionClient.getListLiveConnections();
@@ -124,17 +125,19 @@ public class MainTest {
 
             // Case when API call to get ElastiCubes succeeded but 0 returned
             // Start a default ElastiCube and retry
-            if (ecClient.isCallSuccessful() && elastiCubes.size() == 0){
+            if (!ecClient.isRequiresServiceRestart() && elastiCubes.size() == 0){
                 String defaultEC = ecClient.getDefaultElastiCube();
                 logger.info("No ElastiCubes in RUNNING mode.");
                 logger.info("Chosen default ElastiCube to start: " + defaultEC);
                 CmdOperations.getInstance().runDefaultElastiCube(defaultEC);
                 retry();
-            } // The call to retrieve ECs from endpoint failed (4XX,5XX) => run config strategy and retry
-            else if (!ecClient.isCallSuccessful()){
+            }
+            // The call to retrieve ECs from endpoint failed (404,500,502,504) => run config strategy and retry
+            else if (ecClient.isRequiresServiceRestart()){
                 logger.error("API call to retrieve ElastiCubes was not successful");
                 runStrategyAndRetryLogic();
-            } // Happy path. More than 0 ElastiCubes returned and we can start the JAQL test
+            }
+            // Happy path. More than 0 ElastiCubes returned and we can start the JAQL test
             else {
                 setNumberOfElastiCubes(elastiCubes.size());
 
@@ -153,9 +156,15 @@ public class MainTest {
                 }
             }
 
-        } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException | InterruptedException e) {
-            logger.error("Error running API call to retrieve ElastiCubes. Exception: \n" + Arrays.toString(e.getStackTrace()));
+        } catch (NoSuchAlgorithmException | KeyStoreException | KeyManagementException | InterruptedException e) {
+            logger.error("Error running API call to retrieve ElastiCubes. Exception:", e);
+            setTestSuccess(false);
             terminate("Could not get ElastiCubes from API: " + e.getMessage());
+        } catch (IOException e){
+            logger.error("Error running API call to retrieve ElastiCubes. Exception: ", e);
+            setTestSuccess(false);
+
+            runStrategyAndRetryLogic();
         }
     }
 
@@ -167,19 +176,19 @@ public class MainTest {
     }
 
     private void setAndExecuteStrategy(){
-        if (configFile.isEcsDump() && configFile.isIisDump() && !configFile.restartECS() && !configFile.restartIIS()){
+        if (config.isEcsDump() && config.isIisDump() && !config.restartECS() && !config.restartIIS()){
             strategyContext.setStrategy(new CompleteDumpStrategy());
-        } else if (configFile.isEcsDump() && configFile.isIisDump() && configFile.restartECS() && configFile.restartIIS()){
+        } else if (config.isEcsDump() && config.isIisDump() && config.restartECS() && config.restartIIS()){
             strategyContext.setStrategy(new CompleteResetAndDumpStrategy());
-        } else if (!configFile.isEcsDump() && !configFile.isIisDump() && configFile.restartECS() && configFile.restartIIS()){
+        } else if (!config.isEcsDump() && !config.isIisDump() && config.restartECS() && config.restartIIS()){
             strategyContext.setStrategy(new CompleteResetStrategy());
-        } else if (configFile.isEcsDump() && !configFile.isIisDump() && !configFile.restartECS() && !configFile.restartIIS()){
+        } else if (config.isEcsDump() && !config.isIisDump() && !config.restartECS() && !config.restartIIS()){
             strategyContext.setStrategy(new ECSDumpStrategy());
-        } else if (!configFile.isEcsDump() && !configFile.isIisDump() && configFile.restartECS() && !configFile.restartIIS()){
+        } else if (!config.isEcsDump() && !config.isIisDump() && config.restartECS() && !config.restartIIS()){
             strategyContext.setStrategy(new ECSResetStrategy());
-        } else if (!configFile.isEcsDump() && configFile.isIisDump() && !configFile.restartECS() && !configFile.restartIIS()){
+        } else if (!config.isEcsDump() && config.isIisDump() && !config.restartECS() && !config.restartIIS()){
             strategyContext.setStrategy(new IISDumpStrategy());
-        } else if (!configFile.isEcsDump() && !configFile.isIisDump() && !configFile.restartECS() && configFile.restartIIS()){
+        } else if (!config.isEcsDump() && !config.isIisDump() && !config.restartECS() && config.restartIIS()){
             strategyContext.setStrategy(new IISResetStrategy());
         } else
             strategyContext.setStrategy(new NoResetNoDumpStrategy());
@@ -200,13 +209,19 @@ public class MainTest {
         for (ElastiCube elastiCube : elastiCubes){
 
             // Execute REST API call to /jaql endpoint with supplied ElastiCube
-            SisenseRESTAPIClient client = new SisenseRESTAPIClient(elastiCube.getName());
+            JAQLRESTAPIClient client = new JAQLRESTAPIClient(elastiCube.getName());
             client.executeQuery();
+
+            if (client.isUnauthorized()){
+                setTestSuccess(false);
+                terminate("Unauthorized");
+            }
+
             restAPITests.put(elastiCube.getName(), client.isCallSuccessful());
 
             // check if test failed
             // and send warning and execute MonetDB query
-            if (!client.isCallSuccessful()){
+            if (client.isRequiresServiceRestart()){
                 logger.warn("REST API JAQL test failed for ElastiCube '" +
                             elastiCube.getName() +
                             "' with response code " +
@@ -260,10 +275,10 @@ public class MainTest {
 
         }
 
-        logger.info("ElasitCube JAQL API test results:");
+        logger.info("ElastiCube JAQL API test results:");
         logger.info(TestResultToJSONConverter.toJSON(restAPITests).toString(3));
 
-        // If the call failed (200 with error) or any 4XX/5XX error
+        // If the call failed (200 with error) or any 404/500/502/504 error
         // Run strategy
         if (callFailed){
             runStrategyAndRetryLogic();
@@ -279,7 +294,7 @@ public class MainTest {
         for (String liveConnection : liveConnections){
 
             // Execute REST API call to /jaql endpoint with supplied ElastiCube
-            SisenseRESTAPIClient client = new SisenseRESTAPIClient(liveConnection);
+            JAQLRESTAPIClient client = new JAQLRESTAPIClient(liveConnection);
             client.executeQuery();
             restAPITests.put(liveConnection, client.isCallSuccessful());
 
@@ -366,7 +381,7 @@ public class MainTest {
         monetDBTest.executeQuery();
 
         logger.info("MonetDB query result for ElastiCube " + elastiCube.getName() + ":" + monetDBTest.isQuerySuccessful());
-        if (!monetDBTest.isQuerySuccessful() && configFile.isEcDump()){
+        if (!monetDBTest.isQuerySuccessful() && config.isEcDump()){
             CmdOperations.getInstance().ecDump(elastiCube);
         }
         logger.info("Number of concurrent connection to ElastiCube " + elastiCube.getName() +  " : " + CmdOperations.getInstance().getMonetDBConcurrentConnections(elastiCube));

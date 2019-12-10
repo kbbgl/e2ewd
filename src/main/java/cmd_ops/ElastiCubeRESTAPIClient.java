@@ -1,6 +1,6 @@
 package cmd_ops;
 
-import file_ops.ConfigFile;
+import file_ops.Configuration;
 import models.ElastiCube;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -39,11 +39,12 @@ import java.util.stream.Collectors;
 public class ElastiCubeRESTAPIClient {
 
     private static final Logger logger = LoggerFactory.getLogger(ElastiCubeRESTAPIClient.class);
-    private static final ConfigFile configFile = ConfigFile.getInstance();
+    private static final Configuration config = Configuration.getInstance();
     private HttpClient client;
     private HttpGet get;
     private String uri;
-    private boolean isCallSuccessful;
+//    private boolean isCallSuccessful;
+    private boolean requiresServiceRestart;
     private List<ElastiCube> listOfElastiCubes = new ArrayList<>();
     private String defaultElastiCube;
     private int responseCode;
@@ -62,9 +63,9 @@ public class ElastiCubeRESTAPIClient {
                 .build();
 
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
-                .setConnectTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
-                .setSocketTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
+                .setConnectionRequestTimeout(config.getRequestTimeoutInSeconds() * 1000)
+                .setConnectTimeout(config.getRequestTimeoutInSeconds() * 1000)
+                .setSocketTimeout(config.getRequestTimeoutInSeconds() * 1000)
                 .build();
 
 
@@ -82,7 +83,7 @@ public class ElastiCubeRESTAPIClient {
                         )
                 ).build();
         get = new HttpGet(uri);
-        get.addHeader("authorization", "Bearer " + configFile.getToken());
+        get.addHeader("authorization", "Bearer " + config.getToken());
 
     }
 
@@ -139,58 +140,59 @@ public class ElastiCubeRESTAPIClient {
                             }
                         }
 
-                        setCallSuccessful(true);
+                        setRequiresServiceRestart(false);
 
                     } catch (JSONException ex) {
-                        logger.error("Error parsing response from GET '/api/elasticubes/servers/LocalHost'. Response code " +
+                        logger.error("Error parsing response from GET '"+ getUri() + "'. Response code " +
                                 responseCode + " , error: " +
                                 ex.getMessage());
-                        setCallSuccessful(false);
+                        setRequiresServiceRestart(false);
                     } catch (InterruptedException e) {
                         logger.error("Error getting port for ElastiCube. Exception: \n" + Arrays.toString(e.getStackTrace()));
+                        setRequiresServiceRestart(false);
                     }
                 } else if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
-                    logger.warn("Check that the token '" + configFile.getToken() + "' in the configuration file is valid");
+                    logger.warn("Check that the token '" + config.getToken() + "' in the configuration file is valid");
                     logger.debug(res);
-                    setCallSuccessful(false);
+                    setRequiresServiceRestart(false);
                 } else if (responseCode == HttpStatus.SC_NOT_FOUND){
                     logger.error("The endpoint '/api/elasticubes/servers/LocalHost' was not found (404).");
                     logger.debug(res);
-                  setCallSuccessful(false);
+                    setRequiresServiceRestart(true);
                 } else if (responseCode == HttpStatus.SC_FORBIDDEN) {
                     logger.warn("Ensure that you have sufficient permissions to run calls to GET '/api/elasticubes/servers/LocalHost'");
                     logger.debug(res);
-                    setCallSuccessful(false);
+                    setRequiresServiceRestart(false);
                 } else if (responseCode == HttpStatus.SC_BAD_REQUEST){
                     logger.warn("Bad GET request sent to '/api/elasticubes/servers/LocalHost'");
                     logger.debug(res);
-                    setCallSuccessful(false);
+                    setRequiresServiceRestart(false);
                 } else if (responseCode == HttpStatus.SC_BAD_GATEWAY){
                     logger.error("Server returned 'Bad Gateway' (502)");
                     logger.debug(res);
-                    setCallSuccessful(false);
+                    setRequiresServiceRestart(true);
                 } else if (responseCode == HttpStatus.SC_GATEWAY_TIMEOUT){
                     logger.error("Server returned 'Gateway Timeout' (504)");
                     logger.debug(res);
-                    setCallSuccessful(false);
+                    setRequiresServiceRestart(true);
                 } else if (responseCode == HttpStatus.SC_INTERNAL_SERVER_ERROR){
                     logger.error("Server returned 'Internal Server Error' (500)");
                     logger.debug(res);
-                    setCallSuccessful(false);
+                    setRequiresServiceRestart(true);
                 } else {
                     logger.error("Call failed with error code " + responseCode);
                     logger.debug(res);
-                    setCallSuccessful(false);
+                    setRequiresServiceRestart(false);
                 }
 
             }
             catch (IOException e){
 
-                logger.error("Error getting list of ElastiCubes from GET api/elasticubes/servers/LocalHost. Response code " +
+                logger.error("Error getting list of ElastiCubes from GET '" + getUri() +  "'. Response code " +
                         responseCode + " , error: " +
                         e.getMessage());
 
-                setCallSuccessful(false);
+                setRequiresServiceRestart(false);
             } finally {
                 logger.debug("Releasing REST API client connection...");
                 get.releaseConnection();
@@ -200,26 +202,34 @@ public class ElastiCubeRESTAPIClient {
 
     }
 
-    private void setCallSuccessful(boolean callSuccessful) {
-        isCallSuccessful = callSuccessful;
+    public void setRequiresServiceRestart(boolean requiresServiceRestart) {
+        this.requiresServiceRestart = requiresServiceRestart;
     }
 
-    public boolean isCallSuccessful() {
-        return isCallSuccessful;
+    public boolean isRequiresServiceRestart() {
+        return requiresServiceRestart;
     }
+
+    //    private void setCallSuccessful(boolean callSuccessful) {
+//        isCallSuccessful = callSuccessful;
+//    }
+//
+//    public boolean isCallSuccessful() {
+//        return isCallSuccessful;
+//    }
 
     private void setUri() {
 
         String endpoint = "/api/elasticubes/servers/LocalHost";
 
-        if (configFile.getPort() != 443){
-            uri = configFile.getProtocol() +
-                    "://" + configFile.getHost() + ":" +
-                    configFile.getPort() + endpoint;
+        if (config.getPort() != 443){
+            uri = config.getProtocol() +
+                    "://" + config.getHost() + ":" +
+                    config.getPort() + endpoint;
         }
         else {
-            uri = configFile.getProtocol() +
-                    "://" + configFile.getHost() + endpoint;
+            uri = config.getProtocol() +
+                    "://" + config.getHost() + endpoint;
         }
 
     }
@@ -247,5 +257,9 @@ public class ElastiCubeRESTAPIClient {
 
     public int getResponseCode() {
         return responseCode;
+    }
+
+    public String getUri() {
+        return uri;
     }
 }

@@ -1,8 +1,7 @@
 import cmd_ops.CmdOperations;
-import file_ops.ConfigFile;
+import file_ops.Configuration;
 import file_ops.VersionFile;
 import logging.TestLog;
-import models.ElastiCube;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +10,8 @@ import tests.MainTest;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class App {
 
@@ -58,8 +55,8 @@ public class App {
 
 
         // Check if config.properties is valid
-        logger.info(ConfigFile.getInstance().toString());
-        if (ConfigFile.getInstance().isConfigFileValid()){
+        logger.info(Configuration.getInstance().toString());
+        if (Configuration.getInstance().isConfigFileValid()){
 
             // Start test
             mainTest.init();

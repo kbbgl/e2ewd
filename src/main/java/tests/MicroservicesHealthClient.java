@@ -1,21 +1,18 @@
 package tests;
 
 import cmd_ops.CmdOperations;
-import file_ops.ConfigFile;
+import file_ops.Configuration;
 import integrations.SlackClient;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.ssl.SSLContextBuilder;
@@ -29,7 +26,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -41,7 +37,7 @@ public class MicroservicesHealthClient {
 
     private static MicroservicesHealthClient instance;
     private static final Logger logger = LoggerFactory.getLogger(MicroservicesHealthClient.class);
-    private static final ConfigFile configFile = ConfigFile.getInstance();
+    private static final Configuration config = Configuration.getInstance();
     private HttpClient client;
     private HttpGet get;
     private String uri;
@@ -70,9 +66,9 @@ public class MicroservicesHealthClient {
                 .build();
 
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
-                .setConnectTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
-                .setSocketTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
+                .setConnectionRequestTimeout(config.getRequestTimeoutInSeconds() * 1000)
+                .setConnectTimeout(config.getRequestTimeoutInSeconds() * 1000)
+                .setSocketTimeout(config.getRequestTimeoutInSeconds() * 1000)
                 .build();
 
 
@@ -97,14 +93,14 @@ public class MicroservicesHealthClient {
 
     private void setUri() {
 
-        if (configFile.getPort() != 443){
-            uri = configFile.getProtocol() +
-                    "://" + configFile.getHost() + ":" +
-                    configFile.getPort() + "/api/test";
+        if (config.getPort() != 443){
+            uri = config.getProtocol() +
+                    "://" + config.getHost() + ":" +
+                    config.getPort() + "/api/test";
         }
         else {
-            uri = configFile.getProtocol() +
-                    "://" + configFile.getHost() + "/api/test";
+            uri = config.getProtocol() +
+                    "://" + config.getHost() + "/api/test";
         }
 
         logger.debug("Set URL to " + uri);

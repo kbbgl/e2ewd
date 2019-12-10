@@ -1,6 +1,6 @@
 package cmd_ops;
 
-import file_ops.ConfigFile;
+import file_ops.Configuration;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 public class LiveConnectionRESTAPIClient {
 
     private static final Logger logger = LoggerFactory.getLogger(LiveConnectionRESTAPIClient.class);
-    private static final ConfigFile configFile = ConfigFile.getInstance();
+    private static final Configuration config = Configuration.getInstance();
     private HttpClient client;
     private HttpGet get;
     private String uri;
@@ -59,9 +59,9 @@ public class LiveConnectionRESTAPIClient {
                 .build();
 
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
-                .setConnectTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
-                .setSocketTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
+                .setConnectionRequestTimeout(config.getRequestTimeoutInSeconds() * 1000)
+                .setConnectTimeout(config.getRequestTimeoutInSeconds() * 1000)
+                .setSocketTimeout(config.getRequestTimeoutInSeconds() * 1000)
                 .build();
 
 
@@ -79,7 +79,7 @@ public class LiveConnectionRESTAPIClient {
                         )
                 ).build();
         get = new HttpGet(uri);
-        get.addHeader("authorization", "Bearer " + configFile.getToken());
+        get.addHeader("authorization", "Bearer " + config.getToken());
 
     }
 
@@ -132,7 +132,7 @@ public class LiveConnectionRESTAPIClient {
                         setCallSuccessful(false);
                     }
                 } else if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
-                    logger.warn("Check that the token '" + configFile.getToken() + "' in the configuration file is valid");
+                    logger.warn("Check that the token '" + config.getToken() + "' in the configuration file is valid");
                     logger.info(res);
                     setCallSuccessful(false);
                 } else if (responseCode == HttpStatus.SC_NOT_FOUND){
@@ -194,14 +194,14 @@ public class LiveConnectionRESTAPIClient {
 
         String endpoint = "/api/v1/elasticubes/live";
 
-        if (configFile.getPort() != 443){
-            uri = configFile.getProtocol() +
-                    "://" + configFile.getHost() + ":" +
-                    configFile.getPort() + endpoint;
+        if (config.getPort() != 443){
+            uri = config.getProtocol() +
+                    "://" + config.getHost() + ":" +
+                    config.getPort() + endpoint;
         }
         else {
-            uri = configFile.getProtocol() +
-                    "://" + configFile.getHost() + endpoint;
+            uri = config.getProtocol() +
+                    "://" + config.getHost() + endpoint;
         }
 
     }

@@ -54,7 +54,7 @@ public class ResultFile {
     public void write(boolean result) {
         try(FileWriter fileWriter = new FileWriter(file.getAbsolutePath(), false)) {
             fileWriter.write(String.valueOf(result));
-            logger.info("Test succeeded: " + result);
+            logger.debug("Test succeeded: " + result);
         } catch (IOException e) {
             logger.error("Error writing result to file; " + e.getMessage());
         }

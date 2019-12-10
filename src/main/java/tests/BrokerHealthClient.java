@@ -1,7 +1,6 @@
 package tests;
 
 
-import file_ops.ConfigFile;
 import integrations.SlackClient;
 import models.BrokerQueue;
 import org.apache.commons.codec.binary.Base64;

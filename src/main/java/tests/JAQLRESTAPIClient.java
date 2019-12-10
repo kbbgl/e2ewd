@@ -1,6 +1,6 @@
 package tests;
 
-import file_ops.ConfigFile;
+import file_ops.Configuration;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import run_strategy.StrategyExecutor;
 
 import javax.net.ssl.SSLContext;
 import java.io.BufferedReader;
@@ -34,19 +35,22 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.util.stream.Collectors;
 
-class SisenseRESTAPIClient{
+class JAQLRESTAPIClient {
 
-    private static final Logger logger = LoggerFactory.getLogger(SisenseRESTAPIClient.class);
-    private static final ConfigFile configFile = ConfigFile.getInstance();
+    private static final Logger logger = LoggerFactory.getLogger(JAQLRESTAPIClient.class);
+    private static final Configuration config = Configuration.getInstance();
     private HttpClient client;
     private HttpPost post;
     private String uri;
     private boolean isCallSuccessful;
+    private boolean isUnauthorized = false;
+    private boolean requiresServiceRestart;
     private String callResponse;
     private int responseCode;
     private String elastiCubeName;
+    private StrategyExecutor strategyExecutor = StrategyExecutor.getInstance();
 
-    SisenseRESTAPIClient(String elastiCubeName) throws JSONException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+    JAQLRESTAPIClient(String elastiCubeName) throws JSONException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
 
         this.elastiCubeName = elastiCubeName;
 
@@ -62,9 +66,9 @@ class SisenseRESTAPIClient{
                 .build();
 
         RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
-                .setConnectTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
-                .setSocketTimeout(configFile.getRequestTimeoutInSeconds() * 1000)
+                .setConnectionRequestTimeout(config.getRequestTimeoutInSeconds() * 1000)
+                .setConnectTimeout(config.getRequestTimeoutInSeconds() * 1000)
+                .setSocketTimeout(config.getRequestTimeoutInSeconds() * 1000)
                 .build();
 
 
@@ -82,7 +86,7 @@ class SisenseRESTAPIClient{
                         )
                 ).build();
         post = new HttpPost(uri);
-        post.addHeader("authorization", "Bearer " + configFile.getToken());
+        post.addHeader("authorization", "Bearer " + config.getToken());
         post.setEntity(new StringEntity(jaql.toString(), ContentType.APPLICATION_JSON));
 
     }
@@ -111,8 +115,6 @@ class SisenseRESTAPIClient{
                         .collect(Collectors.joining("\n"));
 
                 setCallResponse(res);
-                logger.debug("Call response:" + getCallResponse());
-
                 if (responseCode == 200) {
 
                     try {
@@ -122,28 +124,33 @@ class SisenseRESTAPIClient{
 
                         // Check if result is larger than 0
                         if (count > 0) {
+                            setRequiresServiceRestart(false);
                             setCallSuccessful(true);
                         } else {
                             logger.info("Query failed for " +
                                     elastiCubeName + " with code " +
                                     responseCode + " ,response: " +
                                     getCallResponse());
+                            setRequiresServiceRestart(false);
                             setCallSuccessful(false);
                         }
                     } catch (JSONException e){
                         logger.warn("Query returned no `values.data` object");
                         try {
                             JSONObject responseObject = new JSONObject(res);
-                            String details = responseObject.getString("details");
 
-                            if (details.equals("ElastiCube is processing and cannot be queried.")){
-                                logger.info("ElastiCube is processing and cannot be queried.");
-                                setCallSuccessful(true);
+                            if (responseObject.has("details")){
+                                String details = responseObject.getString("details");
+                                logger.info(details);
+                                setRequiresServiceRestart(false);
+                                setCallSuccessful(false);
+
                             } else {
                                 logger.error("Query failed for " +
                                         elastiCubeName + " with code " +
                                         responseCode + " , error: " +
                                         e.getMessage());
+                                setRequiresServiceRestart(false);
                                 setCallSuccessful(false);
                             }
 
@@ -152,40 +159,51 @@ class SisenseRESTAPIClient{
                                     elastiCubeName + " with code " +
                                     responseCode + " , error: " +
                                     e.getMessage());
+                            setRequiresServiceRestart(false);
                             setCallSuccessful(false);
                         }
                     }
                 } else if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
-                    logger.warn("Check that the token '" + configFile.getToken() + "' in the configuration file is valid");
+                    logger.warn("Check that the token '" + config.getToken() + "' in the configuration file is valid");
                     logger.debug(res);
+                    setRequiresServiceRestart(false);
                     setCallSuccessful(false);
+                    setUnauthorized(true);
                 } else if (responseCode == HttpStatus.SC_NOT_FOUND){
-                    logger.error("The endpoint '/api/elasticubes/servers/LocalHost' was not found (404).");
+                    logger.error("The endpoint '" + getUri() +"'' was not found (404).");
                     logger.debug(res);
+                    setRequiresServiceRestart(true);
                     setCallSuccessful(false);
                 } else if (responseCode == HttpStatus.SC_FORBIDDEN) {
-                    logger.warn("Ensure that you have sufficient permissions to run calls to GET '/api/elasticubes/servers/LocalHost'");
+                    logger.warn("Ensure that you have sufficient permissions to run calls to GET '" + getUri() +"'");
                     logger.debug(res);
+                    setRequiresServiceRestart(false);
                     setCallSuccessful(false);
+                    setUnauthorized(true);
                 } else if (responseCode == HttpStatus.SC_BAD_REQUEST){
-                    logger.warn("Bad GET request sent to '/api/elasticubes/servers/LocalHost'");
+                    logger.warn("Bad GET request sent to '" + getUri() + "'");
                     logger.debug(res);
+                    setRequiresServiceRestart(false);
                     setCallSuccessful(false);
                 } else if (responseCode == HttpStatus.SC_BAD_GATEWAY){
                     logger.error("Server returned 'Bad Gateway' (502)");
                     logger.debug(res);
+                    setRequiresServiceRestart(true);
                     setCallSuccessful(false);
                 } else if (responseCode == HttpStatus.SC_GATEWAY_TIMEOUT){
                     logger.error("Server returned 'Gateway Timeout' (504)");
                     logger.debug(res);
+                    setRequiresServiceRestart(true);
                     setCallSuccessful(false);
                 } else if (responseCode == HttpStatus.SC_INTERNAL_SERVER_ERROR){
                     logger.error("Server returned 'Internal Server Error' (500)");
                     logger.debug(res);
+                    setRequiresServiceRestart(true);
                     setCallSuccessful(false);
                 } else {
                     logger.error("Call failed with error code " + responseCode);
                     logger.debug(res);
+                    setRequiresServiceRestart(false);
                     setCallSuccessful(false);
                 }
 
@@ -197,7 +215,7 @@ class SisenseRESTAPIClient{
                         responseCode + " , error: " +
                         e.getMessage());
 
-                setCallSuccessful(false);
+                setRequiresServiceRestart(false);
             } finally {
                 logger.debug("Releasing JAQL REST API client connection...");
                 post.releaseConnection();
@@ -205,6 +223,14 @@ class SisenseRESTAPIClient{
             }
         }
 
+    }
+
+    public void setRequiresServiceRestart(boolean requiresServiceRestart) {
+        this.requiresServiceRestart = requiresServiceRestart;
+    }
+
+    public boolean isRequiresServiceRestart() {
+        return requiresServiceRestart;
     }
 
     private void setCallSuccessful(boolean callSuccessful) {
@@ -217,14 +243,14 @@ class SisenseRESTAPIClient{
 
     private void setUri() {
 
-        if (configFile.getPort() != 443){
-            uri = configFile.getProtocol() +
-                    "://" + configFile.getHost() + ":" +
-                    configFile.getPort() + "/api/datasources/x/jaql";
+        if (config.getPort() != 443){
+            uri = config.getProtocol() +
+                    "://" + config.getHost() + ":" +
+                    config.getPort() + "/api/datasources/x/jaql";
         }
         else {
-            uri = configFile.getProtocol() +
-                    "://" + configFile.getHost() + "/api/datasources/x/jaql";
+            uri = config.getProtocol() +
+                    "://" + config.getHost() + "/api/datasources/x/jaql";
         }
 
     }
@@ -258,6 +284,14 @@ class SisenseRESTAPIClient{
         this.responseCode = responseCode;
     }
 
+    public void setUnauthorized(boolean unauthorized) {
+        isUnauthorized = unauthorized;
+    }
+
+    public boolean isUnauthorized() {
+        return isUnauthorized;
+    }
+
     int getResponseCode() {
         return responseCode;
     }
@@ -265,5 +299,9 @@ class SisenseRESTAPIClient{
     String getCallResponse() {
 
         return callResponse;
+    }
+
+    public String getUri() {
+        return uri;
     }
 }

@@ -12,10 +12,10 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
-public class ConfigFile {
+public class Configuration {
 
-    private static ConfigFile configFileInstance;
-    private static final Logger logger = LoggerFactory.getLogger(ConfigFile.class);
+    private static Configuration config;
+    private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
     private String token;
     private String host;
     private String protocol;
@@ -33,7 +33,7 @@ public class ConfigFile {
     private boolean isSlackEnabled;
     private boolean checkLiveConnections;
 
-    private ConfigFile(){
+    private Configuration(){
 
         Properties properties = new Properties();
         InputStream input;
@@ -89,17 +89,17 @@ public class ConfigFile {
 
     }
 
-    public static ConfigFile getInstance(){
-        if (configFileInstance == null){
-            configFileInstance = new ConfigFile();
+    public static Configuration getInstance(){
+        if (config == null){
+            config = new Configuration();
             logger.debug("Created ConfigFile instance");
         }
-        return configFileInstance;
+        return config;
     }
 
     private String executionPath(){
         try {
-            Path path = Paths.get(new File(ConfigFile.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath());
+            Path path = Paths.get(new File(Configuration.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath());
             return String.valueOf(path.getParent());
         } catch (IOException | URISyntaxException e) {
             logger.error("Error getting JAR execution path: " + e.getMessage());

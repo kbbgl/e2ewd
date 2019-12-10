@@ -1,7 +1,7 @@
 package integrations;
 
 import cmd_ops.CmdOperations;
-import file_ops.ConfigFile;
+import file_ops.Configuration;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -10,7 +10,6 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -42,7 +41,7 @@ public class SlackClient {
             logger.debug("SlackClient instance created.");
         }
 
-        if (!ConfigFile.getInstance().isSlackEnabled()){
+        if (!Configuration.getInstance().isSlackEnabled()){
             instance = null;
         }
 
@@ -60,11 +59,11 @@ public class SlackClient {
                 .build();
 
         // check if friendlyHostName was set in config file
-        if (!ConfigFile.getInstance().getFriendlyHostName().isEmpty() ||
-                !ConfigFile.getInstance().getFriendlyHostName().equals("") ||
-                ConfigFile.getInstance().getFriendlyHostName() != null){
+        if (!Configuration.getInstance().getFriendlyHostName().isEmpty() ||
+                !Configuration.getInstance().getFriendlyHostName().equals("") ||
+                Configuration.getInstance().getFriendlyHostName() != null){
 
-            hostname = ConfigFile.getInstance().getFriendlyHostName();
+            hostname = Configuration.getInstance().getFriendlyHostName();
             logger.debug("Retrieved friendlyHostName:" + hostname);
         }
         else {
@@ -77,14 +76,14 @@ public class SlackClient {
         }
 
         client = HttpClientBuilder.create().setDefaultRequestConfig(requestConfig).build();
-        post = new HttpPost(ConfigFile.getInstance().getSlackWebhookURL());
+        post = new HttpPost(Configuration.getInstance().getSlackWebhookURL());
         post.addHeader("Content-type", "application/json");
 
     }
 
     public void sendMessage(String message){
 
-        logger.debug("Sending message '" + message + "' to Slack webhook " + ConfigFile.getInstance().getSlackWebhookURL());
+        logger.debug("Sending message '" + message + "' to Slack webhook " + Configuration.getInstance().getSlackWebhookURL());
 
         try {
             post.setEntity(requestBody(message));
