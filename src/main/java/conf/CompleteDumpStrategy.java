@@ -1,4 +1,4 @@
-package run_strategy;
+package conf;
 
 import cmd_ops.CmdOperations;
 import org.slf4j.Logger;

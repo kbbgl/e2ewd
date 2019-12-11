@@ -1,5 +1,5 @@
 import cmd_ops.CmdOperations;
-import file_ops.Configuration;
+import conf.Configuration;
 import file_ops.VersionFile;
 import logging.TestLog;
 import org.json.JSONException;

@@ -1,6 +1,5 @@
-package run_strategy;
+package conf;
 
-import file_ops.Configuration;
 import file_ops.ResultFile;
 import integrations.SlackClient;
 import logging.TestLog;

@@ -1,14 +1,11 @@
-package run_strategy;
+package conf;
 
-import cmd_ops.CmdOperations;
-import file_ops.Configuration;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 /*

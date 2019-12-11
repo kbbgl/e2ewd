@@ -1,22 +1,23 @@
-package run_strategy;
+package conf;
 
 import cmd_ops.CmdOperations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Arrays;
 
-public class IISResetStrategy implements RunStrategy {
-
+public class CompleteResetStrategy implements RunStrategy {
     private CmdOperations cmdOperations = CmdOperations.getInstance();
-    private final Logger logger = LoggerFactory.getLogger(IISResetStrategy.class);
+    private final Logger logger = LoggerFactory.getLogger(CompleteResetStrategy.class);
 
     @Override
     public void execute() {
 
-        logger.info("Executing IISResetStrategy...");
+        logger.info("Executing CompleteResetStrategy...");
 
         try {
+            cmdOperations.restartECS();
             cmdOperations.restartIIS();
 
             if (!cmdOperations.getSisenseVersion().startsWith("6") &&
@@ -27,11 +28,9 @@ public class IISResetStrategy implements RunStrategy {
             ){
                 cmdOperations.restartQueryProxy();
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException | IOException e) {
             logger.error("Failed to run operation: " + e.getMessage());
+            logger.debug(Arrays.toString(e.getStackTrace()));
         }
-
     }
-
-
 }

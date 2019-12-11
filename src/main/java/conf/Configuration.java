@@ -1,4 +1,4 @@
-package file_ops;
+package conf;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +32,7 @@ public class Configuration {
     private boolean runMicroservicesHealthCheck;
     private boolean isSlackEnabled;
     private boolean checkLiveConnections;
+    private boolean runMonetDBQuery;
 
     private Configuration(){
 
@@ -60,6 +61,7 @@ public class Configuration {
                 setRunMicroservicesHealthCheck(Boolean.parseBoolean(properties.getProperty("runMicroservicesHealthCheck")));
                 setSlackWebhookURL(properties.getProperty("slackWebhookURL"));
                 setCheckLiveConnections(Boolean.parseBoolean(properties.getProperty("checkLiveConnections")));
+                setRunMonetDBquery(Boolean.parseBoolean(properties.getProperty("runMonetDBQuery")));
 
                 // Validate the URL
                 if (!properties.getProperty("slackWebhookURL").isEmpty() || !properties.getProperty("slackWebhookURL").equals("")){
@@ -224,7 +226,7 @@ public class Configuration {
     }
 
     private void setSlackEnabled(boolean slackEnabled) {
-        logger.info("Slack notifications are enabled: " + slackEnabled);
+        logger.debug("Slack notifications are enabled: " + slackEnabled);
         isSlackEnabled = slackEnabled;
     }
 
@@ -234,6 +236,14 @@ public class Configuration {
 
     public boolean isCheckLiveConnections() {
         return checkLiveConnections;
+    }
+
+    public void setRunMonetDBquery(boolean runMonetDBQuery) {
+        this.runMonetDBQuery = runMonetDBQuery;
+    }
+
+    public boolean isRunMonetDBquery() {
+        return runMonetDBQuery;
     }
 
     public boolean isConfigFileValid(){

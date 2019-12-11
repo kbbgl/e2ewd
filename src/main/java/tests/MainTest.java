@@ -3,20 +3,19 @@ package tests;
 import cmd_ops.CmdOperations;
 import cmd_ops.ElastiCubeRESTAPIClient;
 import cmd_ops.LiveConnectionRESTAPIClient;
-import file_ops.Configuration;
+import conf.Configuration;
 import file_ops.ResultFile;
 import integrations.SlackClient;
 import logging.TestLog;
 import logging.TestResultToJSONConverter;
 import models.ElastiCube;
 import org.apache.http.HttpStatus;
-import org.apache.http.conn.HttpHostConnectException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import run_strategy.*;
+import conf.*;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -237,15 +236,18 @@ public class MainTest {
                 callFailed = true;
 
                 // Run MonetDB test
-                try {
-                    executeMonetDBTest(elastiCube);
+                if (config.isRunMonetDBquery()){
+                    try {
+                        executeMonetDBTest(elastiCube);
 
-                } catch (InterruptedException e) {
-                    logger.error("Error running MonetDB test: " +e.getMessage());
-                    logger.debug(Arrays.toString(e.getStackTrace()));
-                    setTestSuccess(false);
-                    terminate("Error running MonetDB test: " + e.getMessage());
+                    } catch (InterruptedException e) {
+                        logger.error("Error running MonetDB test: " +e.getMessage());
+                        logger.debug(Arrays.toString(e.getStackTrace()));
+                        setTestSuccess(false);
+                        terminate("Error running MonetDB test: " + e.getMessage());
+                    }
                 }
+
                 break;
             }
 

@@ -1,7 +1,7 @@
 package tests;
 
 import cmd_ops.CmdOperations;
-import file_ops.Configuration;
+import conf.Configuration;
 import integrations.SlackClient;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

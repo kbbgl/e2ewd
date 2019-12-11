@@ -1,6 +1,6 @@
 package cmd_ops;
 
-import file_ops.Configuration;
+import conf.Configuration;
 import models.ElastiCube;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;

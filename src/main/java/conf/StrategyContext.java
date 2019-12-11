@@ -1,4 +1,4 @@
-package run_strategy;
+package conf;
 
 public class StrategyContext {
 

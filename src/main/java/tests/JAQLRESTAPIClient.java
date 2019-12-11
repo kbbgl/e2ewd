@@ -1,6 +1,6 @@
 package tests;
 
-import file_ops.Configuration;
+import conf.Configuration;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -22,7 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import run_strategy.StrategyExecutor;
+import conf.StrategyExecutor;
 
 import javax.net.ssl.SSLContext;
 import java.io.BufferedReader;
