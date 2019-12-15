@@ -15,6 +15,7 @@ import java.util.*;
 public class Configuration {
 
     private static Configuration config;
+    private Properties properties;
     private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
     private String token;
     private String host;
@@ -36,7 +37,7 @@ public class Configuration {
 
     private Configuration(){
 
-        Properties properties = new Properties();
+        properties = new Properties();
         InputStream input;
 
         logger.debug("Execution path: " + executionPath());
@@ -278,23 +279,13 @@ public class Configuration {
 
     @Override
     public String toString() {
-        return "ConfigFile{\n\t" +
-                "token:" + token + ",\n\t" +
-                "host:" + host + ",\n\t" +
-                "port:" + port + ",\n\t" +
-                "protocol:" + protocol + ",\n\t" +
-                "requestTimeoutInSeconds:" + requestTimeoutInSeconds + ",\n\t" +
-                "restartECS:" + restartECS + ",\n\t" +
-                "restartIIS:" + restartIIS + ",\n\t" +
-                "iisDump:" + iisDump + ",\n\t" +
-                "ecsDump:" + ecsDump + "\n\t" +
-                "ecDump:" + ecDump + "\n\t" +
-                "slackWebhookURL:" + slackWebhookURL + "\n\t" +
-                "friendlyHostName:" + friendlyHostName + "\n\t" +
-                "runBrokerHealthCheck:" + runBrokerHealthCheck + "\n\t" +
-                "runMicroservicesHealthCheck:" + runMicroservicesHealthCheck + "\n\t" +
-                "checkLiveConnections:" + checkLiveConnections + "\n\t" +
-                "runMonetDBQuery:" + runMonetDBQuery + "\n\t" +
-                "}";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Configuration {\n\t");
+        for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+            sb.append(entry.getKey()).append(":").append(entry.getValue()).append("\n\t");
+        }
+        sb.append("}");
+
+        return sb.toString();
     }
 }
