@@ -1,5 +1,6 @@
 import cmd_ops.CmdOperations;
 import conf.Configuration;
+import version.RepositoryComparator;
 import version.VersionFile;
 import logging.TestLog;
 import org.json.JSONException;
@@ -31,9 +32,14 @@ public class App {
         logger.info("STARTING...");
 
         // Check application version
-        VersionFile versionFile = new VersionFile(runningLocation);
-        logger.info("Application version: " + versionFile.getVersion());
-        testLog.setVersion(versionFile.getVersion());
+        try {
+            RepositoryComparator repoComparator = new RepositoryComparator(runningLocation);
+            repoComparator.compareVersions();
+            testLog.setVersion(repoComparator.getInstalledVersion());
+        } catch (URISyntaxException | IOException e) {
+            logger.warn("Cannot check for latest version: ", e);
+            logger.info("Ignoring...");
+        }
 
         // Check to see if Sisense is installed
         try {

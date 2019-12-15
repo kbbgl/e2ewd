@@ -294,6 +294,7 @@ public class Configuration {
                 "runBrokerHealthCheck:" + runBrokerHealthCheck + "\n\t" +
                 "runMicroservicesHealthCheck:" + runMicroservicesHealthCheck + "\n\t" +
                 "checkLiveConnections:" + checkLiveConnections + "\n\t" +
+                "runMonetDBQuery:" + runMonetDBQuery + "\n\t" +
                 "}";
     }
 }

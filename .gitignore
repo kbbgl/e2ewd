@@ -129,3 +129,5 @@ gradle-app.setting
 .gitignore
 .idea/
 e2ewd.iml
+build/.DS_Store
+src/main/java/.DS_Store
