@@ -1,6 +1,6 @@
 import cmd_ops.CmdOperations;
 import conf.Configuration;
-import file_ops.VersionFile;
+import version.VersionFile;
 import logging.TestLog;
 import org.json.JSONException;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class App {
     private static String host = System.getenv("COMPUTERNAME");
     private static MainTest mainTest = new MainTest();
 
-    public static void main(String[] args) throws JSONException, IOException, InterruptedException {
+    public static void main(String[] args) throws JSONException {
 
         // Initialize test
         setRunningLocation();

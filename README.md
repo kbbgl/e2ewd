@@ -42,7 +42,7 @@ Supports **all** Sisense versions.
  | (Optional) `runBrokerHealthCheck` | Whether to check the Broker queues (`localhost:15672)` as part of the test.                                                                                            | `boolean`  | `true` or `false` [default]|
  | (Optional) `runMicroservicesHealthCheck` | Whether to check the microservices (`/api/test`) queues as part of the test.                                                                                    | `boolean`  | `true` or `false` [default]|
  | (Optional) `checkLiveConnections` | Whether to run test JAQLs for [Live Connections](https://documentation.sisense.com/latest/managing-data/LiveConnect.htm#gsc.tab=0) as part of the test.                | `boolean`  | `true`  or `false` [default]
- | (Optional) 'runMonetDBQuery'| Whether to run a query to the ElastiCube directly if a JAQL query fails.                                                                                                     | `boolean` | `true` or `false` [default]|
+ | (Optional) `runMonetDBQuery`| Whether to run a query to the ElastiCube directly if a JAQL query fails.                                                                                                     | `boolean` | `true` or `false` [default]|
  
  <br></br>
 
