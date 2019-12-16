@@ -1,33 +1,41 @@
 package tests;
 
 import cmd_ops.CmdOperations;
-import cmd_ops.ElastiCubeRESTAPIClient;
-import cmd_ops.LiveConnectionRESTAPIClient;
+import tests.queryservice.ElastiCubeRESTAPIClient;
+import tests.broker.BrokerHealthClient;
+import tests.live.LiveConnectionRESTAPIClient;
 import conf.Configuration;
+import dao.WebAppRepositoryClient;
 import file_ops.ResultFile;
 import integrations.SlackClient;
 import logging.TestLog;
-import logging.TestResultToJSONConverter;
-import models.ElastiCube;
+import logging.TestLogConverter;
 import org.apache.http.HttpStatus;
+import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import conf.*;
+import tests.microservices.MicroservicesHealthClient;
+import tests.queryservice.ElastiCube;
+import tests.queryservice.JAQLRESTAPIClient;
+import tests.queryservice.MonetDBTest;
+import tests.queryservice.TelnetTest;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.util.*;
 
 public class MainTest {
 
     private final Logger logger = LoggerFactory.getLogger(MainTest.class);
     private boolean testSuccess;
-    private int attamptNumber;
+    private int attemptNumber;
     private final int maxNumberAttempts = 5;
     private List<ElastiCube> elastiCubes;
     private List<String> liveConnections;
@@ -44,8 +52,8 @@ public class MainTest {
 
         preRun();
 
-        attamptNumber = 1;
-        run(attamptNumber);
+        attemptNumber = 1;
+        run(attemptNumber);
     }
 
     private void preRun(){
@@ -125,11 +133,20 @@ public class MainTest {
             // Case when API call to get ElastiCubes succeeded but 0 returned
             // Start a default ElastiCube and retry
             if (!ecClient.isRequiresServiceRestart() && elastiCubes.size() == 0){
-                String defaultEC = ecClient.getDefaultElastiCube();
+
                 logger.info("No ElastiCubes in RUNNING mode.");
-                logger.info("Chosen default ElastiCube to start: " + defaultEC);
-                CmdOperations.getInstance().runDefaultElastiCube(defaultEC);
-                retry();
+
+                String defaultEC = ecClient.getDefaultElastiCube();
+                if (defaultEC != null){
+                    logger.info("Chosen default ElastiCube to start: " + defaultEC);
+                    CmdOperations.getInstance().runDefaultElastiCube(defaultEC);
+                    retry();
+                } else {
+                    if (Configuration.getInstance().restartECS()){
+                        CmdOperations.getInstance().restartECS();
+                        retry();
+                    }
+                }
             }
             // The call to retrieve ECs from endpoint failed (404,500,502,504) => run config strategy and retry
             else if (ecClient.isRequiresServiceRestart()){
@@ -170,7 +187,7 @@ public class MainTest {
     private void retry() throws JSONException {
 
         logger.info("Retrying...");
-        run(++attamptNumber);
+        run(++attemptNumber);
 
     }
 
@@ -278,7 +295,7 @@ public class MainTest {
         }
 
         logger.info("ElastiCube JAQL API test results:");
-        logger.info(TestResultToJSONConverter.toJSON(restAPITests).toString(3));
+        logger.info(TestLogConverter.toJSON(restAPITests).toString(3));
 
         // If the call failed (200 with error) or any 404/500/502/504 error
         // Run strategy
@@ -320,7 +337,7 @@ public class MainTest {
         }
 
         logger.info("Live Connection JAQL API test results:");
-        logger.info(TestResultToJSONConverter.toJSON(restAPITests).toString(3));
+        logger.info(TestLogConverter.toJSON(restAPITests).toString(3));
 
     }
 
@@ -329,18 +346,17 @@ public class MainTest {
         testLog.setTestEndTime(new Date());
         testLog.setHealthy(testSuccess);
 
+        // Write test to mongo e2ewd.testlog
+        // todo figure out why wrong credentials throws exception that causes process crash
+//        if (config.isWriteTestToRepository()){
+//            writeToMongo();
+//        }
+
         // send Slack notification if enabled and test failed
         if (!isTestSuccess() && SlackClient.getInstance() != null){
             SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed ");
         }
 
-        // send test to web app db
-        // quota exceeded so disabling
-//        try {
-//            WebAppDBConnection.sendOperation(testLog.toJSON());
-//        } catch (IOException | ParseException | JSONException e) {
-//            logger.warn("Failed sending test log to mongo: " + e.getMessage());
-//        }
 
         ResultFile.getInstance().write(testSuccess);
         logger.info("Test result: " + testSuccess);
@@ -355,6 +371,10 @@ public class MainTest {
         testLog.setReasonForFailure(reasonForFailure);
         testLog.setHealthy(testSuccess);
 
+//        if (config.isWriteTestToRepository()){
+//            writeToMongo();
+//        }
+
         // send Slack notification if enabled and test failed
         if (!isTestSuccess() && SlackClient.getInstance() != null){
             SlackClient.getInstance().sendMessage(":rotating_light: CRITICAL! Watchdog test failed ");
@@ -373,6 +393,21 @@ public class MainTest {
         logger.info("EXITING...");
         System.exit(0);
 
+    }
+
+    private void writeToMongo() {
+
+        Document testToInsert = null;
+        try {
+            testToInsert = TestLogConverter.toDocument(testLog.toJSON());
+            if ( WebAppRepositoryClient.getInstance() != null){
+                WebAppRepositoryClient.getInstance().insertTest(testToInsert);
+            } else {
+                logger.warn("Could not add test to Mongo");
+            }
+        } catch (JSONException | ParseException e) {
+            logger.warn("Error inserting test to mongo: ", e);
+        }
     }
 
     private void executeMonetDBTest(ElastiCube elastiCube) throws IOException, InterruptedException {

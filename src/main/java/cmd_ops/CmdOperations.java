@@ -3,9 +3,8 @@ package cmd_ops;
 import com.profesorfalken.jpowershell.PowerShell;
 import integrations.SlackClient;
 import logging.Logger;
-import models.ElastiCube;
+import tests.queryservice.ElastiCube;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -29,6 +28,7 @@ public class CmdOperations {
     private final String IIS_PROCESS_NAME = "w3wp";
     private final int PROCESS_TIMEOUT = 15;
     private final int IIS_TIMEOUT_IN_MINUTES = 3;
+    private final int ECS_TIMEOUT_IN_MINUTES = 1;
     private ElastiCube defaultElastiCube;
 
     private CmdOperations(){
@@ -586,6 +586,10 @@ public class CmdOperations {
             SlackClient.getInstance().sendMessage(":recycle: ECS restarted.");
         }
 
+        logger.info("Setting a timeout of " + ECS_TIMEOUT_IN_MINUTES +" minute(s) to wait for ECS...");
+        TimeUnit.MINUTES.sleep(ECS_TIMEOUT_IN_MINUTES);
+        logger.info("Timeout finished. Resuming execution");
+
     }
 
     public void restartIIS() throws IOException, InterruptedException {
@@ -621,7 +625,7 @@ public class CmdOperations {
             SlackClient.getInstance().sendMessage(":recycle: IIS restarted.");
         }
 
-        logger.info("Setting a timeout of " + IIS_TIMEOUT_IN_MINUTES +" minuteS to wait for IIS...");
+        logger.info("Setting a timeout of " + IIS_TIMEOUT_IN_MINUTES +" minute(s) to wait for IIS...");
         TimeUnit.MINUTES.sleep(IIS_TIMEOUT_IN_MINUTES);
         logger.info("Timeout finished. Resuming execution");
     }

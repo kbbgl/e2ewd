@@ -1,11 +1,15 @@
 package conf;
 
+import dao.WebAppRepositoryClient;
 import file_ops.ResultFile;
 import integrations.SlackClient;
 import logging.TestLog;
+import logging.TestLogConverter;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.ParseException;
 import java.util.Date;
 
 public class NoResetNoDumpStrategy implements RunStrategy {
@@ -27,9 +31,11 @@ public class NoResetNoDumpStrategy implements RunStrategy {
         }
 
 //        try {
-//            WebAppDBConnection.sendOperation(TestLog.getInstance().toJSON());
-//        } catch (IOException | JSONException | ParseException e) {
-//            logger.warn("No data sent to e2ewd dashboard DB");
+//            if (WebAppRepositoryClient.getInstance() != null){
+//                WebAppRepositoryClient.getInstance().insertTest(TestLogConverter.toDocument(TestLog.getInstance().toJSON()));
+//            }
+//        } catch (JSONException | ParseException e) {
+//            logger.warn("Error writing test to mongo: ", e);
 //        }
 
         System.exit(0);

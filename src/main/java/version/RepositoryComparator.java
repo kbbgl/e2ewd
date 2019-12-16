@@ -29,6 +29,8 @@ public class RepositoryComparator {
 
         if (!installedVersion.equals(latestVersion)){
 
+
+
             logger.info("Newer version available: " + latestVersion);
             logger.info("Download from https://github.com/kbbgl/e2ewd");
 

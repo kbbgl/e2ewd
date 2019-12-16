@@ -43,7 +43,10 @@ Supports **all** Sisense versions.
  | (Optional) `runMicroservicesHealthCheck` | Whether to check the microservices (`/api/test`) queues as part of the test.                                                                                    | `boolean`  | `true` or `false` [default]|
  | (Optional) `checkLiveConnections` | Whether to run test JAQLs for [Live Connections](https://documentation.sisense.com/latest/managing-data/LiveConnect.htm#gsc.tab=0) as part of the test.                | `boolean`  | `true`  or `false` [default]
  | (Optional) `runMonetDBQuery`| Whether to run a query to the ElastiCube directly if a JAQL query fails.                                                                                                     | `boolean` | `true` or `false` [default]|
- 
+ | (Optional) `writeTestToRepository` | If set to true, the test log will be written to the local repository database named 'e2ewd', collection 'testlogs'                                                    | `boolean` | `true` or `false` [default]|
+ | (Optional) `repositoryUsername` | Username to use to authenticate with the local repository                                                                                                                 | `String`  | "MY_ADMIN"|
+ | (Optional) `repositoryPassword` | Password to use to authenticate with the local repository                                                                                                                 | `String`  | "MY_PASSWORD"|
+
  <br></br>
 
  4.Run the `run.bat` file as an Administrator.  

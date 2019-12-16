@@ -34,6 +34,9 @@ public class Configuration {
     private boolean isSlackEnabled;
     private boolean checkLiveConnections;
     private boolean runMonetDBQuery;
+    private boolean writeTestToRepository;
+    private String repositoryUsername;
+    private String repositoryPassword;
 
     private Configuration(){
 
@@ -63,6 +66,9 @@ public class Configuration {
                 setSlackWebhookURL(properties.getProperty("slackWebhookURL"));
                 setCheckLiveConnections(Boolean.parseBoolean(properties.getProperty("checkLiveConnections")));
                 setRunMonetDBquery(Boolean.parseBoolean(properties.getProperty("runMonetDBQuery")));
+                setWriteTestToRepository(Boolean.parseBoolean(properties.getProperty("writeTestToRepository")));
+                setRepositoryUsername(properties.getProperty("repositoryUsername"));
+                setRepositoryPassword(properties.getProperty("repositoryPassword"));
 
                 // Validate the URL
                 if (!properties.getProperty("slackWebhookURL").isEmpty() || !properties.getProperty("slackWebhookURL").equals("")){
@@ -245,6 +251,30 @@ public class Configuration {
 
     public boolean isRunMonetDBquery() {
         return runMonetDBQuery;
+    }
+
+    public boolean isWriteTestToRepository() {
+        return writeTestToRepository;
+    }
+
+    public void setWriteTestToRepository(boolean writeTestToRepository) {
+        this.writeTestToRepository = writeTestToRepository;
+    }
+
+    public void setRepositoryUsername(String repositoryUsername) {
+        this.repositoryUsername = repositoryUsername;
+    }
+
+    public String getRepositoryUsername() {
+        return repositoryUsername;
+    }
+
+    public void setRepositoryPassword(String repositoryPassword) {
+        this.repositoryPassword = repositoryPassword;
+    }
+
+    public String getRepositoryPassword() {
+        return repositoryPassword;
     }
 
     public boolean isConfigFileValid(){
