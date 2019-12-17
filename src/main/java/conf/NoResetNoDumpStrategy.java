@@ -1,6 +1,6 @@
 package conf;
 
-import dao.WebAppRepositoryClient;
+//import dao.WebAppRepositoryClient;
 import file_ops.ResultFile;
 import integrations.SlackClient;
 import logging.TestLog;

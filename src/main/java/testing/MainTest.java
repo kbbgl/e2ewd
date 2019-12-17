@@ -1,6 +1,7 @@
 package testing;
 
 import version.GitHubClient;
+import version.VersionModel;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -17,17 +18,29 @@ public class MainTest {
 
     public static void main(String[] args) {
 
-        Properties properties = new Properties();
-        try {
-            properties.load(new InputStreamReader(new FileInputStream("/Users/kobbigal/dev/work/e2ewd/build/libs/config.properties")));
+        VersionModel installed = new VersionModel("7.0.0");
+        VersionModel latest = new VersionModel("8.2.0");
 
-            for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-                System.out.println(entry.getKey() + " = " + entry.getValue());
-            }
+        if (latest.getMajor() > installed.getMajor()){
 
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Newer version available: " + latest.getVersion());
+            System.out.println("Download from https://github.com/kbbgl/e2ewd");
+
+        } else if (latest.getMinor() > installed.getMinor()){
+
+            System.out.println("New minor version available: " + latest.getVersion());
+            System.out.println("Download from https://github.com/kbbgl/e2ewd");
+
+        } else if (latest.getPath() > installed.getPath()){
+
+            System.out.println("New patch version available: " + latest.getVersion());
+            System.out.println("Download from https://github.com/kbbgl/e2ewd");
+
         }
+        else {
+            System.out.println("Latest version installed. No need to update.");
+        }
+
 
 
     }

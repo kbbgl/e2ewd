@@ -27,14 +27,26 @@ public class RepositoryComparator {
 
         String latestVersion = client.getRemoteVersion();
 
-        if (!installedVersion.equals(latestVersion)){
+        VersionModel installed = new VersionModel(installedVersion);
+        VersionModel latest = new VersionModel(latestVersion);
 
-
+        if (latest.getMajor() > installed.getMajor()){
 
             logger.info("Newer version available: " + latestVersion);
             logger.info("Download from https://github.com/kbbgl/e2ewd");
 
-        } else {
+        } else if (latest.getMinor() > installed.getMinor()){
+
+            logger.info("New minor version available: " + latestVersion);
+            logger.info("Download from https://github.com/kbbgl/e2ewd");
+
+        } else if (latest.getPath() > installed.getPath()){
+
+            logger.info("New patch version available: " + latestVersion);
+            logger.info("Download from https://github.com/kbbgl/e2ewd");
+
+        }
+        else {
             logger.info("Latest version installed. No need to update.");
         }
 
@@ -47,4 +59,6 @@ public class RepositoryComparator {
     public String getInstalledVersion() {
         return installedVersion;
     }
+
+
 }

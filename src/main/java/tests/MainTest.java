@@ -1,28 +1,23 @@
 package tests;
 
 import cmd_ops.CmdOperations;
-import tests.queryservice.ElastiCubeRESTAPIClient;
-import tests.broker.BrokerHealthClient;
-import tests.live.LiveConnectionRESTAPIClient;
-import conf.Configuration;
-import dao.WebAppRepositoryClient;
+import conf.*;
+//import dao.WebAppRepositoryClient;
 import file_ops.ResultFile;
 import integrations.SlackClient;
 import logging.TestLog;
 import logging.TestLogConverter;
 import org.apache.http.HttpStatus;
-import org.bson.Document;
+//import org.bson.Document;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import conf.*;
+import tests.broker.BrokerHealthClient;
+import tests.live.LiveConnectionRESTAPIClient;
 import tests.microservices.MicroservicesHealthClient;
-import tests.queryservice.ElastiCube;
-import tests.queryservice.JAQLRESTAPIClient;
-import tests.queryservice.MonetDBTest;
-import tests.queryservice.TelnetTest;
+import tests.queryservice.*;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -395,20 +390,20 @@ public class MainTest {
 
     }
 
-    private void writeToMongo() {
-
-        Document testToInsert = null;
-        try {
-            testToInsert = TestLogConverter.toDocument(testLog.toJSON());
-            if ( WebAppRepositoryClient.getInstance() != null){
-                WebAppRepositoryClient.getInstance().insertTest(testToInsert);
-            } else {
-                logger.warn("Could not add test to Mongo");
-            }
-        } catch (JSONException | ParseException e) {
-            logger.warn("Error inserting test to mongo: ", e);
-        }
-    }
+//    private void writeToMongo() {
+//
+//        Document testToInsert = null;
+//        try {
+//            testToInsert = TestLogConverter.toDocument(testLog.toJSON());
+//            if ( WebAppRepositoryClient.getInstance() != null){
+//                WebAppRepositoryClient.getInstance().insertTest(testToInsert);
+//            } else {
+//                logger.warn("Could not add test to Mongo");
+//            }
+//        } catch (JSONException | ParseException e) {
+//            logger.warn("Error inserting test to mongo: ", e);
+//        }
+//    }
 
     private void executeMonetDBTest(ElastiCube elastiCube) throws IOException, InterruptedException {
 

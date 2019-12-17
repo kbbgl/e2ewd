@@ -1,6 +1,6 @@
 package logging;
 
-import org.bson.Document;
+//import org.bson.Document;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,12 +20,12 @@ public class TestLogConverter {
 
     }
 
-    public static Document toDocument(JSONObject testLog){
-
-        Document document = Document.parse(testLog.toString());
-
-        return document;
-
-    }
+//    public static Document toDocument(JSONObject testLog){
+//
+//        Document document = Document.parse(testLog.toString());
+//
+//        return document;
+//
+//    }
 
 }
