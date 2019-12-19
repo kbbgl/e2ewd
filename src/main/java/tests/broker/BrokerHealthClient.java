@@ -59,7 +59,7 @@ public class BrokerHealthClient{
 
     private void initializeClient() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
 
-        logger.debug("Inializing client...");
+        logger.debug("Initializing client...");
         SSLContext sslContext = new SSLContextBuilder()
                 .loadTrustMaterial(null, (x509CertChain, authType) -> true)
                 .build();
@@ -141,7 +141,7 @@ public class BrokerHealthClient{
                             );
 
                             // Check if one of the queues us unhealthy
-                            if (queue.getNumberOfMessages() > 0 || queue.getNumberOfConsumers() == 0){
+                            if (queue.getNumberOfMessages() > 100 || queue.getNumberOfConsumers() == 0){
                                 logger.warn("Queue '" + queue.getName() + "' unhealthy! Has " + queue.getNumberOfConsumers() + " consumers, " + queue.getNumberOfMessages() + " messages stuck in queue");
 
                                 if (slackClient != null){
