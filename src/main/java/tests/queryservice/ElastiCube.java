@@ -1,23 +1,31 @@
 package tests.queryservice;
 
+/*
+    POJO for ElatiCube model
+    statusCode is:
+    1 - Stopped
+    2 - Running
+    514 - Building
+ */
+
 public class ElastiCube {
 
     private String name;
-    private String state;
+    private int statusCode;
     private int port;
     private boolean isLocked;
 
-    public ElastiCube(String name, String state){
+    public ElastiCube(String name, int statusCode){
         this.name = name;
-        this.state = state;
+        this.statusCode = statusCode;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getState() {
-        return state;
+    public int getStatusCode() {
+        return statusCode;
     }
 
     public int getPort() {
@@ -36,11 +44,26 @@ public class ElastiCube {
         isLocked = locked;
     }
 
+    private String getState(int statusCode){
+
+        switch (statusCode){
+            case 1:
+                return "Stopped";
+            case 2:
+                return "Running";
+            case 514:
+                return "Building";
+            default:
+                return "Unknown status: " + statusCode;
+        }
+
+    }
+
     @Override
     public String toString() {
         return "{" +
                 "name:" + name + "" +
-                ", state:" + state + "" +
+                ", state:" + getState(this.statusCode) + "" +
                 ", port:" + port +
                 '}';
     }

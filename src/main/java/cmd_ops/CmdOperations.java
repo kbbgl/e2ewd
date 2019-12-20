@@ -3,6 +3,7 @@ package cmd_ops;
 import com.profesorfalken.jpowershell.PowerShell;
 import integrations.SlackClient;
 import logging.Logger;
+import tests.queryservice.ECSStateKeeper;
 import tests.queryservice.ElastiCube;
 import org.slf4j.LoggerFactory;
 
@@ -26,10 +27,9 @@ public class CmdOperations {
     private final String procdumpPath = executionPath() + "\\procdump\\procdump.exe";
     private final String ELASTICUBE_PROCESS_NAME = "ElastiCube.ManagementService";
     private final String IIS_PROCESS_NAME = "w3wp";
-    private final int PROCESS_TIMEOUT = 15;
-    private final int IIS_TIMEOUT_IN_MINUTES = 3;
-    private final int ECS_TIMEOUT_IN_MINUTES = 1;
-    private ElastiCube defaultElastiCube;
+    private final int PROCESS_TIMEOUT_IN_SECONDS = 15;
+    private final int IIS_TIMEOUT_IN_MINUTES = 5;
+    private final int ECS_TIMEOUT_IN_MINUTES = 5;
 
     private CmdOperations(){
 
@@ -44,88 +44,88 @@ public class CmdOperations {
         return instance;
     }
 
-    public List<ElastiCube> getListElastiCubes(){
-        List<ElastiCube> elasticubes = new ArrayList<>();
-
-        try {
-            String[] psmCmd = new String[]{
-                    "cmd.exe",
-                    "/c",
-                    "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
-                    "ecs",
-                    "ListCubes",
-                    "serverAddress=localhost"};
-
-            String[] environmentalVariable = { "SISENSE_PSM=true" };
-
-            Process listCubesCommand = runtime.exec(psmCmd, environmentalVariable);
-            logger.debug("Executing " + Arrays.toString(environmentalVariable) + "&&" + Arrays.toString(psmCmd));
-
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream(), StandardCharsets.UTF_8));
-            BufferedReader errorInput = new BufferedReader(new InputStreamReader(listCubesCommand.getErrorStream(), StandardCharsets.UTF_8));
-
-            Pattern listCubesPattern = Pattern.compile("Cube Name \\[(.*?)] ID : \\[(.*?)] FarmPath \\[(.*?)] Status \\[(.*?)]");
-            Pattern errorPattern = Pattern.compile("\\((.*?)\\)");
-
-            // Read stdout
-            String s;
-            logger.debug("Output stream:");
-            while ((s = stdInput.readLine()) != null) {
-                logger.debug(s);
-
-                if (s.startsWith("Cube Name")){
-                    Matcher cubeNameMatcher = listCubesPattern.matcher(s);
-                    while (cubeNameMatcher.find()){
-                        logger.debug(s);
-                        ElastiCube elastiCube = new ElastiCube(cubeNameMatcher.group(1), cubeNameMatcher.group(4));
-                        setElastiCubePort(elastiCube);
-
-                        // filter out all non running ElastiCubes
-                        if (elastiCube.getState().equals("RUNNING") && !elastiCube.isLocked()){
-                            if (elasticubes != null) {
-                                elasticubes.add(elastiCube);
-                                logger.debug("Found ElastiCube " + elastiCube.getName());
-                            }
-                        }
-
-                        if (defaultElastiCube == null && !elastiCube.isLocked()){
-                            defaultElastiCube = elastiCube;
-                        }
-
-                    }
-                } else {
-                    Matcher m = errorPattern.matcher(s);
-                    while (m.find()){
-
-                        logger.error("Command " + Arrays.toString(psmCmd) + "returned an error: " + m.group(1));
-                        if (m.group(1).equals("the server, 'localhost', is not responding.")){
-                            elasticubes = null;
-                        }
-
-                    }
-                }
-            }
-
-            // Read stderr
-            String e;
-            while ((e = errorInput.readLine()) != null){
-                    logger.debug("Error stream: ");
-                    logger.error(e);
-                }
-
-            // Check for timeout
-            if (!listCubesCommand.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
-
-                logger.error("Operation timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
-                listCubesCommand.destroyForcibly();
-            }
-
-        } catch (IOException | InterruptedException e) {
-            logger.error(e.getMessage());
-        }
-
-        return elasticubes;
-    }
+//    public List<ElastiCube> getListElastiCubes(){
+//        List<ElastiCube> elasticubes = new ArrayList<>();
+//
+//        try {
+//            String[] psmCmd = new String[]{
+//                    "cmd.exe",
+//                    "/c",
+//                    "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
+//                    "ecs",
+//                    "ListCubes",
+//                    "serverAddress=localhost"};
+//
+//            String[] environmentalVariable = { "SISENSE_PSM=true" };
+//
+//            Process listCubesCommand = runtime.exec(psmCmd, environmentalVariable);
+//            logger.debug("Executing " + Arrays.toString(environmentalVariable) + "&&" + Arrays.toString(psmCmd));
+//
+//            BufferedReader stdInput = new BufferedReader(new InputStreamReader(listCubesCommand.getInputStream(), StandardCharsets.UTF_8));
+//            BufferedReader errorInput = new BufferedReader(new InputStreamReader(listCubesCommand.getErrorStream(), StandardCharsets.UTF_8));
+//
+//            Pattern listCubesPattern = Pattern.compile("Cube Name \\[(.*?)] ID : \\[(.*?)] FarmPath \\[(.*?)] Status \\[(.*?)]");
+//            Pattern errorPattern = Pattern.compile("\\((.*?)\\)");
+//
+//            // Read stdout
+//            String s;
+//            logger.debug("Output stream:");
+//            while ((s = stdInput.readLine()) != null) {
+//                logger.debug(s);
+//
+//                if (s.startsWith("Cube Name")){
+//                    Matcher cubeNameMatcher = listCubesPattern.matcher(s);
+//                    while (cubeNameMatcher.find()){
+//                        logger.debug(s);
+//                        ElastiCube elastiCube = new ElastiCube(cubeNameMatcher.group(1), cubeNameMatcher.group(4));
+//                        setElastiCubePort(elastiCube);
+//
+//                        // filter out all non running ElastiCubes
+//                        if (elastiCube.getState().equals("RUNNING") && !elastiCube.isLocked()){
+//                            if (elasticubes != null) {
+//                                elasticubes.add(elastiCube);
+//                                logger.debug("Found ElastiCube " + elastiCube.getName());
+//                            }
+//                        }
+//
+//                        if (defaultElastiCube == null && !elastiCube.isLocked()){
+//                            defaultElastiCube = elastiCube;
+//                        }
+//
+//                    }
+//                } else {
+//                    Matcher m = errorPattern.matcher(s);
+//                    while (m.find()){
+//
+//                        logger.error("Command " + Arrays.toString(psmCmd) + "returned an error: " + m.group(1));
+//                        if (m.group(1).equals("the server, 'localhost', is not responding.")){
+//                            elasticubes = null;
+//                        }
+//
+//                    }
+//                }
+//            }
+//
+//            // Read stderr
+//            String e;
+//            while ((e = errorInput.readLine()) != null){
+//                    logger.debug("Error stream: ");
+//                    logger.error(e);
+//                }
+//
+//            // Check for timeout
+//            if (!listCubesCommand.waitFor(PROCESS_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)){
+//
+//                logger.error("Operation timed out (" + PROCESS_TIMEOUT_IN_SECONDS + "s). Destroying process...");
+//                listCubesCommand.destroyForcibly();
+//            }
+//
+//        } catch (IOException | InterruptedException e) {
+//            logger.error(e.getMessage());
+//        }
+//
+//        return elasticubes;
+//    }
 
     // TODO handle cubes in FAULTED state
     public void setElastiCubePort(ElastiCube elastiCube) throws IOException, InterruptedException {
@@ -167,50 +167,50 @@ public class CmdOperations {
         }
 
         // Check that process hasn't timed out
-        if (!ecubePortCommand.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
+        if (!ecubePortCommand.waitFor(PROCESS_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)){
             logger.error("Operation timed out ( + PROCESS_TIMEOUT + s). Destroying process...");
             ecubePortCommand.destroyForcibly();
         }
     }
 
-    public void runElastiCube() throws IOException, InterruptedException {
-
-        String[] psmCmd = new String[]{
-                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
-                "ecube",
-                "start",
-                "name=" + defaultElastiCube.getName(),
-                "serverAddress=localhost"
-        };
-
-        Process ecubeStartProcess = runtime.exec(psmCmd);
-        logger.debug("Executing " + Arrays.toString(psmCmd));
-        logger.info("Starting ElastiCube " + defaultElastiCube.getName());
-
-        BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubeStartProcess.getInputStream(), StandardCharsets.UTF_8));
-        BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubeStartProcess.getErrorStream(), StandardCharsets.UTF_8));
-
-        // read stdin
-        String s;
-        logger.debug("Output stream:");
-        while ((s = stdInput.readLine()) != null){
-            logger.debug(s);
-        }
-
-        // Read stderr
-        String e;
-        logger.debug("Error stream:");
-        while ((e = errorStream.readLine()) != null){
-            logger.error(e);
-        }
-
-        // Check that process hasn't timed out
-        if (!ecubeStartProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
-            logger.error("ecubeStartProcess timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
-            ecubeStartProcess.destroyForcibly();
-        }
-
-    }
+//    public void runElastiCube() throws IOException, InterruptedException {
+//
+//        String[] psmCmd = new String[]{
+//                "C:\\Program Files\\Sisense\\Prism\\Psm.exe",
+//                "ecube",
+//                "start",
+//                "name=" + defaultElastiCube.getName(),
+//                "serverAddress=localhost"
+//        };
+//
+//        Process ecubeStartProcess = runtime.exec(psmCmd);
+//        logger.debug("Executing " + Arrays.toString(psmCmd));
+//        logger.info("Starting ElastiCube " + defaultElastiCube.getName());
+//
+//        BufferedReader stdInput = new BufferedReader(new InputStreamReader(ecubeStartProcess.getInputStream(), StandardCharsets.UTF_8));
+//        BufferedReader errorStream = new BufferedReader(new InputStreamReader(ecubeStartProcess.getErrorStream(), StandardCharsets.UTF_8));
+//
+//        // read stdin
+//        String s;
+//        logger.debug("Output stream:");
+//        while ((s = stdInput.readLine()) != null){
+//            logger.debug(s);
+//        }
+//
+//        // Read stderr
+//        String e;
+//        logger.debug("Error stream:");
+//        while ((e = errorStream.readLine()) != null){
+//            logger.error(e);
+//        }
+//
+//        // Check that process hasn't timed out
+//        if (!ecubeStartProcess.waitFor(PROCESS_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)){
+//            logger.error("ecubeStartProcess timed out (" + PROCESS_TIMEOUT_IN_SECONDS + "s). Destroying process...");
+//            ecubeStartProcess.destroyForcibly();
+//        }
+//
+//    }
 
     public void runDefaultElastiCube(String elastiCubeName) throws InterruptedException, IOException {
 
@@ -244,8 +244,8 @@ public class CmdOperations {
         }
 
         // Check that process hasn't timed out
-        if (!ecubeStartProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
-            logger.error("ecubeStartProcess timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
+        if (!ecubeStartProcess.waitFor(PROCESS_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)){
+            logger.error("ecubeStartProcess timed out (" + PROCESS_TIMEOUT_IN_SECONDS + "s). Destroying process...");
             ecubeStartProcess.destroyForcibly();
         }
 
@@ -296,8 +296,8 @@ public class CmdOperations {
         }
 
         // Check for process timeout
-        if(!monetDBQueryCmd.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
-            logger.error("Operation timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
+        if(!monetDBQueryCmd.waitFor(PROCESS_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)){
+            logger.error("Operation timed out (" + PROCESS_TIMEOUT_IN_SECONDS + "s). Destroying process...");
             monetDBQueryCmd.destroyForcibly();
             return false;
         }
@@ -348,8 +348,8 @@ public class CmdOperations {
         }
 
         // Check for process timeout
-        if(!monetDBQueryCmd.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
-            logger.error("Operation timed out (" + PROCESS_TIMEOUT + "s). Destroying process...");
+        if(!monetDBQueryCmd.waitFor(PROCESS_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)){
+            logger.error("Operation timed out (" + PROCESS_TIMEOUT_IN_SECONDS + "s). Destroying process...");
             monetDBQueryCmd.destroyForcibly();
         }
 
@@ -391,8 +391,8 @@ public class CmdOperations {
         }
 
         // Check if operation timed out
-        if (!process.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
-            logger.error("Operation timed out (" + PROCESS_TIMEOUT + "s.)");
+        if (!process.waitFor(PROCESS_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)){
+            logger.error("Operation timed out (" + PROCESS_TIMEOUT_IN_SECONDS + "s.)");
             process.destroyForcibly();
             return "CANNOT DETECT";
         }
@@ -435,8 +435,8 @@ public class CmdOperations {
             }
 
             // check that process hasn't timed out
-            if (!process.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
-                logger.error("Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
+            if (!process.waitFor(PROCESS_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)){
+                logger.error("Operation timed out (" + PROCESS_TIMEOUT_IN_SECONDS + " s.) Destroying process...");
                 process.destroyForcibly();
             } else {
                 logger.info("Operation successful");
@@ -483,7 +483,7 @@ public class CmdOperations {
 
             // check that process hasn't timed out
             if (!process.waitFor(30, TimeUnit.SECONDS)) {
-                logger.error("Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
+                logger.error("Operation timed out (" + PROCESS_TIMEOUT_IN_SECONDS + " s.) Destroying process...");
                 process.destroyForcibly();
             }
             else {
@@ -528,7 +528,7 @@ public class CmdOperations {
 
             // check that process hasn't timed out
             if (!process.waitFor(30, TimeUnit.SECONDS)) {
-                logger.error("Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
+                logger.error("Operation timed out (" + PROCESS_TIMEOUT_IN_SECONDS + " s.) Destroying process...");
                 process.destroyForcibly();
             }
             else {
@@ -548,47 +548,51 @@ public class CmdOperations {
 
     public void restartECS() throws IOException, InterruptedException {
 
-        logger.info("Restarting ECS...");
+        if (!ECSStateKeeper.getInstance().isBuilding()){
+            logger.info("Restarting ECS...");
 
-        String serviceName;
-        if (getSisenseVersion().startsWith("6") || getSisenseVersion().startsWith("7.1") || getSisenseVersion().startsWith("7.0")){
-            serviceName = "ElastiCubeManagementService";
-        }
-        else {
-            serviceName = "Sisense.ECMS";
-        }
-
-        String restartCommand = "powershell.exe Restart-Service -DisplayName " + serviceName + " -Force";
-        logger.debug("Running command " + restartCommand);
-
-        Process psProcess = runtime.exec(restartCommand);
-
-        String line;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream(), StandardCharsets.UTF_8))) {
-            while ((line = reader.readLine()) != null){
-                logger.debug("Output stream " + line);
+            String serviceName;
+            if (getSisenseVersion().startsWith("6") || getSisenseVersion().startsWith("7.1") || getSisenseVersion().startsWith("7.0")){
+                serviceName = "ElastiCubeManagementService";
             }
-        }
-
-        String error;
-        try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream(), StandardCharsets.UTF_8))) {
-            while ((error = errorReader.readLine()) != null){
-                logger.error(error);
+            else {
+                serviceName = "Sisense.ECMS";
             }
-        }
 
-        // check that process hasn't timed out
-        if (!psProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
-                logger.error("Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
+            String restartCommand = "powershell.exe Restart-Service -DisplayName " + serviceName + " -Force";
+            logger.debug("Running command " + restartCommand);
+
+            Process psProcess = runtime.exec(restartCommand);
+
+            String line;
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(psProcess.getInputStream(), StandardCharsets.UTF_8))) {
+                while ((line = reader.readLine()) != null){
+                    logger.debug("Output stream " + line);
+                }
+            }
+
+            String error;
+            try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(psProcess.getErrorStream(), StandardCharsets.UTF_8))) {
+                while ((error = errorReader.readLine()) != null){
+                    logger.error(error);
+                }
+            }
+
+            // check that process hasn't timed out
+            if (!psProcess.waitFor(PROCESS_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)){
+                logger.error("Operation timed out (" + PROCESS_TIMEOUT_IN_SECONDS + " s.) Destroying process...");
                 psProcess.destroyForcibly();
-        } else {
-            logger.info("ECS restarted.");
-            SlackClient.getInstance().sendMessage(":recycle: ECS restarted.");
-        }
+            } else {
+                logger.info("ECS restarted.");
+                SlackClient.getInstance().sendMessage(":recycle: ECS restarted.");
+            }
 
-        logger.info("Setting a timeout of " + ECS_TIMEOUT_IN_MINUTES +" minute(s) to wait for ECS...");
-        TimeUnit.MINUTES.sleep(ECS_TIMEOUT_IN_MINUTES);
-        logger.info("Timeout finished. Resuming execution");
+            logger.info("Setting a timeout of " + ECS_TIMEOUT_IN_MINUTES +" minute(s) to wait for ECS...");
+            TimeUnit.MINUTES.sleep(ECS_TIMEOUT_IN_MINUTES);
+            logger.info("Timeout finished. Resuming execution");
+        } else{
+            logger.warn("The ElastiCube Server is currently building. Will skip restart.");
+        }
 
     }
 
@@ -616,8 +620,8 @@ public class CmdOperations {
             }
 
         // check that operation hasn't timed out
-        if (!psProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
-            logger.error("Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
+        if (!psProcess.waitFor(PROCESS_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)){
+            logger.error("Operation timed out (" + PROCESS_TIMEOUT_IN_SECONDS + " s.) Destroying process...");
             psProcess.destroyForcibly();
         }
         else {
@@ -655,8 +659,8 @@ public class CmdOperations {
         }
 
         // Check that process hasn't timed out
-        if (!psProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
-            logger.error("Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
+        if (!psProcess.waitFor(PROCESS_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)){
+            logger.error("Operation timed out (" + PROCESS_TIMEOUT_IN_SECONDS + " s.) Destroying process...");
             psProcess.destroyForcibly();
         } else {
             logger.info("ECS restarted.");
@@ -690,8 +694,8 @@ public class CmdOperations {
             }
         }
 
-        if (!getHostnameProcess.waitFor(PROCESS_TIMEOUT, TimeUnit.SECONDS)){
-            logger.error("Operation timed out (" + PROCESS_TIMEOUT + " s.) Destroying process...");
+        if (!getHostnameProcess.waitFor(PROCESS_TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)){
+            logger.error("Operation timed out (" + PROCESS_TIMEOUT_IN_SECONDS + " s.) Destroying process...");
             getHostnameProcess.destroyForcibly();
             return "";
         } else {

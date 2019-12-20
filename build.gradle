@@ -3,7 +3,7 @@ plugins {
     id "application"
 }
 
-version = "7.0.2"
+version = "7.0.3"
 
 
 sourceSets {
@@ -61,7 +61,7 @@ dependencies {
     compile group: 'com.profesorfalken', name: 'jPowerShell', version: '3.0.4'
 
     // https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver
-    compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.12.0'
+//    compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.12.0'
 
 }
 

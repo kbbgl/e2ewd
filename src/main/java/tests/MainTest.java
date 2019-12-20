@@ -123,7 +123,7 @@ public class MainTest {
         // Create EC client and retrieve list of ElastiCubes
         try {
             ElastiCubeRESTAPIClient ecClient = new ElastiCubeRESTAPIClient();
-            elastiCubes = ecClient.getListOfElastiCubes();
+            elastiCubes = ECSStateKeeper.getInstance().getRunningElastiCubes();
 
             // Case when API call to get ElastiCubes succeeded but 0 returned
             // Start a default ElastiCube and retry
@@ -221,7 +221,9 @@ public class MainTest {
 
             // Execute REST API call to /jaql endpoint with supplied ElastiCube
             JAQLRESTAPIClient client = new JAQLRESTAPIClient(elastiCube.getName());
+            logger.info("Executing JAQL to " + elastiCube.getName() + "...");
             client.executeQuery();
+            logger.info("Finished executing JAQL to " + elastiCube.getName());
 
             if (client.isUnauthorized()){
                 setTestSuccess(false);

@@ -46,7 +46,6 @@ public class ElastiCubeRESTAPIClient {
     private boolean requiresServiceRestart;
     private List<ElastiCube> listOfElastiCubes = new ArrayList<>();
     private String defaultElastiCube;
-    private int responseCode;
 
     public ElastiCubeRESTAPIClient() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
 
@@ -99,7 +98,6 @@ public class ElastiCubeRESTAPIClient {
         logger.debug("Parsing response...");
         HttpEntity entity = response.getEntity();
         int responseCode = response.getStatusLine().getStatusCode();
-        setResponseCode(responseCode);
 
         // Check that response
         if (entity != null){
@@ -128,17 +126,11 @@ public class ElastiCubeRESTAPIClient {
                             String elastiCubeName = currentElastiCubeObject.getString("title");
                             int elastiCubeStatus = currentElastiCubeObject.getInt("status");
 
-                            // Check that ElastiCube is running (status == 2 is running)
-                            if (elastiCubeStatus == 2){
-                                ElastiCube currentElastiCube = new ElastiCube(elastiCubeName, "RUNNING");
-                                logger.debug("Getting ElastiCube port from PSM...");
-                                CmdOperations.getInstance().setElastiCubePort(currentElastiCube);
-                                logger.debug("Finished getting ElastiCube port from PSM.");
-                                addElastiCubeToList(currentElastiCube);
-
-                            } else {
-                                logger.debug("ElastiCube " + elastiCubeName + " not in RUNNING mode.");
-                            }
+                            ElastiCube currentElastiCube = new ElastiCube(elastiCubeName, elastiCubeStatus);
+                            logger.debug("Getting ElastiCube port from PSM...");
+                            CmdOperations.getInstance().setElastiCubePort(currentElastiCube);
+                            logger.debug("Finished getting ElastiCube port from PSM.");
+                            ECSStateKeeper.getInstance().addToListOfElastiCubes(currentElastiCube);
                         }
 
                         setRequiresServiceRestart(false);
@@ -227,11 +219,6 @@ public class ElastiCubeRESTAPIClient {
 
     }
 
-    public void addElastiCubeToList(ElastiCube ec) {
-        logger.debug("Added " + ec.toString() + " to list of ElastiCubes.");
-        this.listOfElastiCubes.add(ec);
-    }
-
     public List<ElastiCube> getListOfElastiCubes() {
         return listOfElastiCubes;
     }
@@ -242,10 +229,6 @@ public class ElastiCubeRESTAPIClient {
 
     public String getDefaultElastiCube() {
         return defaultElastiCube;
-    }
-
-    private void setResponseCode(int responseCode) {
-        this.responseCode = responseCode;
     }
 
     public String getUri() {
