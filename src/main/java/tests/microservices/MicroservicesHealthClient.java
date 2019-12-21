@@ -109,7 +109,7 @@ public class MicroservicesHealthClient {
     public void executeCall() throws IOException {
 
         HttpResponse response = client.execute(get);
-        logger.info("Executing call to 'api/test' endpoint...");
+        logger.info("Executing call to '" + uri + "'...");
         parseResponse(response);
     }
 
@@ -118,7 +118,6 @@ public class MicroservicesHealthClient {
         logger.debug("Parsing response...");
         HttpEntity entity = response.getEntity();
         int responseCode = response.getStatusLine().getStatusCode();
-
 
         if (entity != null){
 
@@ -133,34 +132,35 @@ public class MicroservicesHealthClient {
 
                 if (responseCode == 200 || responseCode == 304) {
 
-                    if (cmdOperations.getSisenseVersion().startsWith("6") ||
-                            cmdOperations.getSisenseVersion().startsWith("7.0") ||
-                            cmdOperations.getSisenseVersion().startsWith("7.1")){
+                    if (!config.isRunningRemotely()){
+                        if (cmdOperations.getSisenseVersion().startsWith("6") ||
+                                cmdOperations.getSisenseVersion().startsWith("7.0") ||
+                                cmdOperations.getSisenseVersion().startsWith("7.1")){
 
-                        try {
-                            JSONObject responseObject = new JSONObject(res);
-                            if (!responseObject.getString("test").equals("pass")){
-                                logger.warn("Application is down.");
-                                cmdOperations.restartIIS();
-                            } else {
-                                logger.info("Application is up.");
+                            try {
+                                JSONObject responseObject = new JSONObject(res);
+                                if (!responseObject.getString("test").equals("pass")){
+                                    logger.warn("Application is down.");
+                                    cmdOperations.restartIIS();
+                                } else {
+                                    logger.info("Application is up.");
+                                }
+
+                            } catch (JSONException e) {
+                                logger.error("Error parsing response as JSON");
+                                logger.info("Error: " + e.getMessage());
+                                logger.info("Response: " + res);
                             }
 
-                        } catch (JSONException e) {
-                            logger.error("Error parsing response as JSON");
-                            logger.info("Error: " + e.getMessage());
-                            logger.info("Response: " + res);
                         }
-
-
                     }else {
                         try {
                             JSONObject responseObject = new JSONObject(res);
                             Iterator<String> keysIterator = responseObject.keys();
 
                             // Iterate over response keys (microservice)
+                            int unhealthyMicroservices = 0;
                             while (keysIterator.hasNext()){
-
                                 String microservice = keysIterator.next();
 
                                 if (responseObject.get(microservice) instanceof JSONObject){
@@ -171,6 +171,7 @@ public class MicroservicesHealthClient {
                                     // Check if any is unhealthy
                                     if (!isMicroserviceHealthy){
                                         logger.warn(microservice + " is unhealthy!");
+                                        unhealthyMicroservices++;
 
                                         if (slackClient != null){
                                             slackClient.sendMessage(":warning: `" + microservice + "` is unhealthy!");
@@ -179,6 +180,10 @@ public class MicroservicesHealthClient {
                                     }
                                 }
 
+                            }
+
+                            if (unhealthyMicroservices == 0){
+                                logger.info("All microservices registered.");
                             }
 
                         } catch (JSONException e){

@@ -35,7 +35,12 @@ public class RepositoryComparator {
             logger.info("Newer version available: " + latestVersion);
             logger.info("Download from https://github.com/kbbgl/e2ewd");
 
-        } else if (latest.getMinor() > installed.getMinor()){
+        } else if (latest.getMajor() <= installed.getMajor()){
+
+            logger.info("Installed version more updated than repository");
+
+        }
+        else if (latest.getMinor() > installed.getMinor()){
 
             logger.info("New minor version available: " + latestVersion);
             logger.info("Download from https://github.com/kbbgl/e2ewd");

@@ -3,6 +3,7 @@ package tests;
 import cmd_ops.CmdOperations;
 import conf.*;
 //import dao.WebAppRepositoryClient;
+import conf.strategies.*;
 import file_ops.ResultFile;
 import integrations.SlackClient;
 import logging.TestLog;
@@ -23,7 +24,6 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
 import java.util.*;
 
 public class MainTest {
@@ -75,14 +75,19 @@ public class MainTest {
 
 
         // Run Broker health test
-        if (config.isRunBrokerHealthCheck()){
+        if (!config.isRunningRemotely() && config.isRunBrokerHealthCheck()){
+
             try {
                 BrokerHealthClient brokerHealthClient = BrokerHealthClient.getInstance();
                 brokerHealthClient.executeQuery();
             } catch (IOException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
                 logger.error("Error initializing broker health client: " + e.getMessage());
             }
+
+        } else {
+            logger.info("'runningRemotely=true'. Skipping rabbitmq health check...");
         }
+
 
         // Run microservices health test
         // TODO - add response from 7.1 =<
@@ -102,7 +107,7 @@ public class MainTest {
                 liveConnections = liveConnectionClient.getListLiveConnections();
 
                 if (liveConnectionClient.isCallSuccessful() && liveConnections.size() == 0){
-                    logger.info("No Live Connections found. Consider setting `checkLiveConnections=false` in config.properties' to skip testing for Live Connections.");
+                    logger.info("No Live Connections found. Consider setting `checkLiveConnections=false` in 'config.properties' to skip testing for Live Connections.");
                 } else if (!liveConnectionClient.isCallSuccessful()){
                     logger.error("API call to retrieve Live Connections was not successful");
                 } else {
@@ -221,9 +226,9 @@ public class MainTest {
 
             // Execute REST API call to /jaql endpoint with supplied ElastiCube
             JAQLRESTAPIClient client = new JAQLRESTAPIClient(elastiCube.getName());
-            logger.info("Executing JAQL to " + elastiCube.getName() + "...");
+            logger.info("Executing JAQL to '" + elastiCube.getName() + "'...");
             client.executeQuery();
-            logger.info("Finished executing JAQL to " + elastiCube.getName());
+            logger.info("Finished executing JAQL to '" + elastiCube.getName() + "'.");
 
             if (client.isUnauthorized()){
                 setTestSuccess(false);
@@ -250,7 +255,7 @@ public class MainTest {
                 callFailed = true;
 
                 // Run MonetDB test
-                if (config.isRunMonetDBquery()){
+                if (config.isRunMonetDBQuery()){
                     try {
                         executeMonetDBTest(elastiCube);
 

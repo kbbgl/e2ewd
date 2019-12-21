@@ -1,5 +1,6 @@
-package conf;
+package conf.strategies;
 
+import conf.Configuration;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,18 +33,6 @@ public class StrategyExecutor {
         }
 
         return instance;
-    }
-
-    public void setResponseCode(int responseCode) {
-        this.apiResponseCode = responseCode;
-    }
-
-    public void setApiResponseText(String apiResponseText) {
-        this.apiResponseText = apiResponseText;
-    }
-
-    public void setApiCall(String apiCall) {
-        this.endpoint = apiCall;
     }
 
     public void execute() {
@@ -105,25 +94,6 @@ public class StrategyExecutor {
         }
 
         return hasError;
-    }
-
-    private void setStrategy(){
-        if (config.isEcsDump() && config.isIisDump() && !config.restartECS() && !config.restartIIS()){
-            strategyContext.setStrategy(new CompleteDumpStrategy());
-        } else if (config.isEcsDump() && config.isIisDump() && config.restartECS() && config.restartIIS()){
-            strategyContext.setStrategy(new CompleteResetAndDumpStrategy());
-        } else if (!config.isEcsDump() && !config.isIisDump() && config.restartECS() && config.restartIIS()){
-            strategyContext.setStrategy(new CompleteResetStrategy());
-        } else if (config.isEcsDump() && !config.isIisDump() && !config.restartECS() && !config.restartIIS()){
-            strategyContext.setStrategy(new ECSDumpStrategy());
-        } else if (!config.isEcsDump() && !config.isIisDump() && config.restartECS() && !config.restartIIS()){
-            strategyContext.setStrategy(new ECSResetStrategy());
-        } else if (!config.isEcsDump() && config.isIisDump() && !config.restartECS() && !config.restartIIS()){
-            strategyContext.setStrategy(new IISDumpStrategy());
-        } else if (!config.isEcsDump() && !config.isIisDump() && !config.restartECS() && config.restartIIS()){
-            strategyContext.setStrategy(new IISResetStrategy());
-        } else
-            strategyContext.setStrategy(new NoResetNoDumpStrategy());
     }
 
 }

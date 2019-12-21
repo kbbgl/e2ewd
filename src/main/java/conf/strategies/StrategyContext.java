@@ -1,4 +1,4 @@
-package conf;
+package conf.strategies;
 
 public class StrategyContext {
 

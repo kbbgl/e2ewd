@@ -23,53 +23,83 @@ public class App {
     private static TestLog testLog = TestLog.getInstance();
     private static String host = System.getenv("COMPUTERNAME");
     private static MainTest mainTest = new MainTest();
+    private static Configuration configuration = Configuration.getInstance();
 
     public static void main(String[] args) throws JSONException {
 
-        // Initialize test
         setRunningLocation();
-        testLog.setHost(host);
         testLog.setTestStartTime(new Date());
-        logger.info("STARTING...");
 
-        // Check application version
-        try {
-            RepositoryComparator repoComparator = new RepositoryComparator(runningLocation);
-            repoComparator.compareVersions();
-            testLog.setVersion(repoComparator.getInstalledVersion());
-        } catch (URISyntaxException | IOException e) {
-            logger.warn("Cannot check for latest version: ", e);
-            logger.info("Ignoring...");
-        }
+        if (configuration.isRunningRemotely()){
 
-        // Check to see if Sisense is installed
-        try {
-            String sisenseVersion = operations.getSisenseVersion();
-
-            if (sisenseVersion.equals("CANNOT DETECT")) {
-                logger.error("Sisense is not installed or cannot detect version from registry.");
-                logger.info("EXITING...");
-                System.exit(0);
-            } else {
-                logger.info("Sisense version: " + sisenseVersion);
+            // Check application version
+            try {
+                RepositoryComparator repoComparator = new RepositoryComparator(runningLocation);
+                repoComparator.compareVersions();
+                testLog.setVersion(repoComparator.getInstalledVersion());
+            } catch (URISyntaxException | IOException e) {
+                logger.warn("Cannot check for latest version: ", e);
+                logger.info("Ignoring...");
             }
-        } catch (InterruptedException | IOException e) {
-            logger.error("Failed retrieving Sisense version from registry: " + e.getMessage());
-            logger.info("EXITING...");
-            logger.debug(Arrays.toString(e.getStackTrace()));
-            System.exit(0);
-        }
 
+            logger.info(Configuration.getInstance().toString());
+            if (Configuration.getInstance().isConfigFileValid()){
 
-        // Check if config.properties is valid
-        logger.info(Configuration.getInstance().toString());
-        if (Configuration.getInstance().isConfigFileValid()){
+                // Start test
+                mainTest.init();
+            } else {
+                mainTest.terminate("Configuration file is invalid.");
+            }
 
-            // Start test
-            mainTest.init();
         } else {
-            mainTest.terminate("Configuration file is invalid.");
+
+            // Initialize test
+            testLog.setHost(host);
+            testLog.setTestStartTime(new Date());
+            logger.info("STARTING...");
+
+            // Check application version
+            try {
+                RepositoryComparator repoComparator = new RepositoryComparator(runningLocation);
+                repoComparator.compareVersions();
+                testLog.setVersion(repoComparator.getInstalledVersion());
+            } catch (URISyntaxException | IOException e) {
+                logger.warn("Cannot check for latest version: ", e);
+                logger.info("Ignoring...");
+            }
+
+            // Check to see if Sisense is installed
+            try {
+                String sisenseVersion = operations.getSisenseVersion();
+
+                if (sisenseVersion.equals("CANNOT DETECT")) {
+                    logger.error("Sisense is not installed or cannot detect version from registry.");
+                    logger.info("EXITING...");
+                    System.exit(0);
+                } else {
+                    logger.info("Sisense version: " + sisenseVersion);
+                }
+            } catch (InterruptedException | IOException e) {
+                logger.error("Failed retrieving Sisense version from registry: " + e.getMessage());
+                logger.info("EXITING...");
+                logger.debug(Arrays.toString(e.getStackTrace()));
+                System.exit(0);
+            }
+
+
+            // Check if config.properties is valid
+            logger.info(Configuration.getInstance().toString());
+            if (Configuration.getInstance().isConfigFileValid()){
+
+                // Start test
+                mainTest.init();
+            } else {
+                mainTest.terminate("Configuration file is invalid.");
+            }
+
         }
+
+
     }
 
     private static void setRunningLocation(){

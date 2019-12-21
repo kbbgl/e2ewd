@@ -8,6 +8,8 @@ package tests.queryservice;
     514 - Building
  */
 
+import java.util.Map;
+
 public class ElastiCube {
 
     private String name;
@@ -61,11 +63,22 @@ public class ElastiCube {
 
     @Override
     public String toString() {
-        return "{" +
-                "name:" + name + "" +
-                ", state:" + getState(this.statusCode) + "" +
-                ", port:" + port +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append("name: '").append(name).append("'");
+
+        if (port > 0){
+            sb.append(", port: ").append(port);
+        }
+        sb.append("}");
+
+        return sb.toString();
+
+//        return "\n\t" +
+//                "name:" + name + "" +
+//                ", state:" + getState(this.statusCode) + "" +
+//                (port > 0 ? ", port" + port : "") +
+//                '}';
     }
 
     @Override

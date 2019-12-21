@@ -22,7 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import conf.StrategyExecutor;
+import conf.strategies.StrategyExecutor;
 
 import javax.net.ssl.SSLContext;
 import java.io.BufferedReader;
@@ -48,7 +48,6 @@ public class JAQLRESTAPIClient {
     private String callResponse;
     private int responseCode;
     private String elastiCubeName;
-    private StrategyExecutor strategyExecutor = StrategyExecutor.getInstance();
 
     public JAQLRESTAPIClient(String elastiCubeName) throws JSONException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
 
@@ -119,20 +118,44 @@ public class JAQLRESTAPIClient {
 
                     try {
                         JSONObject responseObject = new JSONObject(res);
-                        JSONObject valuesArray = (JSONObject) responseObject.getJSONArray("values").get(0);
-                        int count = valuesArray.getInt("data");
 
-                        // Check if result is larger than 0
-                        if (count > 0) {
+                        // Linux seen that values array returns :
+                        /*
+                        {
+                          "headers": [],
+                          "metadata": [
+                            {
+                              "formula": "1"
+                            }
+                          ],
+                          "datasource": {
+                            "revisionId": "TBD",
+                            "fullname": "LocalHost/Sample ECommerce"
+                          },
+                          "values": [
+                            1
+                          ]
+                        }
+                         */
+                        if (responseObject.has("values") && responseObject.getJSONArray("values").getInt(0) == 1){
                             setRequiresServiceRestart(false);
                             setCallSuccessful(true);
                         } else {
-                            logger.info("Query failed for " +
-                                    elastiCubeName + " with code " +
-                                    responseCode + " ,response: " +
-                                    getCallResponse());
-                            setRequiresServiceRestart(false);
-                            setCallSuccessful(false);
+                            JSONObject valuesArray = (JSONObject) responseObject.getJSONArray("values").get(0);
+                            int count = valuesArray.getInt("data");
+
+                            // Check if result is larger than 0
+                            if (count > 0) {
+                                setRequiresServiceRestart(false);
+                                setCallSuccessful(true);
+                            } else {
+                                logger.info("Query failed for " +
+                                        elastiCubeName + " with code " +
+                                        responseCode + " ,response: " +
+                                        getCallResponse());
+                                setRequiresServiceRestart(false);
+                                setCallSuccessful(false);
+                            }
                         }
                     } catch (JSONException e){
                         logger.warn("Query returned no `values.data` object");
@@ -273,6 +296,7 @@ public class JAQLRESTAPIClient {
     private void setCallResponse(String callResponse) {
         try {
             JSONObject response = new JSONObject(callResponse);
+            logger.debug("Response from JAQL API for ElastiCube + '" + elastiCubeName +"' : " + response);
             this.callResponse = response.toString(3);
         } catch (JSONException e) {
             logger.warn("WARNING: Couldn't parse response as valid JSON");

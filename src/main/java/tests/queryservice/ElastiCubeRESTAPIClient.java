@@ -121,16 +121,21 @@ public class ElastiCubeRESTAPIClient {
                         logger.info("GET api/elasticubes/servers/LocalHost returned " + elastiCubesArray.length() + " ElastiCubes");
 
                         // Iterate over all ElastiCubes
+                        logger.info("Skipping ElastiCubes port retrieval - runMonetDBQuery is false or running remotely");
                         for (int i = 0; i < elastiCubesArray.length(); i++){
                             JSONObject currentElastiCubeObject = (JSONObject) elastiCubesArray.get(i);
                             String elastiCubeName = currentElastiCubeObject.getString("title");
                             int elastiCubeStatus = currentElastiCubeObject.getInt("status");
 
                             ElastiCube currentElastiCube = new ElastiCube(elastiCubeName, elastiCubeStatus);
-                            logger.debug("Getting ElastiCube port from PSM...");
-                            CmdOperations.getInstance().setElastiCubePort(currentElastiCube);
-                            logger.debug("Finished getting ElastiCube port from PSM.");
+
+                            if (config.isRunMonetDBQuery() || !config.isRunningRemotely()){
+                                logger.info("Getting ElastiCube port from PSM...");
+                                CmdOperations.getInstance().setElastiCubePort(currentElastiCube);
+                                logger.info("Finished getting ElastiCube port from PSM.");
+                            }
                             ECSStateKeeper.getInstance().addToListOfElastiCubes(currentElastiCube);
+
                         }
 
                         setRequiresServiceRestart(false);
@@ -217,10 +222,6 @@ public class ElastiCubeRESTAPIClient {
                     "://" + config.getHost() + endpoint;
         }
 
-    }
-
-    public List<ElastiCube> getListOfElastiCubes() {
-        return listOfElastiCubes;
     }
 
     public void setDefaultElastiCube(String defaultElastiCube) {

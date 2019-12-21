@@ -1,6 +1,7 @@
-package conf;
+package conf.strategies;
 
 import cmd_ops.CmdOperations;
+import conf.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +17,14 @@ public class ECSResetStrategy implements RunStrategy {
 
         logger.info("Executing ECSResetStrategy...");
 
-        try {
-            cmdOperations.restartECS();
-        } catch (IOException | InterruptedException e) {
-            logger.error("Error restarting ECS: " + e.getMessage());
+        if (!Configuration.getInstance().isRunningRemotely()){
+            try {
+                cmdOperations.restartECS();
+            } catch (IOException | InterruptedException e) {
+                logger.error("Error restarting ECS: " + e.getMessage());
+            }
+        } else {
+            logger.warn("runningRemotely=true, skipping ECS reset execution...");
         }
-
     }
 }

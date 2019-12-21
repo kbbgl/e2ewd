@@ -1,6 +1,7 @@
-package conf;
+package conf.strategies;
 
 import cmd_ops.CmdOperations;
+import conf.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +17,14 @@ public class ECSDumpStrategy implements RunStrategy {
 
         logger.info("Executing ECSDumpStrategy...");
 
-        try {
-            cmdOperations.ecsDump();
-        } catch (InterruptedException | IOException e) {
-            logger.error("Error executing ECS memory dump: " + e.getMessage());
+        if (!Configuration.getInstance().isRunningRemotely()){
+            try {
+                cmdOperations.ecsDump();
+            } catch (InterruptedException | IOException e) {
+                logger.error("Error executing ECS memory dump: " + e.getMessage());
+            }
+        } else {
+            logger.warn("runningRemotely=true, skipping ECS process dump execution...");
         }
-
     }
 }

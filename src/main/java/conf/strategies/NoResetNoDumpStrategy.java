@@ -1,15 +1,13 @@
-package conf;
+package conf.strategies;
 
 //import dao.WebAppRepositoryClient;
+import conf.Configuration;
 import file_ops.ResultFile;
 import integrations.SlackClient;
 import logging.TestLog;
-import logging.TestLogConverter;
-import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.ParseException;
 import java.util.Date;
 
 public class NoResetNoDumpStrategy implements RunStrategy {

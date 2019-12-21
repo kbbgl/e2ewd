@@ -65,10 +65,11 @@ public class Configuration {
                 setRunMicroservicesHealthCheck(Boolean.parseBoolean(properties.getProperty("runMicroservicesHealthCheck")));
                 setSlackWebhookURL(properties.getProperty("slackWebhookURL"));
                 setCheckLiveConnections(Boolean.parseBoolean(properties.getProperty("checkLiveConnections")));
-                setRunMonetDBquery(Boolean.parseBoolean(properties.getProperty("runMonetDBQuery")));
+                setRunMonetDBQuery(Boolean.parseBoolean(properties.getProperty("runMonetDBQuery")));
                 setWriteTestToRepository(Boolean.parseBoolean(properties.getProperty("writeTestToRepository")));
                 setRepositoryUsername(properties.getProperty("repositoryUsername"));
                 setRepositoryPassword(properties.getProperty("repositoryPassword"));
+                setRunningRemotely(Boolean.parseBoolean(properties.getProperty("runningRemotely")));
 
                 // Validate the URL
                 if (!properties.getProperty("slackWebhookURL").isEmpty() || !properties.getProperty("slackWebhookURL").equals("")){
@@ -245,16 +246,12 @@ public class Configuration {
         return checkLiveConnections;
     }
 
-    public void setRunMonetDBquery(boolean runMonetDBQuery) {
+    public void setRunMonetDBQuery(boolean runMonetDBQuery) {
         this.runMonetDBQuery = runMonetDBQuery;
     }
 
-    public boolean isRunMonetDBquery() {
+    public boolean isRunMonetDBQuery() {
         return runMonetDBQuery;
-    }
-
-    public boolean isWriteTestToRepository() {
-        return writeTestToRepository;
     }
 
     public void setWriteTestToRepository(boolean writeTestToRepository) {
@@ -265,17 +262,19 @@ public class Configuration {
         this.repositoryUsername = repositoryUsername;
     }
 
-    public String getRepositoryUsername() {
-        return repositoryUsername;
-    }
-
     public void setRepositoryPassword(String repositoryPassword) {
         this.repositoryPassword = repositoryPassword;
     }
 
-    public String getRepositoryPassword() {
-        return repositoryPassword;
+    public boolean isRunningRemotely() {
+        return runningRemotely;
     }
+
+    public void setRunningRemotely(boolean runningRemotely) {
+        this.runningRemotely = runningRemotely;
+    }
+
+    private boolean runningRemotely;
 
     public boolean isConfigFileValid(){
         HashMap<String, String> configMap = new HashMap<>(5);
