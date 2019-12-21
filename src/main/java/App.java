@@ -2,6 +2,7 @@ import cmd_ops.CmdOperations;
 import conf.Configuration;
 //import dao.WebAppRepositoryClient;
 import version.RepositoryComparator;
+import version.SisenseJSAPIClient;
 import version.VersionFile;
 import logging.TestLog;
 import org.json.JSONException;
@@ -44,6 +45,15 @@ public class App {
 
             logger.info(Configuration.getInstance().toString());
             if (Configuration.getInstance().isConfigFileValid()){
+
+                // Check Sisense version
+                try {
+                    String version = SisenseJSAPIClient.getVersion();
+                    logger.info("Sisense version: " + version);
+                } catch (IOException e) {
+                    logger.warn("Error getting version: ", e);
+                }
+
 
                 // Start test
                 mainTest.init();
