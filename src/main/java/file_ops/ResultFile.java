@@ -79,7 +79,7 @@ public class ResultFile {
     private static String filePath(){
         try {
             Path path = Paths.get(new File(ResultFile.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getCanonicalPath());
-            return path.getParent() + "\\run\\result.txt";
+            return Paths.get(path.getParent().toString(), "run", "result.txt").toString();
         } catch (IOException | URISyntaxException e) {
             logger.error("Error reading file path: " + e.getMessage());
             return null;
