@@ -129,7 +129,7 @@ public class ElastiCubeRESTAPIClient {
 
                             ElastiCube currentElastiCube = new ElastiCube(elastiCubeName, elastiCubeStatus);
 
-                            if (config.isRunMonetDBQuery() || !config.isRunningRemotely()){
+                            if (config.isRunMonetDBQuery() && !config.isRunningRemotely()){
                                 logger.info("Getting ElastiCube port from PSM...");
                                 CmdOperations.getInstance().setElastiCubePort(currentElastiCube);
                                 logger.info("Finished getting ElastiCube port from PSM.");
