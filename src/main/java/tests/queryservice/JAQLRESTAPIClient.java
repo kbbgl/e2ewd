@@ -116,10 +116,9 @@ public class JAQLRESTAPIClient {
                 setCallResponse(res);
                 if (responseCode == 200) {
 
-                    try {
-                        JSONObject responseObject = new JSONObject(res);
+                    // todo
 
-                        // Linux seen that values array returns :
+                    // Linux seen that values array returns :
                         /*
                         {
                           "headers": [],
@@ -137,54 +136,61 @@ public class JAQLRESTAPIClient {
                           ]
                         }
                          */
-                        if (responseObject.has("values") && responseObject.getJSONArray("values").getInt(0) == 1){
+                    try {
+                        JSONObject responseObject = new JSONObject(res);
+                        JSONObject valuesArray = (JSONObject) responseObject.getJSONArray("values").get(0);
+                        int count = valuesArray.getInt("data");
+
+                        // Check if result is larger than 0
+                        if (count > 0) {
                             setRequiresServiceRestart(false);
                             setCallSuccessful(true);
                         } else {
-                            JSONObject valuesArray = (JSONObject) responseObject.getJSONArray("values").get(0);
-                            int count = valuesArray.getInt("data");
-
-                            // Check if result is larger than 0
-                            if (count > 0) {
-                                setRequiresServiceRestart(false);
-                                setCallSuccessful(true);
-                            } else {
-                                logger.info("Query failed for " +
-                                        elastiCubeName + " with code " +
-                                        responseCode + " ,response: " +
-                                        getCallResponse());
-                                setRequiresServiceRestart(false);
-                                setCallSuccessful(false);
-                            }
-                        }
-                    } catch (JSONException e){
-                        logger.warn("Query returned no `values.data` object");
-                        try {
-                            JSONObject responseObject = new JSONObject(res);
-
-                            if (responseObject.has("details")){
-                                String details = responseObject.getString("details");
-                                logger.info(details);
-                                setRequiresServiceRestart(false);
-                                setCallSuccessful(false);
-
-                            } else {
-                                logger.error("Query failed for " +
-                                        elastiCubeName + " with code " +
-                                        responseCode + " , error: " +
-                                        e.getMessage());
-                                setRequiresServiceRestart(false);
-                                setCallSuccessful(false);
-                            }
-
-                        } catch (JSONException ex) {
-                            logger.error("Query failed for " +
+                            logger.info("Query failed for " +
                                     elastiCubeName + " with code " +
-                                    responseCode + " , error: " +
-                                    e.getMessage());
+                                    responseCode + " ,response: " +
+                                    getCallResponse());
                             setRequiresServiceRestart(false);
                             setCallSuccessful(false);
                         }
+                    }
+                    catch (JSONException e){
+
+                        logger.error("Query failed for " +
+                                    elastiCubeName + " with code " +
+                                    responseCode + " with response: " +
+                                    getCallResponse() +
+                                    " , error: " +
+                                    e.getMessage());
+                            setRequiresServiceRestart(false);
+                            setCallSuccessful(false);
+//                        logger.warn("Query returned no `values.data` object");
+//                        try {
+//                            JSONObject responseObject = new JSONObject(res);
+//
+//                            if (responseObject.has("details")){
+//                                String details = responseObject.getString("details");
+//                                logger.info(details);
+//                                setRequiresServiceRestart(false);
+//                                setCallSuccessful(false);
+//
+//                            } else {
+//                                logger.error("Query failed for " +
+//                                        elastiCubeName + " with code " +
+//                                        responseCode + " , error: " +
+//                                        e.getMessage());
+//                                setRequiresServiceRestart(false);
+//                                setCallSuccessful(false);
+//                            }
+//
+//                        } catch (JSONException ex) {
+//                            logger.error("Query failed for " +
+//                                    elastiCubeName + " with code " +
+//                                    responseCode + " , error: " +
+//                                    e.getMessage());
+//                            setRequiresServiceRestart(false);
+//                            setCallSuccessful(false);
+//                        }
                     }
                 } else if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
                     logger.warn("Check that the token '" + config.getToken() + "' in the configuration file is valid");
