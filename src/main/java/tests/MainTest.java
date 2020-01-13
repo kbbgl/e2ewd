@@ -179,7 +179,7 @@ public class MainTest {
         } catch (IOException e){
             logger.error("Error running API call to retrieve ElastiCubes. Exception: ", e);
             setTestSuccess(false);
-
+            terminate("Could not get ElastiCubes from API: " + e.getMessage());
             runStrategyAndRetryLogic();
         }
     }
