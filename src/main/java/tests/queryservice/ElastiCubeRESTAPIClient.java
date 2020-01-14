@@ -8,6 +8,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
@@ -23,10 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -88,7 +88,7 @@ public class ElastiCubeRESTAPIClient {
     void executeCall() throws IOException {
 
         HttpResponse response = client.execute(get);
-        logger.debug("Executing REST API call to GET /getElastiCubes...");
+        logger.debug("Executing REST API call to GET api/elasticubes/servers/LocalHost...");
         parseResponse(response);
 
     }
@@ -107,6 +107,8 @@ public class ElastiCubeRESTAPIClient {
                 String res = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))
                         .lines()
                         .collect(Collectors.joining("\n"));
+
+                logger.debug("Response: " + res);
 
                 if (responseCode == HttpStatus.SC_OK) {
 
@@ -234,5 +236,24 @@ public class ElastiCubeRESTAPIClient {
 
     public String getUri() {
         return uri;
+    }
+
+    public HttpResponse startElastiCube(String elasticube) throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException, IOException {
+
+        String endpoint = Configuration.getInstance().getProtocol() + "://"  +
+                Configuration.getInstance().getHost() + (Configuration.getInstance().getPort() == 443 ? "" : ":" + Configuration.getInstance().getPort()) + "/api/elasticubes/LocalHost/" + elasticube.replaceAll(" ", "%20") +"/start";
+
+        logger.info("Sending POST '" + endpoint + "'...");
+        HttpPost post = null;
+        try {
+            post = new HttpPost(endpoint);
+            post.addHeader("authorization", "Bearer " + config.getToken());
+
+            return client.execute(post);
+
+        } catch (Exception e){
+            logger.error("Error starting ElastiCube from REST API: " + e.getMessage());
+            return null;
+        }
     }
 }

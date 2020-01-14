@@ -8,6 +8,8 @@ import file_ops.ResultFile;
 import integrations.SlackClient;
 import logging.TestLog;
 import logging.TestLogConverter;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 //import org.bson.Document;
 import org.json.JSONArray;
@@ -139,10 +141,32 @@ public class MainTest {
                 String defaultEC = ecClient.getDefaultElastiCube();
                 if (defaultEC != null){
                     logger.info("Chosen default ElastiCube to start: " + defaultEC);
-                    CmdOperations.getInstance().runDefaultElastiCube(defaultEC);
+
+
+                    // Check whether we're running remotely and need to use the REST API to run start operation
+                    if (Configuration.getInstance().isRunningRemotely()){
+                        HttpResponse response = ecClient.startElastiCube(defaultEC);
+
+                        if (response != null){
+                            int responseCode = response.getStatusLine().getStatusCode();
+                            String responseText = response.getStatusLine().getReasonPhrase();
+
+                            logger.info("API call to start ElastiCube " + defaultEC + " responded with " + responseCode);
+
+                            if (responseCode != 200){
+                                logger.warn("Response: " + responseText);
+                            }
+                        } else {
+                            logger.error("Failed to start ElastiCube " + defaultEC + " from REST API.");
+                        }
+
+                    } else {
+                        CmdOperations.getInstance().runDefaultElastiCube(defaultEC);
+                    }
+
                     retry();
                 } else {
-                    if (Configuration.getInstance().restartECS()){
+                    if (Configuration.getInstance().restartECS() && !Configuration.getInstance().isRunningRemotely()){
                         CmdOperations.getInstance().restartECS();
                         retry();
                     }
