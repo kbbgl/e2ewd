@@ -8,7 +8,6 @@ import file_ops.ResultFile;
 import integrations.SlackClient;
 import logging.TestLog;
 import logging.TestLogConverter;
-import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 //import org.bson.Document;
@@ -34,7 +33,7 @@ public class MainTest {
     private boolean testSuccess;
     private int attemptNumber;
     private final int maxNumberAttempts = 5;
-    private List<ElastiCube> elastiCubes;
+    private List<ElastiCube> runningElastiCubes;
     private List<String> liveConnections;
     private ResultFile resultFile = ResultFile.getInstance();
     private Configuration config = Configuration.getInstance();
@@ -130,18 +129,17 @@ public class MainTest {
         // Create EC client and retrieve list of ElastiCubes
         try {
             ElastiCubeRESTAPIClient ecClient = new ElastiCubeRESTAPIClient();
-            elastiCubes = ECSStateKeeper.getInstance().getRunningElastiCubes();
+            runningElastiCubes = ECSStateKeeper.getInstance().getRunningElastiCubes();
 
             // Case when API call to get ElastiCubes succeeded but 0 returned
             // Start a default ElastiCube and retry
-            if (!ecClient.isRequiresServiceRestart() && elastiCubes.size() == 0){
+            if (!ecClient.isRequiresServiceRestart() && runningElastiCubes.size() == 0){
 
                 logger.info("No ElastiCubes in RUNNING mode.");
 
-                String defaultEC = ecClient.getDefaultElastiCube();
+                String defaultEC = ECSStateKeeper.getInstance().getAvailableElastiCubes().get(0).getName();
                 if (defaultEC != null){
                     logger.info("Chosen default ElastiCube to start: " + defaultEC);
-
 
                     // Check whether we're running remotely and need to use the REST API to run start operation
                     if (Configuration.getInstance().isRunningRemotely()){
@@ -179,10 +177,10 @@ public class MainTest {
             }
             // Happy path. More than 0 ElastiCubes returned and we can start the JAQL test
             else {
-                setNumberOfElastiCubes(elastiCubes.size());
+                setNumberOfElastiCubes(runningElastiCubes.size());
 
-                JSONArray elastiCubesJSONArray = new JSONArray(elastiCubes.toArray());
-                logger.info("Found " + elastiCubes.size() + " running ElastiCubes: \n" + elastiCubesJSONArray.toString(3));
+                JSONArray elastiCubesJSONArray = new JSONArray(runningElastiCubes.toArray());
+                logger.info("Found " + runningElastiCubes.size() + " running ElastiCubes: \n" + elastiCubesJSONArray.toString(3));
 
                 // execute REST API tests and remove ElastiCubes that their REST API tests succeeded
                 try {
@@ -242,11 +240,11 @@ public class MainTest {
     }
 
     private void executeElastiCubeJAQLCalls() throws JSONException, IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
-        Map<String, Boolean> restAPITests = new HashMap<>(elastiCubes.size());
+        Map<String, Boolean> restAPITests = new HashMap<>(runningElastiCubes.size());
         logger.info("Running ElastiCube JAQL API tests...");
 
         boolean callFailed = false;
-        for (ElastiCube elastiCube : elastiCubes){
+        for (ElastiCube elastiCube : runningElastiCubes){
 
             // Execute REST API call to /jaql endpoint with supplied ElastiCube
             JAQLRESTAPIClient client = new JAQLRESTAPIClient(elastiCube.getName());

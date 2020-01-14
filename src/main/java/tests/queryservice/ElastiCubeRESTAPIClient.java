@@ -243,7 +243,8 @@ public class ElastiCubeRESTAPIClient {
         String endpoint = Configuration.getInstance().getProtocol() + "://"  +
                 Configuration.getInstance().getHost() + (Configuration.getInstance().getPort() == 443 ? "" : ":" + Configuration.getInstance().getPort()) + "/api/elasticubes/LocalHost/" + elasticube.replaceAll(" ", "%20") +"/start";
 
-        logger.info("Sending POST '" + endpoint + "'...");
+        logger.info("Starting ElastiCube " + elasticube + " from REST API...");
+        logger.debug("Sending POST '" + endpoint + "'...");
         HttpPost post = null;
         try {
             post = new HttpPost(endpoint);

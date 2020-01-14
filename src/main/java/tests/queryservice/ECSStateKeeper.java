@@ -9,7 +9,7 @@ import java.util.List;
 public class ECSStateKeeper {
 
     private static ECSStateKeeper instance;
-    private List<ElastiCube> allElastiCubes = new ArrayList<>();
+    private List<ElastiCube> availableElastiCubes = new ArrayList<>();
     private Logger logger = LoggerFactory.getLogger(ECSStateKeeper.class);
 
     private ECSStateKeeper(){
@@ -26,15 +26,26 @@ public class ECSStateKeeper {
     }
 
     public void addToListOfElastiCubes(ElastiCube elastiCube){
-        logger.debug("Added " + elastiCube.getName() + " to list of ElastiCubes");
-        this.allElastiCubes.add(elastiCube);
+
+        // Check whether the ElastiCube is not building and add it to the list
+        if (elastiCube.getStatusCode() != 514){
+            logger.debug("Added " + elastiCube.getName() + " to list of ElastiCubes");
+            this.availableElastiCubes.add(elastiCube);
+        } else {
+            logger.info("ElastiCube '" + elastiCube.getName() + "' is currently building and will not be added to list of available ElastiCubes.");
+        }
+
+    }
+
+    public List<ElastiCube> getAvailableElastiCubes() {
+        return availableElastiCubes;
     }
 
     public List<ElastiCube> getRunningElastiCubes() {
 
         List<ElastiCube> runningElastiCubes = new ArrayList<>();
 
-        for (ElastiCube elastiCube : allElastiCubes){
+        for (ElastiCube elastiCube : availableElastiCubes){
             if (elastiCube.getStatusCode() == 2){
                 runningElastiCubes.add(elastiCube);
             }
@@ -45,7 +56,7 @@ public class ECSStateKeeper {
 
     public boolean isBuilding() {
 
-        for (ElastiCube elastiCube : allElastiCubes){
+        for (ElastiCube elastiCube : availableElastiCubes){
             if (elastiCube.getStatusCode() == 514){
                 return true;
             }
