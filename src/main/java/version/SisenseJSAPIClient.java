@@ -32,7 +32,6 @@ public class SisenseJSAPIClient {
                         .get();
 
         Elements scriptElements = document.getElementsByTag("script");
-        System.out.println("Found " + scriptElements.size() + " elements");
 
         for (Element element :scriptElements ){
 
