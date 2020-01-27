@@ -128,7 +128,7 @@ public class MainTest {
 
         // Create EC client and retrieve list of ElastiCubes
         try {
-            ElastiCubeRESTAPIClient ecClient = new ElastiCubeRESTAPIClient();
+            ElastiCubeRESTAPIClient ecClient = new ElastiCubeRESTAPIClient(this);
             runningElastiCubes = ECSStateKeeper.getInstance().getRunningElastiCubes();
 
             // Case when API call to get ElastiCubes succeeded but 0 returned
@@ -170,7 +170,7 @@ public class MainTest {
                     }
                 }
             }
-            // The call to retrieve ECs from endpoint failed (404,500,502,504) => run config strategy and retry
+            // The call to retrieve ECs from endpoint failed (400,404,500,502,504) => run config strategy and retry
             else if (ecClient.isRequiresServiceRestart()){
                 logger.error("API call to retrieve ElastiCubes was not successful");
                 runStrategyAndRetryLogic();
@@ -393,7 +393,8 @@ public class MainTest {
 
         testLog.setTestEndTime(new Date());
         testLog.setReasonForFailure(reasonForFailure);
-        testLog.setHealthy(testSuccess);
+        logger.info("Reason for failure: " + reasonForFailure);
+        testLog.setHealthy(false);
 
 //        if (config.isWriteTestToRepository()){
 //            writeToMongo();
@@ -411,9 +412,8 @@ public class MainTest {
 //        } catch (IOException | ParseException | JSONException e) {
 //            logger.warn("Failed sending test log to mongo: " + e.getMessage());
 //        }
-
-        ResultFile.getInstance().write(testSuccess);
-        logger.info("Test result: " + testSuccess);
+        ResultFile.getInstance().write(false);
+        logger.info("Test result: " + false);
         logger.info("EXITING...");
         System.exit(0);
 
@@ -465,8 +465,10 @@ public class MainTest {
 
     private void runStrategyAndRetryLogic() throws JSONException {
 
-        runECSTelnetTests();
-        setAndExecuteStrategy();
+        if (!Configuration.getInstance().isRunningRemotely()){
+            runECSTelnetTests();
+            setAndExecuteStrategy();
+        }
         retry();
     }
 

@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tests.MainTest;
 
 import javax.net.ssl.SSLContext;
 import java.io.*;
@@ -46,9 +47,12 @@ public class ElastiCubeRESTAPIClient {
     private boolean requiresServiceRestart;
     private List<ElastiCube> listOfElastiCubes = new ArrayList<>();
     private String defaultElastiCube;
+    private int responseCode;
+    private MainTest mainTest;
 
-    public ElastiCubeRESTAPIClient() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
+    public ElastiCubeRESTAPIClient(MainTest test) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException, IOException {
 
+        this.mainTest = test;
         setUri();
         initializeClient();
         executeCall();
@@ -98,6 +102,7 @@ public class ElastiCubeRESTAPIClient {
         logger.debug("Parsing response...");
         HttpEntity entity = response.getEntity();
         int responseCode = response.getStatusLine().getStatusCode();
+        setResponseCode(responseCode);
 
         // Check that response
         if (entity != null){
@@ -109,6 +114,7 @@ public class ElastiCubeRESTAPIClient {
                         .collect(Collectors.joining("\n"));
 
                 logger.debug("Response: " + res);
+                logger.info("API call to '" + getUri() + " returned " + responseCode);
 
                 if (responseCode == HttpStatus.SC_OK) {
 
@@ -154,6 +160,7 @@ public class ElastiCubeRESTAPIClient {
                 } else if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
                     logger.warn("Check that the token '" + config.getToken() + "' in the configuration file is valid");
                     logger.debug(res);
+                    mainTest.terminate("Token invalid");
                     setRequiresServiceRestart(false);
                 } else if (responseCode == HttpStatus.SC_NOT_FOUND){
                     logger.error("The endpoint '/api/elasticubes/servers/LocalHost' was not found (404).");
@@ -162,13 +169,14 @@ public class ElastiCubeRESTAPIClient {
                 } else if (responseCode == HttpStatus.SC_FORBIDDEN) {
                     logger.warn("Ensure that you have sufficient permissions to run calls to GET '/api/elasticubes/servers/LocalHost'");
                     logger.debug(res);
+                    mainTest.terminate("Permission denied with supplied token.");
                     setRequiresServiceRestart(false);
                 } else if (responseCode == HttpStatus.SC_BAD_REQUEST){
                     logger.warn("Bad GET request sent to '/api/elasticubes/servers/LocalHost'");
                     logger.debug(res);
-                    setRequiresServiceRestart(false);
+                    setRequiresServiceRestart(true);
                 } else if (responseCode == HttpStatus.SC_BAD_GATEWAY){
-                    logger.error("Server returned 'Bad Gateway' (502)");
+                    logger.error("Server returned 'Bad Gateway'");
                     logger.debug(res);
                     setRequiresServiceRestart(true);
                 } else if (responseCode == HttpStatus.SC_GATEWAY_TIMEOUT){
@@ -256,5 +264,13 @@ public class ElastiCubeRESTAPIClient {
             logger.error("Error starting ElastiCube from REST API: " + e.getMessage());
             return null;
         }
+    }
+
+    public int getResponseCode() {
+        return responseCode;
+    }
+
+    public void setResponseCode(int responseCode) {
+        this.responseCode = responseCode;
     }
 }
